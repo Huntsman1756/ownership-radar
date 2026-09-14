@@ -13,5 +13,12 @@ probe/evidence/windowed/*.html
 probe/evidence/legal/*.html
 probe/evidence/*.html
 
+# G2 corpus — real CNMV PDFs not redistributed; manifest + parse
+# reports (derived, no document content) stay tracked
+corpus/dev/
+corpus/holdout/
+corpus/raw/
+corpus/corpus.sqlite*
+
 __pycache__/
 *.pyc

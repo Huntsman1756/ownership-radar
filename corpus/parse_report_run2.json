@@ -1,0 +1,1198 @@
+{
+ "parsed_at": "2026-09-14T05:16:04+00:00",
+ "parser": "nodpdf-0.1.0",
+ "results": [
+  {
+   "notice_key": "nod:2018080149",
+   "split": "dev",
+   "file": "corpus\\dev\\SAN_2018080149.pdf",
+   "doc_sha256": "e20e0330700183696acb1d45094c0d39eacdb5d3155f87003443f80552883997",
+   "status": "PARSED",
+   "template": "EU_2016_523_PDMR_CNMV",
+   "kind": "INITIAL",
+   "events": 1,
+   "lines": 1,
+   "qa": [
+    "MATCH"
+   ],
+   "digest": "1584f1d6bdfd4cd9bc11ed167c82b1bad68417e9082b09fd2d574d9f6820f4a6"
+  },
+  {
+   "notice_key": "nod:2018131018",
+   "split": "dev",
+   "file": "corpus\\dev\\SAN_2018131018.pdf",
+   "doc_sha256": "4503a4163b4bf67f9adf362618b7d13c84ef26bc8dccf47db430a5deba2cd338",
+   "status": "PARSED",
+   "template": "EU_2016_523_PDMR_CNMV",
+   "kind": "INITIAL",
+   "events": 1,
+   "lines": 1,
+   "qa": [
+    "MATCH"
+   ],
+   "digest": "5f5c36c96387c7271f5499267714a0b86138fc62d823abf53ab2aa9de13a7bbe"
+  },
+  {
+   "notice_key": "nod:2019021561",
+   "split": "dev",
+   "file": "corpus\\dev\\SAN_2019021561.pdf",
+   "doc_sha256": "935a4bed6f1aebdf5b5f66b71fe98e9eeffdd5469b84685196e4fc0eb1b5ed97",
+   "status": "PARSED",
+   "template": "EU_2016_523_PDMR_CNMV",
+   "kind": "INITIAL",
+   "events": 1,
+   "lines": 4,
+   "qa": [
+    "MATCH"
+   ],
+   "digest": "47ec28e0325fe50056ebbfb2a9881723f9cf16a4e9ff5b6853a7cfd676ad3e4f"
+  },
+  {
+   "notice_key": "nod:2019027702",
+   "split": "dev",
+   "file": "corpus\\dev\\SAN_2019027702.pdf",
+   "doc_sha256": "6c046da398586b87a868055c1228f680a83615d88313fc1847af2fe22d60f36b",
+   "status": "PARSED",
+   "template": "EU_2016_523_PDMR_CNMV",
+   "kind": "INITIAL",
+   "events": 1,
+   "lines": 1,
+   "qa": [
+    "MATCH"
+   ],
+   "digest": "1dc0b59eefac67919df64ae999087092fa886bf42f3e6d1ef59baebbe9a1feda"
+  },
+  {
+   "notice_key": "nod:2019030149",
+   "split": "dev",
+   "file": "corpus\\dev\\SAN_2019030149.pdf",
+   "doc_sha256": "218cce44b384c82935d35716f49cd35620ee2c410a4a74524f0144d82299993d",
+   "status": "PARSED",
+   "template": "EU_2016_523_PDMR_CNMV",
+   "kind": "INITIAL",
+   "events": 1,
+   "lines": 1,
+   "qa": [
+    "MATCH"
+   ],
+   "digest": "6692c019c2ccd0f5a57ae353e631fec4efd413f05680bcd3fc86e8b62b82e278"
+  },
+  {
+   "notice_key": "nod:2020020409",
+   "split": "dev",
+   "file": "corpus\\dev\\SAN_2020020409.pdf",
+   "doc_sha256": "3e8cbff6dfe7c1f9f87fc46fa806dd9b492ccb664b82676c805db2a2c26fba51",
+   "status": "PARSED",
+   "template": "EU_2016_523_PDMR_CNMV",
+   "kind": "INITIAL",
+   "events": 1,
+   "lines": 3,
+   "qa": [
+    "MATCH"
+   ],
+   "digest": "3a0e7ee191ef99e5fa27a69927197d49e09fbe83c76b9cc866de21eb8d887637"
+  },
+  {
+   "notice_key": "nod:2020063191",
+   "split": "dev",
+   "file": "corpus\\dev\\SAN_2020063191.pdf",
+   "doc_sha256": "af9784c3192717f6cc06d3021c3fe79dee3629855dc79fd007e2d32e1bf94d63",
+   "status": "PARSED",
+   "template": "EU_2016_523_PDMR_CNMV",
+   "kind": "INITIAL",
+   "events": 1,
+   "lines": 1,
+   "qa": [
+    "MATCH"
+   ],
+   "digest": "cbe799a246c3c52d099ea065f6ec8f04db7995a36f4aad23c4a11f599a311cf7"
+  },
+  {
+   "notice_key": "nod:2020131192",
+   "split": "dev",
+   "file": "corpus\\dev\\SAN_2020131192.pdf",
+   "doc_sha256": "e7abc1c8c1dc514f1088d0f2aead4c878d5cf417b235f906a4171b88a957a442",
+   "status": "PARSED",
+   "template": "EU_2016_523_PDMR_CNMV",
+   "kind": "INITIAL",
+   "events": 1,
+   "lines": 1,
+   "qa": [
+    "MATCH"
+   ],
+   "digest": "d8986040134442ce0e761a35808b4c8705443bd074e1dc07a4c70e2dea85f6cd"
+  },
+  {
+   "notice_key": "nod:2020131282",
+   "split": "dev",
+   "file": "corpus\\dev\\SAN_2020131282.pdf",
+   "doc_sha256": "f4dfcdcc3cbe6f4f79b0144c8a0d2df18e6a3a2d1b1c859ebd9ef5ece3969093",
+   "status": "PARSED",
+   "template": "EU_2016_523_PDMR_CNMV",
+   "kind": "INITIAL",
+   "events": 1,
+   "lines": 1,
+   "qa": [
+    "MATCH"
+   ],
+   "digest": "a09b93283a668836316e692db6f790dfea582f099aa576685e4a8582bcb6f0f7"
+  },
+  {
+   "notice_key": "nod:2020131299",
+   "split": "dev",
+   "file": "corpus\\dev\\SAN_2020131299.pdf",
+   "doc_sha256": "8e526ff44613a995dd9eb9429880c5059982a3411ee5f923acd8b9a95d99da77",
+   "status": "PARSED",
+   "template": "EU_2016_523_PDMR_CNMV",
+   "kind": "INITIAL",
+   "events": 1,
+   "lines": 1,
+   "qa": [
+    "MATCH"
+   ],
+   "digest": "7faef42d8abf408da0e51cd74419938119dd1024c09cb9e906c485f30772a402"
+  },
+  {
+   "notice_key": "nod:2021022417",
+   "split": "dev",
+   "file": "corpus\\dev\\SAN_2021022417.pdf",
+   "doc_sha256": "b3fbea3801f1b594a4473bc6e0c6a85d07c329222d8977dd3c3a905f2ccd9bdb",
+   "status": "PARSED",
+   "template": "EU_2016_523_PDMR_CNMV",
+   "kind": "INITIAL",
+   "events": 1,
+   "lines": 6,
+   "qa": [
+    "MATCH"
+   ],
+   "digest": "9b8bc8fd903ee7fe935b7eaf36f823a1b0b211f399a83fc01e65e736edef391b"
+  },
+  {
+   "notice_key": "nod:2021022430",
+   "split": "dev",
+   "file": "corpus\\dev\\SAN_2021022430.pdf",
+   "doc_sha256": "9381c8cc788b11cd4c933b89db3b86aba27c009fc4277b0cd214f31b2656260a",
+   "status": "PARSED",
+   "template": "EU_2016_523_PDMR_CNMV",
+   "kind": "INITIAL",
+   "events": 1,
+   "lines": 2,
+   "qa": [
+    "MATCH"
+   ],
+   "digest": "198e2a0d70c6a67efffdfb48eeca6021a1aa634cc11b2af3eb14e683be9ed026"
+  },
+  {
+   "notice_key": "nod:2021151554",
+   "split": "dev",
+   "file": "corpus\\dev\\SAN_2021151554.pdf",
+   "doc_sha256": "5ff105e7578d08690e8ba0ff0167da2db53f8eaacc5843c4909bf570738bf89e",
+   "status": "PARSED",
+   "template": "EU_2016_523_PDMR_CNMV",
+   "kind": "INITIAL",
+   "events": 1,
+   "lines": 1,
+   "qa": [
+    "MATCH"
+   ],
+   "digest": "878066e225eeb0d9137d0b8881db3ae301cffd991c1d5245616497d75c066fb6"
+  },
+  {
+   "notice_key": "nod:2022022546",
+   "split": "dev",
+   "file": "corpus\\dev\\SAN_2022022546.pdf",
+   "doc_sha256": "50c5e3a09ce280a252f8bf9fbb2b704c810dcfc02b367e041a0fdf1c9966de05",
+   "status": "PARSED",
+   "template": "EU_2016_523_PDMR_CNMV",
+   "kind": "INITIAL",
+   "events": 1,
+   "lines": 6,
+   "qa": [
+    "MATCH"
+   ],
+   "digest": "7101f5ce2dfa26f6c1992a32b2bd79866505c7b50aaee1ad1cc6233ae2586e7e"
+  },
+  {
+   "notice_key": "nod:2022079256",
+   "split": "dev",
+   "file": "corpus\\dev\\SAN_2022079256.pdf",
+   "doc_sha256": "16abdda9b4eac3dcaa653207539d23c4cc6d62c9dbd2f7b28727c9142cd0022b",
+   "status": "PARSED",
+   "template": "EU_2016_523_PDMR_CNMV",
+   "kind": "INITIAL",
+   "events": 1,
+   "lines": 1,
+   "qa": [
+    "MATCH"
+   ],
+   "digest": "cd4d37ecb3492b22e2458027ae0a2512ab5e597d70710104329c5f3f38c6e823"
+  },
+  {
+   "notice_key": "nod:2023025044",
+   "split": "dev",
+   "file": "corpus\\dev\\SAN_2023025044.pdf",
+   "doc_sha256": "1e924c2c98b1b85d737566354b88a5e8a507ad479352c40c01d4dea9b137e5ed",
+   "status": "PARSED",
+   "template": "EU_2016_523_PDMR_CNMV",
+   "kind": "INITIAL",
+   "events": 1,
+   "lines": 6,
+   "qa": [
+    "MATCH"
+   ],
+   "digest": "c35d5764c6232307d7d120f4d3cb9b9a97169b046aa314e7329f985af56089ce"
+  },
+  {
+   "notice_key": "nod:2023032928",
+   "split": "dev",
+   "file": "corpus\\dev\\SAN_2023032928.pdf",
+   "doc_sha256": "36f148ccc4b201b1af70a0037d9d1ccaa65511f58b081ec8f409b56473145960",
+   "status": "PARSED",
+   "template": "EU_2016_523_PDMR_CNMV",
+   "kind": "INITIAL",
+   "events": 1,
+   "lines": 1,
+   "qa": [
+    "MATCH"
+   ],
+   "digest": "92f05d1bbb9d1dca3380a0cdb30249cb60fbf12fc848abbdac942e538d025533"
+  },
+  {
+   "notice_key": "nod:2024020225",
+   "split": "dev",
+   "file": "corpus\\dev\\SAN_2024020225.pdf",
+   "doc_sha256": "f66469c6bd421d86315696e36dd0662fc29d9aec1fa291e2b07e4ceb3d5981b6",
+   "status": "PARSED",
+   "template": "EU_2016_523_PDMR_CNMV",
+   "kind": "INITIAL",
+   "events": 2,
+   "lines": 2,
+   "qa": [
+    "MATCH",
+    "MATCH"
+   ],
+   "digest": "e56385aa5e03b7f6d73e3ffb0a77e0b4e8ea75f01f3ea194e5d277c8a1a1601f"
+  },
+  {
+   "notice_key": "nod:2024025997",
+   "split": "dev",
+   "file": "corpus\\dev\\SAN_2024025997.pdf",
+   "doc_sha256": "d9814d20d53f800a9aca119f90c9474d3102e71567e8baa61ebb81b92b26d04b",
+   "status": "PARSED",
+   "template": "EU_2016_523_PDMR_CNMV",
+   "kind": "INITIAL",
+   "events": 1,
+   "lines": 6,
+   "qa": [
+    "MATCH"
+   ],
+   "digest": "fbf62f6f7f9b0b064ee71bb7a3eb241f3f863cf167acccb9383738613dfa5464"
+  },
+  {
+   "notice_key": "nod:2024039561",
+   "split": "dev",
+   "file": "corpus\\dev\\SAN_2024039561.pdf",
+   "doc_sha256": "9ab6c4edac90c1a674d3757c3f7ad3242c24efa26a11fdd7c778309571f8efb3",
+   "status": "PARSED",
+   "template": "EU_2016_523_PDMR_CNMV",
+   "kind": "INITIAL",
+   "events": 2,
+   "lines": 2,
+   "qa": [
+    "MATCH",
+    "MATCH"
+   ],
+   "digest": "2a0213c513cbd19c82ce4466f5d6e4ec9fe36f777b1bc40a76ee11dfceeb4c87"
+  },
+  {
+   "notice_key": "nod:2025025210",
+   "split": "dev",
+   "file": "corpus\\dev\\SAN_2025025210.pdf",
+   "doc_sha256": "e9f1c620b7cff0f90345d2f88b9fc175c5af19d8cffeb8f47693fe19224c9dfa",
+   "status": "PARSED",
+   "template": "EU_2016_523_PDMR_CNMV",
+   "kind": "INITIAL",
+   "events": 1,
+   "lines": 6,
+   "qa": [
+    "MATCH"
+   ],
+   "digest": "27089280e124d308260075714d04db8dd3ad43e0308e59f2e08862389ac9e479"
+  },
+  {
+   "notice_key": "nod:2025025615",
+   "split": "dev",
+   "file": "corpus\\dev\\SAN_2025025615.pdf",
+   "doc_sha256": "2fbf5ea410f1ece564907196001cf3a568c0744a5dcc3537c01fe6d326b49e96",
+   "status": "PARSED",
+   "template": "EU_2016_523_PDMR_CNMV",
+   "kind": "INITIAL",
+   "events": 1,
+   "lines": 3,
+   "qa": [
+    "MATCH"
+   ],
+   "digest": "5f13936fc1c05d02dcbbe36fb62dee74aa6387f8ca721836b71f5dc150767855"
+  },
+  {
+   "notice_key": "nod:2025038309",
+   "split": "dev",
+   "file": "corpus\\dev\\SAN_2025038309.pdf",
+   "doc_sha256": "a16e611635f79484a21f71856aab57a234b6bb57b364ff675200137df1c9b6bb",
+   "status": "PARSED",
+   "template": "EU_2016_523_PDMR_CNMV",
+   "kind": "INITIAL",
+   "events": 1,
+   "lines": 1,
+   "qa": [
+    "MATCH"
+   ],
+   "digest": "f62459791bdf8f0437e7e52dbe528cc4b7c2c8cb10028f6923a4ff5f16a73f6d"
+  },
+  {
+   "notice_key": "nod:2025115942",
+   "split": "dev",
+   "file": "corpus\\dev\\SAN_2025115942.pdf",
+   "doc_sha256": "0af80367f4eeabb835d916dff59778bf8e72289f6f1ec16f71411b3e8e427bda",
+   "status": "PARSED",
+   "template": "EU_2016_523_PDMR_CNMV",
+   "kind": "INITIAL",
+   "events": 1,
+   "lines": 1,
+   "qa": [
+    "MATCH"
+   ],
+   "digest": "d8fbac7132d65b30b9ccd272db66b4c588ec193ddbf227c6f477b736fbf89937"
+  },
+  {
+   "notice_key": "nod:2025137241",
+   "split": "dev",
+   "file": "corpus\\dev\\SAN_2025137241.pdf",
+   "doc_sha256": "20535b8b4785611c6a4c07816ada8613b7c3ce10be8ede53bd39b6e4f98171d0",
+   "status": "PARSED",
+   "template": "EU_2016_523_PDMR_CNMV",
+   "kind": "INITIAL",
+   "events": 1,
+   "lines": 1,
+   "qa": [
+    "MATCH"
+   ],
+   "digest": "36ef689275c0bef7672232b977b2803af2e85f5f60289216fe8d1094bf0826dc"
+  },
+  {
+   "notice_key": "nod:2025137322",
+   "split": "dev",
+   "file": "corpus\\dev\\SAN_2025137322.pdf",
+   "doc_sha256": "ff11416bbabfe3231a50b2cb603bebbdf9aef06eb6d2d018d2b51da02766fff8",
+   "status": "PARSED",
+   "template": "EU_2016_523_PDMR_CNMV",
+   "kind": "AMENDMENT",
+   "events": 1,
+   "lines": 1,
+   "qa": [
+    "MATCH"
+   ],
+   "digest": "0d4d22d3af65dbaef36d32265bd1e65253326508764bf9aa6b7c87b8852739f2"
+  },
+  {
+   "notice_key": "nod:2026019374",
+   "split": "dev",
+   "file": "corpus\\dev\\SAN_2026019374.pdf",
+   "doc_sha256": "611f9118b562b3956e2b03a4de19e1af0fdedf44a62a199d43514bb102c1d727",
+   "status": "PARSED",
+   "template": "EU_2016_523_PDMR_CNMV",
+   "kind": "INITIAL",
+   "events": 2,
+   "lines": 2,
+   "qa": [
+    "MATCH",
+    "MATCH"
+   ],
+   "digest": "2d3cffe8e61b4db03a81d006e7fe11f856b36334ab4e7a4a2ab0e995f2f1863a"
+  },
+  {
+   "notice_key": "nod:2026025351",
+   "split": "dev",
+   "file": "corpus\\dev\\SAN_2026025351.pdf",
+   "doc_sha256": "c7eb4edc9db2e98f31c2165efe8d30ebde07fae5fc3735607c9e48b74248dc8c",
+   "status": "PARSED",
+   "template": "EU_2016_523_PDMR_CNMV",
+   "kind": "INITIAL",
+   "events": 1,
+   "lines": 4,
+   "qa": [
+    "MATCH"
+   ],
+   "digest": "273461b8e9f7e447b8c20682d8952368f082cec45e44f7c3bb569446a2ea5f88"
+  },
+  {
+   "notice_key": "nod:2026035251",
+   "split": "dev",
+   "file": "corpus\\dev\\SAN_2026035251.pdf",
+   "doc_sha256": "5a90a6a0fe8023e960f0ef5cc1bad5a9c351bb06a3735fd1d23d57bcca58fa38",
+   "status": "PARSED",
+   "template": "EU_2016_523_PDMR_CNMV",
+   "kind": "INITIAL",
+   "events": 2,
+   "lines": 2,
+   "qa": [
+    "MATCH",
+    "MATCH"
+   ],
+   "digest": "3ab565cc39d01a5418f19077a6cffe85eb937e3b906014cb6f395840d8da9aa1"
+  },
+  {
+   "notice_key": "nod:2026113065",
+   "split": "dev",
+   "file": "corpus\\dev\\SAN_2026113065.pdf",
+   "doc_sha256": "2b30eac79511ead8ea34838406144a53233620bf96178511ae2e9c9f2728431e",
+   "status": "PARSED",
+   "template": "EU_2016_523_PDMR_CNMV",
+   "kind": "INITIAL",
+   "events": 1,
+   "lines": 1,
+   "qa": [
+    "MATCH"
+   ],
+   "digest": "ed8e6e4d8c2f6c83cc629a8257efb80ba774e64a1618ca6a908304a92d460988"
+  },
+  {
+   "notice_key": "nod:2026120682",
+   "split": "dev",
+   "file": "corpus\\dev\\SAN_2026120682.pdf",
+   "doc_sha256": "36c150fd1da8b700a3ba18edf6c3edf1ca307c723a80803851f9cee2b4d8ebb9",
+   "status": "PARSED",
+   "template": "EU_2016_523_PDMR_CNMV",
+   "kind": "AMENDMENT",
+   "events": 1,
+   "lines": 1,
+   "qa": [
+    "MATCH"
+   ],
+   "digest": "83047295c70660fee4523beebcde04ca65ff12847e568a56eeda251c9768fd2d"
+  },
+  {
+   "notice_key": "nod:2018109299",
+   "split": "dev",
+   "file": "corpus\\dev\\BBVA_2018109299.pdf",
+   "doc_sha256": "d57bd1141372927ed1d8585b54ddeccf7c9ab05b97ecaa9eccc6fefbcdaccf89",
+   "status": "PARSED",
+   "template": "EU_2016_523_PDMR_CNMV",
+   "kind": "INITIAL",
+   "events": 1,
+   "lines": 3,
+   "qa": [
+    "MATCH"
+   ],
+   "digest": "575c22685245e0fe1996ab6a9ddf8e329edd0f1eeb3d125d437a577b1b572562"
+  },
+  {
+   "notice_key": "nod:2019038472",
+   "split": "dev",
+   "file": "corpus\\dev\\BBVA_2019038472.pdf",
+   "doc_sha256": "c5b72bf3f7d8247e07d27b0b1868e098b555108a0177429f06224814149ef0f6",
+   "status": "PARSED",
+   "template": "EU_2016_523_PDMR_CNMV",
+   "kind": "INITIAL",
+   "events": 1,
+   "lines": 2,
+   "qa": [
+    "MATCH"
+   ],
+   "digest": "35f59ab7ed1254651b353fe8d79b832fe4a8ede9785767667f5df9ae837bd47c"
+  },
+  {
+   "notice_key": "nod:2019038807",
+   "split": "dev",
+   "file": "corpus\\dev\\BBVA_2019038807.pdf",
+   "doc_sha256": "6a8e15703121dd330a56b3207cb058255807504fbdafd47b38be73d546dcf4fd",
+   "status": "PARSED",
+   "template": "EU_2016_523_PDMR_CNMV",
+   "kind": "INITIAL",
+   "events": 1,
+   "lines": 2,
+   "qa": [
+    "MATCH"
+   ],
+   "digest": "af0d91670f52d7a1bf054d4dd1c7b06fcd2794b6b2579dfb504931d0285c57ba"
+  },
+  {
+   "notice_key": "nod:2020025599",
+   "split": "dev",
+   "file": "corpus\\dev\\BBVA_2020025599.pdf",
+   "doc_sha256": "460b9e69ef990ac99222381051fa174303ebc839d4dadbc23aed07c242d6c43a",
+   "status": "PARSED",
+   "template": "EU_2016_523_PDMR_CNMV",
+   "kind": "INITIAL",
+   "events": 1,
+   "lines": 2,
+   "qa": [
+    "MATCH"
+   ],
+   "digest": "87238fb65e0b9058217fcbc0ebba2c0fdc6a1b3b391f7b21470bb7218eeffa95"
+  },
+  {
+   "notice_key": "nod:2020027303",
+   "split": "dev",
+   "file": "corpus\\dev\\BBVA_2020027303.pdf",
+   "doc_sha256": "1df1061074ad8e21eac0a7eeb0bd0cee1a832251df6c78ac27b6f893161dd31a",
+   "status": "PARSED",
+   "template": "EU_2016_523_PDMR_CNMV",
+   "kind": "INITIAL",
+   "events": 1,
+   "lines": 2,
+   "qa": [
+    "MATCH"
+   ],
+   "digest": "59cabff9b701fd1638c63f298947c186efe3046703f0e267d3d4ac7bca95d785"
+  },
+  {
+   "notice_key": "nod:2021025505",
+   "split": "dev",
+   "file": "corpus\\dev\\BBVA_2021025505.pdf",
+   "doc_sha256": "8e530bb9540807c9bcfa5cf03e746fe05dee143b94ff0fd20116a26bfa30c1e1",
+   "status": "PARSED",
+   "template": "EU_2016_523_PDMR_CNMV",
+   "kind": "INITIAL",
+   "events": 1,
+   "lines": 1,
+   "qa": [
+    "MATCH"
+   ],
+   "digest": "e9b07dc740cb1fc10c80e3a2004a4c7a1f8875a6c8dfb44d5c0f02103b9b40ed"
+  },
+  {
+   "notice_key": "nod:2021025533",
+   "split": "dev",
+   "file": "corpus\\dev\\BBVA_2021025533.pdf",
+   "doc_sha256": "12f221b2fe5131d06c25f435e7ebfa8729103a6108ce670d84b1a0b0956e5951",
+   "status": "PARSED",
+   "template": "EU_2016_523_PDMR_CNMV",
+   "kind": "INITIAL",
+   "events": 1,
+   "lines": 1,
+   "qa": [
+    "MATCH"
+   ],
+   "digest": "bc81295ca624f6667d5a3def98c2316555c9078b5b8d0bab464078c27935e5d0"
+  },
+  {
+   "notice_key": "nod:2022026428",
+   "split": "dev",
+   "file": "corpus\\dev\\BBVA_2022026428.pdf",
+   "doc_sha256": "73740cb446f3ae4a9c9afac0ed837e7185240385f17b2d645378d9d2c69cf5a0",
+   "status": "PARSED",
+   "template": "EU_2016_523_PDMR_CNMV",
+   "kind": "INITIAL",
+   "events": 1,
+   "lines": 3,
+   "qa": [
+    "MATCH"
+   ],
+   "digest": "a72f15c929c8b918c2bd1e6070add1fd4bfca981ee942a75abb7d11500198781"
+  },
+  {
+   "notice_key": "nod:2022026862",
+   "split": "dev",
+   "file": "corpus\\dev\\BBVA_2022026862.pdf",
+   "doc_sha256": "f4b29f1fd64da2e56a5b1a0d03ef72bfa86164365bf0e4f924cd9007359c2743",
+   "status": "PARSED",
+   "template": "EU_2016_523_PDMR_CNMV",
+   "kind": "INITIAL",
+   "events": 1,
+   "lines": 2,
+   "qa": [
+    "MATCH"
+   ],
+   "digest": "778f8b8c5ca8661e3c2af3d3383bdd80d73fe256b973dddfe164c4306873da3e"
+  },
+  {
+   "notice_key": "nod:2022118962",
+   "split": "dev",
+   "file": "corpus\\dev\\BBVA_2022118962.pdf",
+   "doc_sha256": "aef133698e8739c1c7704a3c52da97b4248261edaece64d98a5db9ccf298f777",
+   "status": "PARSED",
+   "template": "EU_2016_523_PDMR_CNMV",
+   "kind": "INITIAL",
+   "events": 1,
+   "lines": 1,
+   "qa": [
+    "MATCH"
+   ],
+   "digest": "77f7ad5d0aebd1ad8bcb4cd109d9ef06140fd9894be71665991cb169e6ccc277"
+  },
+  {
+   "notice_key": "nod:2023039767",
+   "split": "dev",
+   "file": "corpus\\dev\\BBVA_2023039767.pdf",
+   "doc_sha256": "9f7cf7f52493fc160e00f4fbf3d1dc072f656a0502382c6d8c97bdeae8419e0e",
+   "status": "PARSED",
+   "template": "EU_2016_523_PDMR_CNMV",
+   "kind": "INITIAL",
+   "events": 1,
+   "lines": 3,
+   "qa": [
+    "MATCH"
+   ],
+   "digest": "daae7513f440ac62a2f813ea60eb5e86bc41ee662ed2c49164903251dd9c0208"
+  },
+  {
+   "notice_key": "nod:2023039783",
+   "split": "dev",
+   "file": "corpus\\dev\\BBVA_2023039783.pdf",
+   "doc_sha256": "e9e452615b491feffb17ee47a96e62dffb1956a77141147a36382e033e2e67a6",
+   "status": "PARSED",
+   "template": "EU_2016_523_PDMR_CNMV",
+   "kind": "AMENDMENT",
+   "events": 1,
+   "lines": 5,
+   "qa": [
+    "MATCH"
+   ],
+   "digest": "ae4d213fef494177a28de8adfcb63a781b4f44da908786a1a4c338dd0d5e9f92"
+  },
+  {
+   "notice_key": "nod:2023105506",
+   "split": "dev",
+   "file": "corpus\\dev\\BBVA_2023105506.pdf",
+   "doc_sha256": "36803356586665815d56747d61ff13804ea946caf5e39151d0e36dd9190ff6ad",
+   "status": "PARSED",
+   "template": "EU_2016_523_PDMR_CNMV",
+   "kind": "INITIAL",
+   "events": 1,
+   "lines": 1,
+   "qa": [
+    "MATCH"
+   ],
+   "digest": "625949d96b7002708400fc5834f04082db172a47f9e1ab7502a110082d7f5f5d"
+  },
+  {
+   "notice_key": "nod:2023105509",
+   "split": "dev",
+   "file": "corpus\\dev\\BBVA_2023105509.pdf",
+   "doc_sha256": "e51beef381e9e17344b4aa63444b46ad2cac0567c2b4b94889cbc8be708e1d6a",
+   "status": "PARSED",
+   "template": "EU_2016_523_PDMR_CNMV",
+   "kind": "INITIAL",
+   "events": 5,
+   "lines": 5,
+   "qa": [
+    "MATCH",
+    "MATCH",
+    "MATCH",
+    "MATCH",
+    "MATCH"
+   ],
+   "digest": "ffc3267db9d1a2f87004bd666f2f8753393f8e31f2eca32f5726f8c125206dd1"
+  },
+  {
+   "notice_key": "nod:2023105878",
+   "split": "dev",
+   "file": "corpus\\dev\\BBVA_2023105878.pdf",
+   "doc_sha256": "a82f1d537ab5ced4a94b2c5625e3fd4eab1fa2dbae28b6b684f552967e472d29",
+   "status": "PARSED",
+   "template": "EU_2016_523_PDMR_CNMV",
+   "kind": "AMENDMENT",
+   "events": 1,
+   "lines": 1,
+   "qa": [
+    "MATCH"
+   ],
+   "digest": "a213b9f523a62270dbf878967194b25e35f322a436944c8c353417c55ff41117"
+  },
+  {
+   "notice_key": "nod:2023106224",
+   "split": "dev",
+   "file": "corpus\\dev\\BBVA_2023106224.pdf",
+   "doc_sha256": "b41c318c3cddc67f1bd5203d98eb0cd39492097e5005f007a8b2c673287e7b04",
+   "status": "PARSED",
+   "template": "EU_2016_523_PDMR_CNMV",
+   "kind": "AMENDMENT",
+   "events": 5,
+   "lines": 5,
+   "qa": [
+    "MATCH",
+    "MATCH",
+    "MATCH",
+    "MATCH",
+    "MATCH"
+   ],
+   "digest": "75eb95ed11caaf47000e3a642fe9f3171a22737046a508430a4d4eb1ee044309"
+  },
+  {
+   "notice_key": "nod:2024032167",
+   "split": "dev",
+   "file": "corpus\\dev\\BBVA_2024032167.pdf",
+   "doc_sha256": "ae04aa3030d95fbbb3215790253a749a9d70f1ada8985485f753bdf3c190419b",
+   "status": "PARSED",
+   "template": "EU_2016_523_PDMR_CNMV",
+   "kind": "INITIAL",
+   "events": 1,
+   "lines": 1,
+   "qa": [
+    "MATCH"
+   ],
+   "digest": "31bf6c78f7af3aa3817c3148e2d7646df8831d41885d84bdb2ab0d06f57e2352"
+  },
+  {
+   "notice_key": "nod:2024033819",
+   "split": "dev",
+   "file": "corpus\\dev\\BBVA_2024033819.pdf",
+   "doc_sha256": "1a30f3bd48704570d087250b7080187d36f5c63ddca34731a3dc6c09cbc846aa",
+   "status": "PARSED",
+   "template": "EU_2016_523_PDMR_CNMV",
+   "kind": "INITIAL",
+   "events": 1,
+   "lines": 3,
+   "qa": [
+    "MATCH"
+   ],
+   "digest": "824142e3fea7a5331d3320a6c27b6d8f99eb07264388bc3e2eb0974a7710dae4"
+  },
+  {
+   "notice_key": "nod:2024043765",
+   "split": "dev",
+   "file": "corpus\\dev\\BBVA_2024043765.pdf",
+   "doc_sha256": "3180dbbc76115f57bfccf95a880428d31ec146d61b814f1928fc071e2aa185ae",
+   "status": "PARSED",
+   "template": "EU_2016_523_PDMR_CNMV",
+   "kind": "INITIAL",
+   "events": 1,
+   "lines": 1,
+   "qa": [
+    "MATCH"
+   ],
+   "digest": "4044cb38451f9c38d1cccc193ab055599c01705878b545d23135c1dbd58ad2f8"
+  },
+  {
+   "notice_key": "nod:2025032697",
+   "split": "dev",
+   "file": "corpus\\dev\\BBVA_2025032697.pdf",
+   "doc_sha256": "0c01d57fe492d241165d1d0abd9530e472881544fb51ce068adf444e08cbf7e9",
+   "status": "PARSED",
+   "template": "EU_2016_523_PDMR_CNMV",
+   "kind": "INITIAL",
+   "events": 1,
+   "lines": 5,
+   "qa": [
+    "MATCH"
+   ],
+   "digest": "fec40a00ac06d181e78b32c873d4d38e8b9e3a4b0f47e1d9b20b75557254ebbd"
+  },
+  {
+   "notice_key": "nod:2025147694",
+   "split": "dev",
+   "file": "corpus\\dev\\BBVA_2025147694.pdf",
+   "doc_sha256": "7c122a946291df11f840db010cac1a942bb363f58d22664652a8af05a8039537",
+   "status": "PARSED",
+   "template": "EU_2016_523_PDMR_CNMV",
+   "kind": "INITIAL",
+   "events": 1,
+   "lines": 1,
+   "qa": [
+    "MATCH"
+   ],
+   "digest": "58cf38dd3906149a43c3bd5ddbd6a0964873912f39e9476a5293a9599fd265fc"
+  },
+  {
+   "notice_key": "nod:2026025253",
+   "split": "dev",
+   "file": "corpus\\dev\\BBVA_2026025253.pdf",
+   "doc_sha256": "e6ab2673c1a42ad4b7abef41b610dc93778659d682d3d9834f41abba35367637",
+   "status": "PARSED",
+   "template": "EU_2016_523_PDMR_CNMV",
+   "kind": "INITIAL",
+   "events": 1,
+   "lines": 1,
+   "qa": [
+    "MATCH"
+   ],
+   "digest": "dd08bc15110f5c29ea06503ab877075ae8d84b000b9134650c794ec40a7d8dd9"
+  },
+  {
+   "notice_key": "nod:2026031522",
+   "split": "dev",
+   "file": "corpus\\dev\\BBVA_2026031522.pdf",
+   "doc_sha256": "1bdcd72df5f740a3d63ceb9ab49f87927ab7c1f3918240271535bebb6d355e7d",
+   "status": "PARSED",
+   "template": "EU_2016_523_PDMR_CNMV",
+   "kind": "INITIAL",
+   "events": 1,
+   "lines": 4,
+   "qa": [
+    "MATCH"
+   ],
+   "digest": "1d0eb8ce4ab1ee7720c7f7b37c037afe529af367d4efafb568e5d6ac2b5a2c8a"
+  },
+  {
+   "notice_key": "nod:2026031544",
+   "split": "dev",
+   "file": "corpus\\dev\\BBVA_2026031544.pdf",
+   "doc_sha256": "7922e5a9e783699b3e043cb8e6ac747112ecfdd7619034e61d47d7ad99df6353",
+   "status": "PARSED",
+   "template": "EU_2016_523_PDMR_CNMV",
+   "kind": "INITIAL",
+   "events": 1,
+   "lines": 5,
+   "qa": [
+    "MATCH"
+   ],
+   "digest": "e0f656e7e0b27dcf0232b404d85c47e674631b42dff0bb4205cc946bd4dc0a85"
+  },
+  {
+   "notice_key": "nod:2026043972",
+   "split": "dev",
+   "file": "corpus\\dev\\BBVA_2026043972.pdf",
+   "doc_sha256": "168dbc23baa5c6dfd39cb58886737f79f8afb64245585abbc901c42885104342",
+   "status": "PARSED",
+   "template": "EU_2016_523_PDMR_CNMV",
+   "kind": "INITIAL",
+   "events": 1,
+   "lines": 1,
+   "qa": [
+    "MATCH"
+   ],
+   "digest": "2bfe8c80aa135c1f604755b6355471af03bfa4f03c556fab362c8094f5796e4b"
+  },
+  {
+   "notice_key": "nod:2019038807",
+   "split": "dev",
+   "file": "probe\\evidence\\templates\\nod_BBVA_2019038807_2019-04-04.pdf",
+   "doc_sha256": "6a8e15703121dd330a56b3207cb058255807504fbdafd47b38be73d546dcf4fd",
+   "status": "PARSED",
+   "template": "EU_2016_523_PDMR_CNMV",
+   "kind": "INITIAL",
+   "events": 1,
+   "lines": 2,
+   "qa": [
+    "MATCH"
+   ],
+   "digest": "af0d91670f52d7a1bf054d4dd1c7b06fcd2794b6b2579dfb504931d0285c57ba"
+  },
+  {
+   "notice_key": "nod:2025153790",
+   "split": "dev",
+   "file": "probe\\evidence\\templates\\nod_BBVA_2025153790_2025-12-24.pdf",
+   "doc_sha256": "09f1688a91ea06531b97ab47a68cf6d7f828c4b3fa3f6d6365b0a362ad24f0eb",
+   "status": "PARSED",
+   "template": "EU_2016_523_PDMR_CNMV",
+   "kind": "INITIAL",
+   "events": 1,
+   "lines": 1,
+   "qa": [
+    "MATCH"
+   ],
+   "digest": "f7147fd99ea017df43ac6a1d5b1e84a5b53cad711f0b82684e70ffc7cf5c261b"
+  },
+  {
+   "notice_key": "nod:2019021570",
+   "split": "dev",
+   "file": "probe\\evidence\\templates\\nod_SAN_2019021570_2019-02-18.pdf",
+   "doc_sha256": "bcc0286bd0c55b8db1b868f5a627151fc4630896e8a7b5d790abefd4b7977cf1",
+   "status": "PARSED",
+   "template": "EU_2016_523_PDMR_CNMV",
+   "kind": "INITIAL",
+   "events": 1,
+   "lines": 4,
+   "qa": [
+    "MATCH"
+   ],
+   "digest": "5becb72d953bd320cd728f4ee1129a9fd3e96b07b3665b84f8c79e5d90bac985"
+  },
+  {
+   "notice_key": "nod:2021022416",
+   "split": "dev",
+   "file": "probe\\evidence\\templates\\nod_SAN_2021022416_2021-02-18.pdf",
+   "doc_sha256": "e455e28995e89d1ddc4bc62d27e9fd0826dfe4647ac1de2314e928b382bbbb74",
+   "status": "PARSED",
+   "template": "EU_2016_523_PDMR_CNMV",
+   "kind": "INITIAL",
+   "events": 1,
+   "lines": 6,
+   "qa": [
+    "MATCH"
+   ],
+   "digest": "519670be6424de5523acaa5576597c8d7d8114b92ec5ec8406fbfa8eb701fd6b"
+  },
+  {
+   "notice_key": "nod:2025033179",
+   "split": "dev",
+   "file": "probe\\evidence\\templates\\nod_SAN_2025033179_2025-03-04.pdf",
+   "doc_sha256": "64c8aae2d242c6cad3d9e907cc95d6384661769a15fe86e3b6a5ad48bc07d83d",
+   "status": "PARSED",
+   "template": "EU_2016_523_PDMR_CNMV",
+   "kind": "INITIAL",
+   "events": 1,
+   "lines": 1,
+   "qa": [
+    "MATCH"
+   ],
+   "digest": "f890edb2b843e261c70f09a117ac303900e97e462ae43ddabda540593599dbb2"
+  },
+  {
+   "notice_key": "nod_legacy:2017026125",
+   "split": "dev",
+   "file": "probe\\evidence\\templates\\nod_legacy_BBVA_2017026125_2017-02-28.pdf",
+   "doc_sha256": "1768a3defe47b39dcaa699b7990a3103a46abaa41a4cc34cd883387e719a973b",
+   "status": "UNSUPPORTED_TEMPLATE",
+   "template": "UNSUPPORTED_TEMPLATE",
+   "kind": null,
+   "events": 0,
+   "lines": 0,
+   "qa": [],
+   "digest": "b2edffe626c9bc3e509b5818bd6b732f2df48e4b4350ef552b14331aa7db23aa"
+  },
+  {
+   "notice_key": "nod_legacy:2011144527",
+   "split": "dev",
+   "file": "probe\\evidence\\templates\\nod_legacy_SAN_2011144527_2011-11-10.pdf",
+   "doc_sha256": "e957930d92cebded179bae3ccb7cb7de6e5dedc598693ab4019160953d9be796",
+   "status": "UNSUPPORTED_NO_TEXT_LAYER",
+   "template": "UNSUPPORTED_NO_TEXT_LAYER",
+   "kind": null,
+   "events": 0,
+   "lines": 0,
+   "qa": [],
+   "digest": "c3cbaaad32fce9d190f6c6e881cba5e31691f16f7e0e09523691b7432ae00b59"
+  },
+  {
+   "notice_key": "nod_legacy:2017021859",
+   "split": "dev",
+   "file": "probe\\evidence\\templates\\nod_legacy_SAN_2017021859_2017-02-20.pdf",
+   "doc_sha256": "7a3a6439eaa54fae8c331e9f9a953cac89f6fb279f00407bd908edcccd570081",
+   "status": "UNSUPPORTED_TEMPLATE",
+   "template": "UNSUPPORTED_TEMPLATE",
+   "kind": null,
+   "events": 0,
+   "lines": 0,
+   "qa": [],
+   "digest": "392d8c24ac2039811c35a3d9e948380c89778f3473521bf011cf550513e9ccbc"
+  },
+  {
+   "notice_key": "nod:2018105375",
+   "split": "holdout",
+   "file": "corpus\\holdout\\CABK_2018105375.pdf",
+   "doc_sha256": "c3455b5970b79f28e94514c68e3dff4d5ccc4419af3e3295f1feae6dd9907f49",
+   "status": "PARSED",
+   "template": "EU_2016_523_PDMR_CNMV",
+   "kind": "INITIAL",
+   "events": 1,
+   "lines": 1,
+   "qa": [
+    "MATCH"
+   ],
+   "digest": "4c3efbc1c928894137211f599abe521fce1a7c045ea75105d4ab87eebe644655"
+  },
+  {
+   "notice_key": "nod:2021050582",
+   "split": "holdout",
+   "file": "corpus\\holdout\\CABK_2021050582.pdf",
+   "doc_sha256": "4011bf91390da434d340d14781fa5ccf0bf3be816066e06a679426fe000cde3f",
+   "status": "PARSED",
+   "template": "EU_2016_523_PDMR_CNMV",
+   "kind": "INITIAL",
+   "events": 1,
+   "lines": 1,
+   "qa": [
+    "MATCH"
+   ],
+   "digest": "92a44ae43e906f7791d1463ec604ab11a7059fea29547b992da19d6544d13992"
+  },
+  {
+   "notice_key": "nod:2023068949",
+   "split": "holdout",
+   "file": "corpus\\holdout\\CABK_2023068949.pdf",
+   "doc_sha256": "0e88b82301f681a0855cf26b5182ebc9f15c8835c05865fcb7e54515215c71ec",
+   "status": "PARSED",
+   "template": "EU_2016_523_PDMR_CNMV",
+   "kind": "INITIAL",
+   "events": 1,
+   "lines": 1,
+   "qa": [
+    "MATCH"
+   ],
+   "digest": "db988d5b26c4edee1ee0e73fbee892d063f0217b914483b5b92c7e6b8a1ff2fc"
+  },
+  {
+   "notice_key": "nod:2025031727",
+   "split": "holdout",
+   "file": "corpus\\holdout\\CABK_2025031727.pdf",
+   "doc_sha256": "ffa9d582f8d70bd93be99662f9ec2c0c14a23caf6e009eb618b7e3d9b9374457",
+   "status": "PARSED",
+   "template": "EU_2016_523_PDMR_CNMV",
+   "kind": "INITIAL",
+   "events": 1,
+   "lines": 1,
+   "qa": [
+    "MATCH"
+   ],
+   "digest": "c4bba09bb770b7d9756ee81c38f9bf54fdc3016344286c31bb6286c2d0a0f723"
+  },
+  {
+   "notice_key": "nod:2026089639",
+   "split": "holdout",
+   "file": "corpus\\holdout\\CABK_2026089639.pdf",
+   "doc_sha256": "522d9722ffa753aa60bff0a67ff65057b05cb25f4a4129edd02215346b305963",
+   "status": "PARSED",
+   "template": "EU_2016_523_PDMR_CNMV",
+   "kind": "INITIAL",
+   "events": 1,
+   "lines": 1,
+   "qa": [
+    "MATCH"
+   ],
+   "digest": "7d873e1af0cdc0f407dc62130a002657fe2c086dea721c07470f63d45d98347c"
+  },
+  {
+   "notice_key": "nod:2018062819",
+   "split": "holdout",
+   "file": "corpus\\holdout\\TEF_2018062819.pdf",
+   "doc_sha256": "b80d6044deca77ffbe2d0872e17def82f31d31b072118eec9ece1662c1217686",
+   "status": "PARSED",
+   "template": "EU_2016_523_PDMR_CNMV",
+   "kind": "INITIAL",
+   "events": 2,
+   "lines": 2,
+   "qa": [
+    "MATCH",
+    "MATCH"
+   ],
+   "digest": "d54a622a329cb1938e31e7d34515a1b239ab3614b26dd310ec0ed342d53c6963"
+  },
+  {
+   "notice_key": "nod:2021041178",
+   "split": "holdout",
+   "file": "corpus\\holdout\\TEF_2021041178.pdf",
+   "doc_sha256": "142c6985f56b7cc601e6d3d2a4852021252854884ca0395ba8c6671a9e002eea",
+   "status": "PARSED",
+   "template": "EU_2016_523_PDMR_CNMV",
+   "kind": "INITIAL",
+   "events": 1,
+   "lines": 1,
+   "qa": [
+    "MATCH"
+   ],
+   "digest": "229a24e8ffdbba413b6b091caab770fb88af21fd0dd5aa3a8f8bd95c32997a76"
+  },
+  {
+   "notice_key": "nod:2022110940",
+   "split": "holdout",
+   "file": "corpus\\holdout\\TEF_2022110940.pdf",
+   "doc_sha256": "1ddf5030807c05a51b36821d76d7d218b600fc12d44f20a7414df89392228847",
+   "status": "PARSED",
+   "template": "EU_2016_523_PDMR_CNMV",
+   "kind": "INITIAL",
+   "events": 1,
+   "lines": 1,
+   "qa": [
+    "MATCH"
+   ],
+   "digest": "d9ef616ca01e5ad40c7ef0f1916f995d87f0f0665b710f308e777ce09f1cb42c"
+  },
+  {
+   "notice_key": "nod:2023075392",
+   "split": "holdout",
+   "file": "corpus\\holdout\\TEF_2023075392.pdf",
+   "doc_sha256": "deea5df7da16418cc77cabf664a8a3f132a2afdffad84b1b3458b946c5d8d6aa",
+   "status": "PARSED",
+   "template": "EU_2016_523_PDMR_CNMV",
+   "kind": "INITIAL",
+   "events": 1,
+   "lines": 1,
+   "qa": [
+    "MATCH"
+   ],
+   "digest": "26845a8d87a006017784abf2a07e4774b59bcf31a41701616d5c3f806070788c"
+  },
+  {
+   "notice_key": "nod:2026090693",
+   "split": "holdout",
+   "file": "corpus\\holdout\\TEF_2026090693.pdf",
+   "doc_sha256": "8c94b369ca795881db18474e8980a6d6d756f0611218e0f0c2045bb7485c474d",
+   "status": "PARSED",
+   "template": "EU_2016_523_PDMR_CNMV",
+   "kind": "INITIAL",
+   "events": 1,
+   "lines": 1,
+   "qa": [
+    "MATCH"
+   ],
+   "digest": "85029a87443a8166b2c4ba253088e5af6782c172bfdfda873cf4c007999ffac8"
+  },
+  {
+   "notice_key": "nod:2018065124",
+   "split": "holdout",
+   "file": "corpus\\holdout\\REP_2018065124.pdf",
+   "doc_sha256": "b43cbb3002c62ee7d974e765a371d1be97b63a460e0cf876944bdd9bbe62d406",
+   "status": "PARSED",
+   "template": "EU_2016_523_PDMR_CNMV",
+   "kind": "INITIAL",
+   "events": 1,
+   "lines": 1,
+   "qa": [
+    "MATCH"
+   ],
+   "digest": "923fc279e2d80327c895c502700fa98adab69bc9047767896af00c00970c1041"
+  },
+  {
+   "notice_key": "nod:2019133604",
+   "split": "holdout",
+   "file": "corpus\\holdout\\REP_2019133604.pdf",
+   "doc_sha256": "b3ea570082a2e65f2a6e19eaf86111e4d00544afabb056514bef1dba2af8fc4c",
+   "status": "PARSED",
+   "template": "EU_2016_523_PDMR_CNMV",
+   "kind": "INITIAL",
+   "events": 1,
+   "lines": 1,
+   "qa": [
+    "MATCH"
+   ],
+   "digest": "4824fb1348107e832c33baf5a2e8275f5404ca2495aabc6944ce27ab59b82983"
+  },
+  {
+   "notice_key": "nod:2021006492",
+   "split": "holdout",
+   "file": "corpus\\holdout\\REP_2021006492.pdf",
+   "doc_sha256": "52c922f036fc0471c96d3f9e2d7f52281b2653e6473fd0925b0787db13f4dcdc",
+   "status": "PARSED",
+   "template": "EU_2016_523_PDMR_CNMV",
+   "kind": "INITIAL",
+   "events": 1,
+   "lines": 1,
+   "qa": [
+    "MATCH"
+   ],
+   "digest": "ef181e230fac135ac85dccdf6eaf028cecdd87524742b8ef45449178356adeaf"
+  },
+  {
+   "notice_key": "nod:2023134119",
+   "split": "holdout",
+   "file": "corpus\\holdout\\REP_2023134119.pdf",
+   "doc_sha256": "75e484337e0c7e57b863ddde8c70f7a3adbdb6d05fdaa7bc6d4e0ddebc297b9a",
+   "status": "PARSED",
+   "template": "EU_2016_523_PDMR_CNMV",
+   "kind": "INITIAL",
+   "events": 1,
+   "lines": 1,
+   "qa": [
+    "MATCH"
+   ],
+   "digest": "134e6af59a4e39704c17586458ece02ba4b653575e08904efa4f267e550005c4"
+  },
+  {
+   "notice_key": "nod:2026118023",
+   "split": "holdout",
+   "file": "corpus\\holdout\\REP_2026118023.pdf",
+   "doc_sha256": "9cc3528e91e6e89089d13bdeb1aa3f7b79cda105546a5431b207a9d33b246be9",
+   "status": "PARSED",
+   "template": "EU_2016_523_PDMR_CNMV",
+   "kind": "INITIAL",
+   "events": 1,
+   "lines": 1,
+   "qa": [
+    "MATCH"
+   ],
+   "digest": "fa70665f36395ce6e8811693206c53fc8c38d7fe3b0ff5ca2b113c2fa26b4482"
+  }
+ ]
+}
