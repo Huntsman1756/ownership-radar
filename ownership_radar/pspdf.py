@@ -566,8 +566,14 @@ def parse_lines(pages):
             t = g._n(" ".join(c["t"] for c in l)).upper()
             if "APELLIDOS Y NOMBRE O DENOMINACIÓN" in t or \
                     "FULL NAME OR COMPANY NAME" in t:
-                out["chain_rows"] += _chain_rows(lines[j + 1:],
-                                                 source="ANNEX")
+                # multi-page annex tables repeat the column header on
+                # each page -> several segments; row_index must stay
+                # unique per notice (chain_path_index stays per-table)
+                new = _chain_rows(lines[j + 1:], source="ANNEX")
+                base = len(out["chain_rows"])
+                for r in new:
+                    r["row_index"] += base
+                out["chain_rows"] += new
 
     # -- section 9: proxy ----------------------------------------------------
     s9 = g.find_line(lines, "DERECHOS DE VOTO RECIBIDOS EN "

@@ -18,7 +18,11 @@ _seq = 0
 
 
 class Fetcher:
-    def __init__(self, run_id, raw_root):
+    def __init__(self, run_id, raw_root, blob_root=None):
+        """blob_root enables content-addressable raw storage: payloads
+        land once under blob_root/ab/cd/<sha256>.<ext>; repeated bytes
+        are never rewritten — only the per-run meta records the new
+        observation."""
         self.run_id = run_id
         self.cj = http.cookiejar.CookieJar()
         self.op = urllib.request.build_opener(
@@ -26,8 +30,25 @@ class Fetcher:
         self.op.addheaders = [("User-Agent", UA)]
         self.outdir = os.path.join(raw_root, run_id)
         os.makedirs(self.outdir, exist_ok=True)
+        self.blob_root = blob_root
+        if blob_root:
+            os.makedirs(blob_root, exist_ok=True)
         self.n = 0
         self.log = []
+
+    def _store_payload(self, body, ext, fn):
+        sha = sha256b(body)
+        if self.blob_root:
+            rel = os.path.join(sha[:2], sha[2:4], sha + ext)
+            dest = os.path.join(self.blob_root, rel)
+            if not os.path.isfile(dest):
+                os.makedirs(os.path.dirname(dest), exist_ok=True)
+                with open(dest, "wb") as f:
+                    f.write(body)
+            return rel, True
+        with open(os.path.join(self.outdir, fn), "wb") as f:
+            f.write(body)
+        return os.path.join(self.run_id, fn), False
 
     def get(self, url, note=""):
         global _seq
@@ -53,9 +74,9 @@ class Fetcher:
                 }
                 ext = ".pdf" if "pdf" in (meta["content_type"] or "") else ".html"
                 fn = f"{seq:05d}{ext}"
-                with open(os.path.join(self.outdir, fn), "wb") as f:
-                    f.write(body)
-                meta["raw_file"] = f"{self.run_id}/{fn}"
+                rel, deduped = self._store_payload(body, ext, fn)
+                meta["raw_file"] = rel
+                meta["deduped_blob"] = deduped
                 with open(os.path.join(self.outdir, fn + ".meta.json"),
                           "w", encoding="utf-8") as f:
                     json.dump(meta, f, ensure_ascii=False, indent=1)

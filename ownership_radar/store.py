@@ -209,6 +209,39 @@ CREATE TABLE IF NOT EXISTS ledger_event(
  rule_id TEXT, derivation_version TEXT,
  payload_json TEXT, payload_sha256 TEXT,
  first_observed_at TEXT);
+-- G5 production ingestion. The universe is a frozen, versioned seed;
+-- raw payloads are content-addressable; runs are typed
+-- (BACKFILL/INCREMENTAL/RECONCILIATION) and resumable via
+-- crawl_checkpoint; failures are isolated into failed_item.
+CREATE TABLE IF NOT EXISTS universe_version(
+ universe_version TEXT PRIMARY KEY, source_json TEXT,
+ generated_at TEXT, content_sha256 TEXT, scope_note TEXT);
+CREATE TABLE IF NOT EXISTS universe_issuer(
+ universe_version TEXT NOT NULL, issuer_id TEXT NOT NULL,
+ nif TEXT, name_raw TEXT, isins_json TEXT,
+ identifier_basis TEXT, identity_quality TEXT,
+ PRIMARY KEY(universe_version, issuer_id));
+CREATE TABLE IF NOT EXISTS issuer_alias(
+ alias TEXT NOT NULL, issuer_id TEXT NOT NULL,
+ alias_type TEXT, source TEXT,
+ PRIMARY KEY(alias, issuer_id));
+CREATE TABLE IF NOT EXISTS raw_blob(
+ raw_sha256 TEXT PRIMARY KEY, blob_path TEXT, raw_bytes INTEGER,
+ content_type TEXT, first_run_id TEXT, first_seen_at TEXT);
+CREATE TABLE IF NOT EXISTS failed_item(
+ run_id TEXT, scope_key TEXT, issuer_id TEXT, family TEXT,
+ notice_key TEXT, stage TEXT, error_class TEXT, retryable INTEGER,
+ detail TEXT, failed_at TEXT);
+CREATE TABLE IF NOT EXISTS crawl_checkpoint(
+ run_id TEXT, scope_key TEXT, status TEXT, cursor_json TEXT,
+ updated_at TEXT, PRIMARY KEY(run_id, scope_key));
+CREATE TABLE IF NOT EXISTS discovered_issuer(
+ nif TEXT PRIMARY KEY, name_raw TEXT, first_seen_run TEXT,
+ first_seen_at TEXT, source TEXT);
+CREATE TABLE IF NOT EXISTS notice_doc(
+ notice_key TEXT PRIMARY KEY, doc_status TEXT, raw_sha256 TEXT,
+ fetched_at TEXT, fetch_run_id TEXT, parse_status TEXT,
+ semantic_parser_version TEXT);
 """
 
 # Conservative surface-level defaults only. The ps surface deliberately
@@ -246,6 +279,13 @@ def init_db(path):
     if "pdf_engine" not in cols:
         cx.execute("ALTER TABLE nod_notice_semantic "
                    "ADD COLUMN pdf_engine TEXT")
+    cols = {r[1] for r in cx.execute(
+        "PRAGMA table_info(crawl_run)")}
+    for col, ddl in (("run_type", "TEXT"), ("scope", "TEXT"),
+                     ("universe_version", "TEXT")):
+        if col not in cols:
+            cx.execute(f"ALTER TABLE crawl_run ADD COLUMN "
+                       f"{col} {ddl}")
     cx.commit()
     return cx
 
@@ -570,10 +610,18 @@ def store_ac_semantic(cx, notice_key, p, corpus_split=None):
                         r.get("pct_raw")))
 
 
-def mark_disappearances(cx, run_id):
-    rows = cx.execute("""SELECT n.notice_key FROM notice n
-        WHERE n.last_seen_run<>? AND n.first_seen_run<>?""",
-        (run_id, run_id)).fetchall()
+def mark_disappearances(cx, run_id, issuer_ids=None):
+    """Record SOURCE_DISAPPEARANCE_OBSERVED for notices absent from a
+    run. Scoped to the issuers actually enumerated — G1's global
+    variant would false-positive on partial-scope runs."""
+    sql = """SELECT n.notice_key FROM notice n
+             WHERE n.last_seen_run<>? AND n.first_seen_run<>?"""
+    params = [run_id, run_id]
+    if issuer_ids is not None:
+        sql += " AND n.issuer_id IN (%s)" % ",".join(
+            "?" * len(issuer_ids))
+        params += list(issuer_ids)
+    rows = cx.execute(sql, params).fetchall()
     now = datetime.now(timezone.utc).isoformat(timespec="milliseconds")
     for (k,) in rows:
         cx.execute("""INSERT INTO notice_observation(run_id,notice_key,

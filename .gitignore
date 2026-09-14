@@ -2,6 +2,9 @@
 data/raw/
 data/radar.sqlite*
 data/runs/
+# G5 production dataset — local only, never committed (§14, §45)
+data/production/
+data/g5probe/
 
 # G0 probe raw payloads — CNMV documents are NOT redistributed
 # (see DATA-NOTICE.md); provenance metadata (*.meta.json) is committed

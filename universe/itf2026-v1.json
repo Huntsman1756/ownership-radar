@@ -1,0 +1,614 @@
+{
+ "universe_version": "itf2026-v1",
+ "source": {
+  "name": "AEAT ITF RELACION_SOCIEDADES_EJERCICIO_2026",
+  "url": "https://www3.agenciatributaria.gob.es/static_files/Sede/Tema/Declaraciones_informativas/I_Transacciones_Financieras/RELACION_SOCIEDADES_EJERCICIO_2026.pdf",
+  "pdf_sha256": "8cd71aa84ea52352f7280eacff04b674d12db8a8b0e3c298bfddca8dadc15912"
+ },
+ "generated_at": "2026-09-14T11:03:12+00:00",
+ "content_sha256": "25f5153e2dd499663737c983a191b8aeffe9cb09be9102dc55c3b709c0ae7e42",
+ "scope_note": "Spanish listed companies with market cap > 1bn EUR on 1/12/2025 (ITF scope). See docs/gates/G5-UNIVERSE.md.",
+ "issuers": [
+  {
+   "issuer_id": "A01004324",
+   "nif": "A01004324",
+   "name": "VIDRALA, S.A.",
+   "isins": [
+    "ES0183746314"
+   ],
+   "identifier_basis": "NIF",
+   "identity_quality": "OFFICIAL_IDENTIFIER"
+  },
+  {
+   "issuer_id": "A08000143",
+   "nif": "A08000143",
+   "name": "BANCO DE SABADELL, S.A.",
+   "isins": [
+    "ES0113860A34"
+   ],
+   "identifier_basis": "NIF",
+   "identity_quality": "OFFICIAL_IDENTIFIER"
+  },
+  {
+   "issuer_id": "A08001851",
+   "nif": "A08001851",
+   "name": "ACCIONA, S.A.",
+   "isins": [
+    "ES0125220311"
+   ],
+   "identifier_basis": "NIF",
+   "identity_quality": "OFFICIAL_IDENTIFIER"
+  },
+  {
+   "issuer_id": "A08015497",
+   "nif": "A08015497",
+   "name": "NATURGY ENERGY GROUP, S.A.",
+   "isins": [
+    "ES0116870314"
+   ],
+   "identifier_basis": "NIF",
+   "identity_quality": "OFFICIAL_IDENTIFIER"
+  },
+  {
+   "issuer_id": "A08017535",
+   "nif": "A08017535",
+   "name": "CEMENTOS MOLINS, S.A.",
+   "isins": [
+    "ES0117360117"
+   ],
+   "identifier_basis": "NIF",
+   "identity_quality": "OFFICIAL_IDENTIFIER"
+  },
+  {
+   "issuer_id": "A08055741",
+   "nif": "A08055741",
+   "name": "MAPFRE, S.A.",
+   "isins": [
+    "ES0124244E34"
+   ],
+   "identifier_basis": "NIF",
+   "identity_quality": "OFFICIAL_IDENTIFIER"
+  },
+  {
+   "issuer_id": "A08168064",
+   "nif": "A08168064",
+   "name": "GRUPO CATALANA OCCIDENTE, S.A.",
+   "isins": [
+    "ES0116920333"
+   ],
+   "identifier_basis": "NIF",
+   "identity_quality": "OFFICIAL_IDENTIFIER"
+  },
+  {
+   "issuer_id": "A08663619",
+   "nif": "A08663619",
+   "name": "CAIXABANK, S.A.",
+   "isins": [
+    "ES0140609019"
+   ],
+   "identifier_basis": "NIF",
+   "identity_quality": "OFFICIAL_IDENTIFIER"
+  },
+  {
+   "issuer_id": "A15075062",
+   "nif": "A15075062",
+   "name": "INDUSTRIA DE DISEÑO TEXTIL, S.A. \"INDITEX\"",
+   "isins": [
+    "ES0148396007"
+   ],
+   "identifier_basis": "NIF",
+   "identity_quality": "OFFICIAL_IDENTIFIER"
+  },
+  {
+   "issuer_id": "A16367328",
+   "nif": "A16367328",
+   "name": "INMOCEMENTO S.A.",
+   "isins": [
+    "ES0105836003"
+   ],
+   "identifier_basis": "NIF",
+   "identity_quality": "OFFICIAL_IDENTIFIER"
+  },
+  {
+   "issuer_id": "A17728593",
+   "nif": "A17728593",
+   "name": "FLUIDRA, S.A.",
+   "isins": [
+    "ES0137650018"
+   ],
+   "identifier_basis": "NIF",
+   "identity_quality": "OFFICIAL_IDENTIFIER"
+  },
+  {
+   "issuer_id": "A20001020",
+   "nif": "A20001020",
+   "name": "CONSTRUCCIONES Y AUXILIAR DE FERROCARRILES, S.A.",
+   "isins": [
+    "ES0121975009"
+   ],
+   "identifier_basis": "NIF",
+   "identity_quality": "OFFICIAL_IDENTIFIER"
+  },
+  {
+   "issuer_id": "A20014452",
+   "nif": "A20014452",
+   "name": "CIE AUTOMOTIVE, S.A.",
+   "isins": [
+    "ES0105630315"
+   ],
+   "identifier_basis": "NIF",
+   "identity_quality": "OFFICIAL_IDENTIFIER"
+  },
+  {
+   "issuer_id": "A28004885",
+   "nif": "A28004885",
+   "name": "ACS ACTIVIDADES DE CONSTRUCCION Y SERVICIOS, S.A.",
+   "isins": [
+    "ES0167050915"
+   ],
+   "identifier_basis": "NIF",
+   "identity_quality": "OFFICIAL_IDENTIFIER"
+  },
+  {
+   "issuer_id": "A28013811",
+   "nif": "A28013811",
+   "name": "SACYR, S.A.",
+   "isins": [
+    "ES0182870214"
+   ],
+   "identifier_basis": "NIF",
+   "identity_quality": "OFFICIAL_IDENTIFIER"
+  },
+  {
+   "issuer_id": "A28015865",
+   "nif": "A28015865",
+   "name": "TELEFONICA, S.A.",
+   "isins": [
+    "ES0178430E18"
+   ],
+   "identifier_basis": "NIF",
+   "identity_quality": "OFFICIAL_IDENTIFIER"
+  },
+  {
+   "issuer_id": "A28023430",
+   "nif": "A28023430",
+   "name": "ENDESA, S.A.",
+   "isins": [
+    "ES0130670112"
+   ],
+   "identifier_basis": "NIF",
+   "identity_quality": "OFFICIAL_IDENTIFIER"
+  },
+  {
+   "issuer_id": "A28027399",
+   "nif": "A28027399",
+   "name": "INMOBILIARIA COLONIAL, SOCIMI S.A.",
+   "isins": [
+    "ES0139140174"
+   ],
+   "identifier_basis": "NIF",
+   "identity_quality": "OFFICIAL_IDENTIFIER"
+  },
+  {
+   "issuer_id": "A28037224",
+   "nif": "A28037224",
+   "name": "FOMENTO DE CONSTRUCCIONES Y CONTRATAS, S.A.",
+   "isins": [
+    "ES0122060314"
+   ],
+   "identifier_basis": "NIF",
+   "identity_quality": "OFFICIAL_IDENTIFIER"
+  },
+  {
+   "issuer_id": "A28041283",
+   "nif": "A28041283",
+   "name": "LABORATORIOS FARMACEUTICOS ROVI S.A.",
+   "isins": [
+    "ES0157261019"
+   ],
+   "identifier_basis": "NIF",
+   "identity_quality": "OFFICIAL_IDENTIFIER"
+  },
+  {
+   "issuer_id": "A28092583",
+   "nif": "A28092583",
+   "name": "TECNICAS REUNIDAS, S.A.",
+   "isins": [
+    "ES0178165017"
+   ],
+   "identifier_basis": "NIF",
+   "identity_quality": "OFFICIAL_IDENTIFIER"
+  },
+  {
+   "issuer_id": "A28157360",
+   "nif": "A28157360",
+   "name": "BANKINTER, S.A.",
+   "isins": [
+    "ES0113679I37"
+   ],
+   "identifier_basis": "NIF",
+   "identity_quality": "OFFICIAL_IDENTIFIER"
+  },
+  {
+   "issuer_id": "A28164754",
+   "nif": "A28164754",
+   "name": "DISTRIBUIDORA INTERNACIONAL DE ALIMENTACION, S.A.",
+   "isins": [
+    "ES0126775008"
+   ],
+   "identifier_basis": "NIF",
+   "identity_quality": "OFFICIAL_IDENTIFIER"
+  },
+  {
+   "issuer_id": "A28250777",
+   "nif": "A28250777",
+   "name": "ACERINOX, S.A.",
+   "isins": [
+    "ES0132105018"
+   ],
+   "identifier_basis": "NIF",
+   "identity_quality": "OFFICIAL_IDENTIFIER"
+  },
+  {
+   "issuer_id": "A28294726",
+   "nif": "A28294726",
+   "name": "ENAGAS,S.A.",
+   "isins": [
+    "ES0130960018"
+   ],
+   "identifier_basis": "NIF",
+   "identity_quality": "OFFICIAL_IDENTIFIER"
+  },
+  {
+   "issuer_id": "A28430882",
+   "nif": "A28430882",
+   "name": "PROSEGUR",
+   "isins": [
+    "ES0175438003"
+   ],
+   "identifier_basis": "NIF",
+   "identity_quality": "OFFICIAL_IDENTIFIER"
+  },
+  {
+   "issuer_id": "A28599033",
+   "nif": "A28599033",
+   "name": "INDRA SISTEMAS S.A., SERIE A",
+   "isins": [
+    "ES0118594417"
+   ],
+   "identifier_basis": "NIF",
+   "identity_quality": "OFFICIAL_IDENTIFIER"
+  },
+  {
+   "issuer_id": "A31065501",
+   "nif": "A31065501",
+   "name": "VISCOFAN, S.A.",
+   "isins": [
+    "ES0184262212"
+   ],
+   "identifier_basis": "NIF",
+   "identity_quality": "OFFICIAL_IDENTIFIER"
+  },
+  {
+   "issuer_id": "A39000013",
+   "nif": "A39000013",
+   "name": "BANCO SANTANDER S.A.",
+   "isins": [
+    "ES0113900J37"
+   ],
+   "identifier_basis": "NIF",
+   "identity_quality": "OFFICIAL_IDENTIFIER"
+  },
+  {
+   "issuer_id": "A47412333",
+   "nif": "A47412333",
+   "name": "EBRO FOODS, S.A.",
+   "isins": [
+    "ES0112501012"
+   ],
+   "identifier_basis": "NIF",
+   "identity_quality": "OFFICIAL_IDENTIFIER"
+  },
+  {
+   "issuer_id": "A48004360",
+   "nif": "A48004360",
+   "name": "FAES FARMA, S.A.",
+   "isins": [
+    "ES0134950F36"
+   ],
+   "identifier_basis": "NIF",
+   "identity_quality": "OFFICIAL_IDENTIFIER"
+  },
+  {
+   "issuer_id": "A48010615",
+   "nif": "A48010615",
+   "name": "IBERDROLA S.A.",
+   "isins": [
+    "ES0144580Y14"
+   ],
+   "identifier_basis": "NIF",
+   "identity_quality": "OFFICIAL_IDENTIFIER"
+  },
+  {
+   "issuer_id": "A48027056",
+   "nif": "A48027056",
+   "name": "ELECNOR S.A.",
+   "isins": [
+    "ES0129743318"
+   ],
+   "identifier_basis": "NIF",
+   "identity_quality": "OFFICIAL_IDENTIFIER"
+  },
+  {
+   "issuer_id": "A48265169",
+   "nif": "A48265169",
+   "name": "BANCO BILBAO VIZCAYA ARGENTARIA, S.A.",
+   "isins": [
+    "ES0113211835"
+   ],
+   "identifier_basis": "NIF",
+   "identity_quality": "OFFICIAL_IDENTIFIER"
+  },
+  {
+   "issuer_id": "A48943864",
+   "nif": "A48943864",
+   "name": "GESTAMP AUTOMOCION, S.A.",
+   "isins": [
+    "ES0105223004"
+   ],
+   "identifier_basis": "NIF",
+   "identity_quality": "OFFICIAL_IDENTIFIER"
+  },
+  {
+   "issuer_id": "A58389123",
+   "nif": "A58389123",
+   "name": "GRIFOLS, S.A.",
+   "isins": [
+    "ES0171996087",
+    "ES0171996095"
+   ],
+   "identifier_basis": "NIF",
+   "identity_quality": "OFFICIAL_IDENTIFIER"
+  },
+  {
+   "issuer_id": "A58869389",
+   "nif": "A58869389",
+   "name": "ALMIRALL S.A.",
+   "isins": [
+    "ES0157097017"
+   ],
+   "identifier_basis": "NIF",
+   "identity_quality": "OFFICIAL_IDENTIFIER"
+  },
+  {
+   "issuer_id": "A64907306",
+   "nif": "A64907306",
+   "name": "CELLNEX TELECOM, S.A.",
+   "isins": [
+    "ES0105066007"
+   ],
+   "identifier_basis": "NIF",
+   "identity_quality": "OFFICIAL_IDENTIFIER"
+  },
+  {
+   "issuer_id": "A66674904",
+   "nif": "A66674904",
+   "name": "PUIG BRANDS, S.A. CLASE B",
+   "isins": [
+    "ES0105777017"
+   ],
+   "identifier_basis": "NIF",
+   "identity_quality": "OFFICIAL_IDENTIFIER"
+  },
+  {
+   "issuer_id": "A74219304",
+   "nif": "A74219304",
+   "name": "EDP RENOVAVEIS, S.A.",
+   "isins": [
+    "ES0127797019"
+   ],
+   "identifier_basis": "NIF",
+   "identity_quality": "OFFICIAL_IDENTIFIER"
+  },
+  {
+   "issuer_id": "A78003662",
+   "nif": "A78003662",
+   "name": "REDEIA CORPORACION, S.A.",
+   "isins": [
+    "ES0173093024"
+   ],
+   "identifier_basis": "NIF",
+   "identity_quality": "OFFICIAL_IDENTIFIER"
+  },
+  {
+   "issuer_id": "A78267176",
+   "nif": "A78267176",
+   "name": "PHARMA MAR, S.A.",
+   "isins": [
+    "ES0169501022"
+   ],
+   "identifier_basis": "NIF",
+   "identity_quality": "OFFICIAL_IDENTIFIER"
+  },
+  {
+   "issuer_id": "A78304516",
+   "nif": "A78304516",
+   "name": "MELIA HOTELS INTERNATIONAL, S.A.",
+   "isins": [
+    "ES0176252718"
+   ],
+   "identifier_basis": "NIF",
+   "identity_quality": "OFFICIAL_IDENTIFIER"
+  },
+  {
+   "issuer_id": "A78374725",
+   "nif": "A78374725",
+   "name": "REPSOL, S.A.",
+   "isins": [
+    "ES0173516115"
+   ],
+   "identifier_basis": "NIF",
+   "identity_quality": "OFFICIAL_IDENTIFIER"
+  },
+  {
+   "issuer_id": "A78839271",
+   "nif": "A78839271",
+   "name": "ATRESMEDIA CORPORACION DE MEDIOS DE COMUNICACION, S.A.",
+   "isins": [
+    "ES0109427734"
+   ],
+   "identifier_basis": "NIF",
+   "identity_quality": "OFFICIAL_IDENTIFIER"
+  },
+  {
+   "issuer_id": "A80871031",
+   "nif": "A80871031",
+   "name": "LINEA DIRECTA ASEGURADORA, S.A., COMPAÑIA DE SEGUROS Y REASEGUROS",
+   "isins": [
+    "ES0105546008"
+   ],
+   "identifier_basis": "NIF",
+   "identity_quality": "OFFICIAL_IDENTIFIER"
+  },
+  {
+   "issuer_id": "A81787889",
+   "nif": "A81787889",
+   "name": "REALIA BUSINESS, S.A.",
+   "isins": [
+    "ES0173908015"
+   ],
+   "identifier_basis": "NIF",
+   "identity_quality": "OFFICIAL_IDENTIFIER"
+  },
+  {
+   "issuer_id": "A83511501",
+   "nif": "A83511501",
+   "name": "SOLARIA ENERGIA Y MEDIO AMBIENTE, S.A.",
+   "isins": [
+    "ES0165386014"
+   ],
+   "identifier_basis": "NIF",
+   "identity_quality": "OFFICIAL_IDENTIFIER"
+  },
+  {
+   "issuer_id": "A84236934",
+   "nif": "A84236934",
+   "name": "AMADEUS IT GROUP, S.A.",
+   "isins": [
+    "ES0109067019"
+   ],
+   "identifier_basis": "NIF",
+   "identity_quality": "OFFICIAL_IDENTIFIER"
+  },
+  {
+   "issuer_id": "A85130821",
+   "nif": "A85130821",
+   "name": "GRENERGY RENOVABLES, S.A.",
+   "isins": [
+    "ES0105079000"
+   ],
+   "identifier_basis": "NIF",
+   "identity_quality": "OFFICIAL_IDENTIFIER"
+  },
+  {
+   "issuer_id": "A85483311",
+   "nif": "A85483311",
+   "name": "CORPORACIÓN ACCIONA ENERGÍAS RENOVABLES S.A.",
+   "isins": [
+    "ES0105563003"
+   ],
+   "identifier_basis": "NIF",
+   "identity_quality": "OFFICIAL_IDENTIFIER"
+  },
+  {
+   "issuer_id": "A85845535",
+   "nif": "A85845535",
+   "name": "INTERNATIONAL CONSOLIDATED AIRLINES GROUP, S.A.",
+   "isins": [
+    "ES0177542018"
+   ],
+   "identifier_basis": "NIF",
+   "identity_quality": "OFFICIAL_IDENTIFIER"
+  },
+  {
+   "issuer_id": "A86212420",
+   "nif": "A86212420",
+   "name": "AENA, S.M.E., S.A.",
+   "isins": [
+    "ES0105046017"
+   ],
+   "identifier_basis": "NIF",
+   "identity_quality": "OFFICIAL_IDENTIFIER"
+  },
+  {
+   "issuer_id": "A86977790",
+   "nif": "A86977790",
+   "name": "MERLIN PROPERTIES SOCIMI, S.A.",
+   "isins": [
+    "ES0105025003"
+   ],
+   "identifier_basis": "NIF",
+   "identity_quality": "OFFICIAL_IDENTIFIER"
+  },
+  {
+   "issuer_id": "A87008579",
+   "nif": "A87008579",
+   "name": "CIA. DE DIST. INTEG. LOGISTA HOLDINGS",
+   "isins": [
+    "ES0105027009"
+   ],
+   "identifier_basis": "NIF",
+   "identity_quality": "OFFICIAL_IDENTIFIER"
+  },
+  {
+   "issuer_id": "A87471264",
+   "nif": "A87471264",
+   "name": "METROVACESA, S.A.",
+   "isins": [
+    "ES0105122024"
+   ],
+   "identifier_basis": "NIF",
+   "identity_quality": "OFFICIAL_IDENTIFIER"
+  },
+  {
+   "issuer_id": "A87586483",
+   "nif": "A87586483",
+   "name": "AEDAS HOMES, S.A",
+   "isins": [
+    "ES0105287009"
+   ],
+   "identifier_basis": "NIF",
+   "identity_quality": "OFFICIAL_IDENTIFIER"
+  },
+  {
+   "issuer_id": "A87959649",
+   "nif": "A87959649",
+   "name": "CIRSA ENTERPRISES, S.A.",
+   "isins": [
+    "ES0105884011"
+   ],
+   "identifier_basis": "NIF",
+   "identity_quality": "OFFICIAL_IDENTIFIER"
+  },
+  {
+   "issuer_id": "A93139053",
+   "nif": "A93139053",
+   "name": "UNICAJA BANCO, S.A.",
+   "isins": [
+    "ES0180907000"
+   ],
+   "identifier_basis": "NIF",
+   "identity_quality": "OFFICIAL_IDENTIFIER"
+  },
+  {
+   "issuer_id": "A95786562",
+   "nif": "A95786562",
+   "name": "NEINOR HOMES, S.A.",
+   "isins": [
+    "ES0105251005"
+   ],
+   "identifier_basis": "NIF",
+   "identity_quality": "OFFICIAL_IDENTIFIER"
+  }
+ ]
+}

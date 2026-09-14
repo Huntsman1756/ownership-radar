@@ -10,7 +10,48 @@ def main():
     if args and args[0] == "ledger":
         _ledger(args[1:])
         return
+    if args and args[0] == "ingest":
+        _ingest(args[1:])
+        return
     run()
+
+
+def _ingest(args):
+    """Production ingestion — separate DB under data/production/."""
+    from . import coverage, ingest, ledger, poller, store, universe
+    db = os.environ.get("RADAR_PROD_DB", ingest.DB_PATH)
+    u = universe.load_universe()
+    cmd = args[0] if args else "report"
+    cx = store.init_db(db)
+    universe.persist_universe(cx, u[0])
+    if cmd == "backfill":
+        ids = _opt(args, "--issuers")
+        sub = {k: u[1][k] for k in ids.split(",")} if ids else None
+        rid, stats = ingest.backfill(
+            db, u, issuers=sub,
+            docs="--no-docs" not in args,
+            filing_since=_opt(args, "--docs-since"),
+            run_id=_opt(args, "--run-id"))
+        print(json.dumps({"run_id": rid}, indent=1))
+    elif cmd == "reconcile":
+        rid, stats = ingest.reconcile(db, u)
+        print(json.dumps({"run_id": rid, "new_notices":
+                          stats["new_notices"]}, indent=1))
+    elif cmd == "poll":
+        rid, stats = poller.run(db, u)
+        print(json.dumps({"run_id": rid, "stats": stats},
+                         indent=1, ensure_ascii=False))
+    elif cmd == "report":
+        print(json.dumps(coverage.report(cx, u),
+                         indent=1, ensure_ascii=False))
+    elif cmd == "invariants":
+        print(json.dumps(coverage.invariants(cx), indent=1))
+    elif cmd == "materialize":
+        print(ledger.materialize(cx)["digest"])
+    else:
+        print("usage: ingest backfill|reconcile|poll|report|"
+              "invariants|materialize")
+        sys.exit(2)
 
 
 def _ledger(args):

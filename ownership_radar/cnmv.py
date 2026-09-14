@@ -71,6 +71,64 @@ def parse_date(s):
 
 # ------------------------------------------------------------------ collectors
 
+def _nod_notice_from_block(b, issuer_key, meta):
+    fecha = re.search(r'liFechaRegistro[^>]*>\s*([0-9/]+)', b)
+    emisor = re.search(r'datosentidad\.aspx\?nif=([A-Z0-9-]+)', b)
+    dec = re.search(r'Declarante:\s*([^<]+)', b)
+    motivo = re.search(r'Motivo de la notificaci[oó]n:\s*([^<]+)', b)
+    doc = re.search(r'verdocumento/ver\?e=([^"&\']+)', b)
+    reg = re.search(r'Número de registro:\s*(\d+)', b)
+    rect = re.search(r'rectifica a nº de registro:\s*(\d+)', b, re.I)
+    rectd = re.search(r'rectificada por nº de registro:\s*(\d+)', b, re.I)
+    if not reg:
+        return None, rect, rectd
+    n = {
+        "source_surface": "nod",
+        "source_registration_number": reg.group(1),
+        "issuer_id": issuer_key,
+        "issuer_nif_seen": emisor.group(1) if emisor else None,
+        "filing_date": parse_date(fecha.group(1)) if fecha else None,
+        "declarant_name_raw": clean(dec.group(1)) if dec else None,
+        "declarant_role": clean(motivo.group(1)) if motivo else None,
+        "doc_token": doc.group(1) if doc else None,
+        "notice_status": "RECTIFIES" if rect else ("RECTIFIED" if rectd else "ACTIVE"),
+        "raw_sha256": meta.get("raw_sha256"),
+        "source_url_observed": meta.get("requested_url"),
+        "source_url_canonical": meta.get("final_url"),
+    }
+    return n, rect, rectd
+
+
+def _nod_relations(store, cx, n, rect, rectd, meta, run_id):
+    reg = n["source_registration_number"]
+    if rect:
+        store.add_relation(cx, "nod:" + reg, "nod:" + rect.group(1),
+                           "RECTIFIES", meta.get("requested_url"), run_id,
+                           meta.get("raw_sha256"))
+    if rectd:
+        store.add_relation(cx, "nod:" + rectd.group(1), "nod:" + reg,
+                           "RECTIFIES", meta.get("requested_url"), run_id,
+                           meta.get("raw_sha256"))
+
+
+def _alt_nif(nif):
+    """CNMV entity lookup is inconsistent about the hyphenated NIF
+    form: `nif=A39000013` resolves SAN but `nif=A-28013811` is the
+    only form returning SACYR content. Try primary form first; if a
+    page shows zero content signals, retry once with the alternate
+    form. Deterministic fallback — not fuzzy matching; the URL used
+    is recorded in every observation."""
+    if "-" in nif:
+        return nif.replace("-", "")
+    return nif[0] + "-" + nif[1:]
+
+
+def _nod_page_blocks(h):
+    return re.findall(
+        r'repListaPrincipal_ctl\d+_elementoPrimerNivel.*?</li>\s*</ul>',
+        h, re.S) or re.split(r'elementoPrimerNivel', h)[1:]
+
+
 def collect_nod(fx, cx, issuer_key, issuer, run_id, store):
     """directivos-resultado?nif=&page=N ; also supports fechad/fechah
     windowing (used by the reconciliation tooling)."""
@@ -81,6 +139,46 @@ def collect_nod(fx, cx, issuer_key, issuer, run_id, store):
         url = base_url + (f"&page={page}" if page else "")
         meta, body = fx.get(url, note=f"nod list {issuer_key} page={page}")
         h = body.decode("utf-8", "replace")
+        if page == 0 and not _nod_page_blocks(h):
+            # zero-content signal -> deterministic alt-NIF retry
+            alt = base_url.replace("nif=" + nif,
+                                   "nif=" + _alt_nif(nif))
+            meta2, body2 = fx.get(alt,
+                                  note=f"nod list {issuer_key} alt-nif")
+            h2 = body2.decode("utf-8", "replace")
+            if _nod_page_blocks(h2):
+                meta, body, h, base_url = meta2, body2, h2, alt
+        if total_pages is None:
+            m = re.search(r"Página \d+ de (\d+)", h)
+            total_pages = int(m.group(1)) if m else 1
+        blocks = _nod_page_blocks(h)
+        for b in blocks:
+            n, rect, rectd = _nod_notice_from_block(b, issuer_key, meta)
+            if not n:
+                continue
+            store.upsert_notice(cx, n, run_id)
+            n_notices += 1
+            _nod_relations(store, cx, n, rect, rectd, meta, run_id)
+        page += 1
+        if page >= total_pages:
+            break
+    return n_notices
+
+
+def collect_nod_window(fx, cx, run_id, store, fechad, fechah,
+                       universe_nifs=None):
+    """Global NOD enumeration: directivos-resultado?fechad&fechah with
+    NO nif returns all issuers (proven G5 recon). issuer_id = the
+    block's datosentidad NIF (normalized, hyphen stripped). NIFs
+    outside the universe are recorded in discovered_issuer — notices
+    are still stored under their NIF issuer_id, never dropped."""
+    base = f"{BASE}/portal/consultas/directivos-resultado?fechad={fechad}&fechah={fechah}"
+    page, total_pages = 0, None
+    n_notices, seen_nifs = 0, set()
+    while True:
+        url = base + (f"&page={page}" if page else "")
+        meta, body = fx.get(url, note=f"nod window {fechad}..{fechah} p{page}")
+        h = body.decode("utf-8", "replace")
         if total_pages is None:
             m = re.search(r"Página \d+ de (\d+)", h)
             total_pages = int(m.group(1)) if m else 1
@@ -88,44 +186,48 @@ def collect_nod(fx, cx, issuer_key, issuer, run_id, store):
             r'repListaPrincipal_ctl\d+_elementoPrimerNivel.*?</li>\s*</ul>',
             h, re.S) or re.split(r'elementoPrimerNivel', h)[1:]
         for b in blocks:
-            fecha = re.search(r'liFechaRegistro[^>]*>\s*([0-9/]+)', b)
             emisor = re.search(r'datosentidad\.aspx\?nif=([A-Z0-9-]+)', b)
-            dec = re.search(r'Declarante:\s*([^<]+)', b)
-            motivo = re.search(r'Motivo de la notificaci[oó]n:\s*([^<]+)', b)
-            doc = re.search(r'verdocumento/ver\?e=([^"&\']+)', b)
-            reg = re.search(r'Número de registro:\s*(\d+)', b)
-            rect = re.search(r'rectifica a nº de registro:\s*(\d+)', b, re.I)
-            rectd = re.search(r'rectificada por nº de registro:\s*(\d+)', b, re.I)
-            if not reg:
+            nif = emisor.group(1).replace("-", "") if emisor else None
+            n, rect, rectd = _nod_notice_from_block(b, nif, meta)
+            if not n:
                 continue
-            n = {
-                "source_surface": "nod",
-                "source_registration_number": reg.group(1),
-                "issuer_id": issuer_key,
-                "issuer_nif_seen": emisor.group(1) if emisor else None,
-                "filing_date": parse_date(fecha.group(1)) if fecha else None,
-                "declarant_name_raw": clean(dec.group(1)) if dec else None,
-                "declarant_role": clean(motivo.group(1)) if motivo else None,
-                "doc_token": doc.group(1) if doc else None,
-                "notice_status": "RECTIFIES" if rect else ("RECTIFIED" if rectd else "ACTIVE"),
-                "raw_sha256": meta.get("raw_sha256"),
-                "source_url_observed": meta.get("requested_url"),
-                "source_url_canonical": meta.get("final_url"),
-            }
+            if nif:
+                seen_nifs.add(nif)
+                if universe_nifs is not None and nif not in universe_nifs:
+                    from datetime import datetime, timezone
+                    cx.execute(
+                        "INSERT OR IGNORE INTO discovered_issuer "
+                        "VALUES(?,?,?,?,?)",
+                        (nif, n.get("declarant_name_raw"), run_id,
+                         datetime.now(timezone.utc)
+                         .isoformat(timespec="milliseconds"),
+                         "nod_window"))
             store.upsert_notice(cx, n, run_id)
             n_notices += 1
-            if rect:
-                store.add_relation(cx, "nod:" + reg.group(1), "nod:" + rect.group(1),
-                                   "RECTIFIES", meta.get("requested_url"), run_id,
-                                   meta.get("raw_sha256"))
-            if rectd:
-                store.add_relation(cx, "nod:" + rectd.group(1), "nod:" + reg.group(1),
-                                   "RECTIFIES", meta.get("requested_url"), run_id,
-                                   meta.get("raw_sha256"))
+            _nod_relations(store, cx, n, rect, rectd, meta, run_id)
         page += 1
         if page >= total_pages:
             break
-    return n_notices
+    return {"notices": n_notices, "issuer_nifs": sorted(seen_nifs)}
+
+
+def last5days_ps_ac_issuers(fx, cx, run_id):
+    """BusquedaUltimosDias is a DISCOVERY HINT only (G0): it lists
+    issuers per registry, not registration numbers. Returns the NIFs
+    appearing under 'Participaciones significativas y Autocartera'."""
+    meta, body = fx.get(f"{BASE}/portal/Consultas/BusquedaUltimosDias",
+                        note="ultimos_dias hint")
+    h = body.decode("utf-8", "replace")
+    out = []
+    for m in re.finditer(
+            r'Participaciones significativas y Autocartera \(\d+\)</a>(.*?)</ul>',
+            h, re.S):
+        for a in re.findall(
+                r'ps_ac_ini\.aspx\?nif=([A-Z0-9-]+)"[^>]*>([^<]+)',
+                m.group(1)):
+            out.append({"nif": a[0].replace("-", ""),
+                        "name_raw": clean(a[1])})
+    return out
 
 
 def collect_nod_legacy(fx, cx, issuer_key, issuer, run_id, store):
@@ -134,6 +236,11 @@ def collect_nod_legacy(fx, cx, issuer_key, issuer, run_id, store):
     url = f"{BASE}/portal/consultas/derechosvoto/notificacionesanterioresdirectivos?nif={nif}"
     meta, body = fx.get(url, note=f"nod_legacy grid {issuer_key}")
     h = body.decode("utf-8", "replace")
+    if not table_rows(h, 'id="ctl00_ContentPrincipal_grid"'):
+        meta, body = fx.get(
+            url.replace("nif=" + nif, "nif=" + _alt_nif(nif)),
+            note=f"nod_legacy grid {issuer_key} alt-nif")
+        h = body.decode("utf-8", "replace")
     n_notices = 0
     for r in table_rows(h, 'id="ctl00_ContentPrincipal_grid"'):
         cells = cell_texts(r)
@@ -188,11 +295,15 @@ def collect_ps_ac(fx, cx, issuer_key, issuer, run_id, store):
     hub = f"{BASE}/portal/consultas/derechosvoto/ps_ac_ini.aspx?nif={nif}"
     meta, body = fx.get(hub, note=f"ps hub {issuer_key}")
     h = body.decode("utf-8", "replace")
-    n_notices = 0
-
     np_links = qs_links(h, "Notificaciones-Participaciones")
     if not np_links:
+        alt = hub.replace("nif=" + nif, "nif=" + _alt_nif(nif))
+        meta, body = fx.get(alt, note=f"ps hub {issuer_key} alt-nif")
+        h = body.decode("utf-8", "replace")
+        np_links = qs_links(h, "Notificaciones-Participaciones")
+    if not np_links:
         return 0
+    n_notices = 0
     meta_np, b_np = fx.get(BASE + "/portal/consultas/derechosvoto/" + np_links[0],
                            note=f"ps current {issuer_key}")
     hnp = b_np.decode("utf-8", "replace")
