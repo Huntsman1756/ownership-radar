@@ -19,6 +19,7 @@ corpus/dev/
 corpus/holdout/
 corpus/raw/
 corpus/corpus.sqlite*
+corpus/g3/
 
 __pycache__/
 *.pyc
