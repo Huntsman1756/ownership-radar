@@ -274,3 +274,46 @@ Holdout oracle: `corpus/oracle/g3_holdout_expected.json`, hand-
 annotated from `pdftotext` (Poppler) output — engine independent of
 pdfminer. Field-level semantic values only (no x/y positions).
 A dedicated test compares parser output vs oracle field by field.
+
+---
+
+## Results (appended after freeze — contract unchanged)
+
+Corpus-wide parse (`corpus/g3_parse_report.json`, `_run2` byte-
+identical → G3-C06 PASS):
+
+| split | PARSED | UNSUPPORTED_* | NO_DOC_TOKEN |
+|---|---|---|---|
+| ps_dev | 44 (25 C8_M1, 19 C2_M1) | 44 no-text, 14 legacy, 5 template | 14 |
+| ps_holdout | 12 (6 C8_M1, 6 C2_M1) | 4 no-text, 4 legacy, 3 template | 1 |
+| ac_dev | 38 (22 C8_M4, 16 C2_M2) | 17 no-text, 7 legacy | 18 |
+| ac_holdout | 10 (1 C8_M4, 9 C2_M2) | 3 no-text, 1 legacy | 0 |
+
+Extraction totals: 5332 PS instrument rows, 2333 chain rows,
+56/56 `DECLARED_COMPUTED_MATCH`, 0 unmapped; 4798 AC operations,
+96/96 flow-QA `MATCH`, every parsed AC notice mixed A+T.
+
+`NOT_OBSERVED` (declared, never faked): populated §11 loyalty values
+(25 C2 docs carry the structure, all empty); concerted-agreement
+checkbox checked; `reason_issuer_voting_rights_change` checked.
+In-form annulment block observed ×2 (PS); `notice_relation` ANNULS
+links preserved for 15 ps + 30 ac pairs.
+
+Holdout oracle `corpus/oracle/g3_holdout_expected.json` (hand-
+annotated from `pdftotext` — Poppler, independent of pdfminer):
+**0 field-level mismatches** across all PS + AC holdout notices
+(`tests/test_g3_holdout_oracle.py`).
+
+Synthetic invariants: `tests/test_g3_invariants.py` — 15 tests
+(position-not-trade, instruments not collapsed, declared never
+overwritten, pre/post-2022 semantics, no AC netting, declared-only
+trigger, flow ≠ stock, annulment persistence, determinism).
+
+### Gate verdicts
+
+| Gate | Verdict |
+|---|---|
+| G3-C01..C06 | PASS (G2 suite 27→42 incl. G3 tests, 0 digest diffs) |
+| G3-A01..A15 | PASS |
+| G3-A16 LOYALTY_SECTION_STRUCTURAL | PASS (structure parsed; populated values NOT_OBSERVED) |
+| G3-B01..B13 | PASS |

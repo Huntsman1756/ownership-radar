@@ -1,0 +1,233 @@
+{
+ "method": "manual annotation from `pdftotext -raw` (Poppler) output, independent of pdfminer; fields limited to textually stable values (checkbox glyphs are unreliable in Poppler output and are excluded). Row counts counted by hand per table region.",
+ "annotated_at": "2026-09-14",
+ "ps": {
+  "CABK_2021151543": {
+   "template": "CIRC_8_2015_MODEL_1",
+   "obliged_subject": "BLACKROCK INC.",
+   "residence": "NEW YORK / UNITED STATES",
+   "threshold_date": "09/12/2021",
+   "cur_pct_shares": "3,001", "cur_pct_instr": "0,210",
+   "cur_pct_total": "3,211", "issuer_total_vr": "8.060.647.033",
+   "prev_pct_shares": "2,994", "prev_pct_instr": "0,218",
+   "prev_pct_total": "3,212",
+   "rows_7a": 1, "rows_7b1": 1, "rows_7b2": 1
+  },
+  "CABK_2022089634": {
+   "template": "CIRC_8_2015_MODEL_1",
+   "obliged_subject": "CAPITAL RESEARCH AND MANAGEMENT COMPANY",
+   "residence": "Los Angeles / UNITED STATES",
+   "threshold_date": "06/07/2022",
+   "cur_pct_shares": "2,993", "cur_pct_instr": "0,000",
+   "cur_pct_total": "2,993", "issuer_total_vr": "8.060.647.033",
+   "prev_pct_shares": "3,109", "prev_pct_instr": "N.A.",
+   "prev_pct_total": "3,109",
+   "rows_7a": 1, "rows_7b1": 0, "rows_7b2": 0
+  },
+  "CABK_2023003738": {
+   "template": "CIRC_2_2022_MODEL_1",
+   "obliged_subject": "BLACKROCK INC.",
+   "residence": "NEW YORK / UNITED STATES",
+   "threshold_date": "13/01/2023",
+   "cur_pct_shares": "4,402", "cur_pct_instr": "0,615",
+   "cur_pct_total": "5,017", "issuer_total_vr": "7.502.131.619",
+   "prev_pct_shares": "3,001", "prev_pct_instr": "0,210",
+   "prev_pct_total": "3,211",
+   "rows_7a": 1, "rows_7b1": 1, "rows_7b2": 1
+  },
+  "CABK_2025091733": {
+   "template": "CIRC_2_2022_MODEL_1",
+   "obliged_subject": "BLACKROCK INC.",
+   "residence": "NEW YORK / UNITED STATES",
+   "threshold_date": "01/07/2025",
+   "reason_other_text_contains": "Group restructure",
+   "cur_pct_shares": "4,620", "cur_pct_instr": "0,060",
+   "cur_pct_total": "4,680", "issuer_total_vr": "7.085.565.456",
+   "prev_pct_shares": "3,819", "prev_pct_instr": "0,261",
+   "prev_pct_total": "4,080",
+   "rows_7a": 1, "rows_7b1": 1, "rows_7b2": 1
+  },
+  "TEF_2020035550": {
+   "template": "CIRC_8_2015_MODEL_1",
+   "obliged_subject": "BlackRock, Inc.",
+   "residence": "NEW YORK / ESTADOS UNIDOS",
+   "threshold_date": "30/03/2020",
+   "cur_pct_shares": "4,807", "cur_pct_instr": "0,176",
+   "cur_pct_total": "4,983", "issuer_total_vr": "5.192.131.686",
+   "prev_pct_shares": "4,981", "prev_pct_instr": "0,314",
+   "prev_pct_total": "5,295",
+   "rows_7a": 1, "rows_7b1": 1, "rows_7b2": 1
+  },
+  "TEF_2019075897": {
+   "template": "CIRC_8_2015_MODEL_1",
+   "obliged_subject": "Norges Bank",
+   "residence": "Oslo / NORUEGA",
+   "threshold_date": "24/06/2019",
+   "cur_pct_shares": "2,958", "cur_pct_instr": "0,066",
+   "cur_pct_total": "3,024", "issuer_total_vr": "5.192.131.686",
+   "prev_pct_shares": "N.A.", "prev_pct_instr": "N.A.",
+   "prev_pct_total": "0,000",
+   "rows_7a": 1, "rows_7b1": 1, "rows_7b2": 0
+  },
+  "TEF_2019077053": {
+   "template": "CIRC_8_2015_MODEL_1",
+   "obliged_subject": "Norges Bank",
+   "residence": "Oslo / NORUEGA",
+   "threshold_date": "27/06/2019",
+   "cur_pct_shares": "2,877", "cur_pct_instr": "0,000",
+   "cur_pct_total": "2,877", "issuer_total_vr": "5.192.131.686",
+   "prev_pct_shares": "3,223", "prev_pct_instr": "0,000",
+   "prev_pct_total": "3,223",
+   "rows_7a": 1, "rows_7b1": 0, "rows_7b2": 0
+  },
+  "TEF_2021026477": {
+   "template": "CIRC_8_2015_MODEL_1",
+   "obliged_subject": "BANCO BILBAO VIZCAYA ARGENTARIA, S.A.",
+   "residence": "Bilbao / ESPAÑA",
+   "threshold_date": "24/02/2021",
+   "cur_pct_shares": "4,839", "cur_pct_instr": "0,000",
+   "cur_pct_total": "4,839", "issuer_total_vr": "5.526.431.062",
+   "prev_pct_shares": "6,961", "prev_pct_instr": "N.A.",
+   "prev_pct_total": "6,961",
+   "rows_7a": 1, "rows_7b1": 0, "rows_7b2": 0
+  },
+  "TEF_2023110523": {
+   "template": "CIRC_2_2022_MODEL_1",
+   "obliged_subject": "PUBLIC INVESTMENT FUND",
+   "residence": "Riyadh / ARABIA SAUDI",
+   "threshold_date": "05/09/2023",
+   "cur_pct_shares": "4,900", "cur_pct_instr": "5,000",
+   "cur_pct_total": "9,900", "issuer_total_vr": "5.750.458.145",
+   "prev_pct_shares": "N.A.", "prev_pct_instr": "N.A.",
+   "prev_pct_total": "0,000",
+   "rows_7a": 1, "rows_7b1": 0, "rows_7b2": 1,
+   "b2_first_type_contains": "Contingent Sale"
+  },
+  "TEF_2026121404": {
+   "template": "CIRC_2_2022_MODEL_1",
+   "obliged_subject": "Morgan Stanley",
+   "residence": "WILMINGTON / ESTADOS UNIDOS",
+   "threshold_date": "04/09/2026",
+   "reason_other_text_contains": "Expiry of Options",
+   "cur_pct_shares": "0,101", "cur_pct_instr": "8,297",
+   "cur_pct_total": "8,398", "issuer_total_vr": "5.670.161.554",
+   "prev_pct_shares": "0,066", "prev_pct_instr": "13,025",
+   "prev_pct_total": "13,091",
+   "rows_7a": 1, "rows_7b1": 12, "rows_7b2": 11
+  },
+  "TEF_2024044525": {
+   "template": "CIRC_2_2022_MODEL_1",
+   "obliged_subject": "CAIXABANK, S.A.",
+   "residence": "Valencia / ESPAÑA",
+   "threshold_date": "28/03/2024",
+   "cur_pct_shares": "2,511", "cur_pct_instr": "0,000",
+   "cur_pct_total": "2,511", "issuer_total_vr": "5.750.458.145",
+   "prev_pct_shares": "4,879", "prev_pct_instr": "0,000",
+   "prev_pct_total": "4,879",
+   "rows_7a": 1, "rows_7b1": 0, "rows_7b2": 0
+  },
+  "TEF_2026090072": {
+   "template": "CIRC_2_2022_MODEL_1",
+   "obliged_subject": "BANCO BILBAO VIZCAYA ARGENTARIA, S.A.",
+   "residence": "Bilbao / ESPAÑA",
+   "threshold_date": "30/06/2026",
+   "cur_pct_shares": "1,965", "cur_pct_instr": "0,000",
+   "cur_pct_total": "1,965", "issuer_total_vr": "5.670.161.554",
+   "prev_pct_shares": "5,007", "prev_pct_instr": "0,000",
+   "prev_pct_total": "5,007",
+   "rows_7a": 1, "rows_7b1": 0, "rows_7b2": 0
+  }
+ },
+ "ac": {
+  "CABK_2022104053": {
+   "template": "CIRC_2_2022_MODEL_2", "notification_date": "28/07/2022",
+   "issuer_voting_rights": "8.060.647.033", "op_count": 12,
+   "tot_acq_vr_direct": "82.811.254", "tot_acq_vr_indirect": null,
+   "tot_acq_pct_direct": "1,027", "tot_acq_pct_indirect": "0,000",
+   "tot_tr_vr_direct": "14.527", "tot_tr_vr_indirect": null,
+   "tot_tr_pct_direct": "0,000", "tot_tr_pct_indirect": "0,000",
+   "final_total_vr": "333.731.948", "final_pct_total": "4,140"
+  },
+  "CABK_2022115234": {
+   "template": "CIRC_2_2022_MODEL_2", "notification_date": "15/09/2022",
+   "issuer_voting_rights": "8.060.647.033", "op_count": 36,
+   "tot_acq_vr_direct": "82.141.657", "tot_acq_vr_indirect": null,
+   "tot_acq_pct_direct": "1,019", "tot_acq_pct_indirect": "0,000",
+   "tot_tr_vr_direct": "46.235", "tot_tr_vr_indirect": null,
+   "tot_tr_pct_direct": "0,001", "tot_tr_pct_indirect": "0,000",
+   "final_total_vr": "415.827.370", "final_pct_total": "5,159"
+  },
+  "CABK_2026072826": {
+   "template": "CIRC_2_2022_MODEL_2", "notification_date": "20/05/2026",
+   "op_count": 173,
+   "tot_acq_vr_direct": "51.922.978", "tot_acq_vr_indirect": "133.551",
+   "tot_acq_pct_direct": "0,744", "tot_acq_pct_indirect": "0,002",
+   "tot_tr_vr_direct": "52.255.170", "tot_tr_vr_indirect": "317.765",
+   "tot_tr_pct_direct": "0,749", "tot_tr_pct_indirect": "0,005",
+   "final_total_vr": "9.563.669", "final_pct_total": "0,137"
+  },
+  "CABK_2024065568": {
+   "template": "CIRC_2_2022_MODEL_2", "notification_date": "02/05/2024",
+   "issuer_voting_rights": "7.502.131.619", "op_count": 39,
+   "tot_acq_vr_direct": "74.949.762", "tot_acq_vr_indirect": "505.460",
+   "tot_acq_pct_direct": "0,999", "tot_acq_pct_indirect": "0,007",
+   "tot_tr_vr_direct": "865.514", "tot_tr_vr_indirect": "344.341",
+   "tot_tr_pct_direct": "0,012", "tot_tr_pct_indirect": "0,005",
+   "final_total_vr": "227.024.319", "final_pct_total": "3,026"
+  },
+  "CABK_2024065570": {
+   "template": "CIRC_2_2022_MODEL_2", "notification_date": "03/05/2024",
+   "op_count": 2,
+   "tot_acq_vr_direct": "2.615.449", "tot_acq_vr_indirect": null,
+   "tot_acq_pct_direct": "0,035", "tot_acq_pct_indirect": "0,000",
+   "tot_tr_vr_direct": "129.404.256", "tot_tr_vr_indirect": null,
+   "tot_tr_pct_direct": "1,755", "tot_tr_pct_indirect": "0,000",
+   "final_total_vr": "100.235.512", "final_pct_total": "1,360"
+  },
+  "REP_2022076789": {
+   "template": "CIRC_8_2015_MODEL_4", "notification_date": "02/06/2022",
+   "issuer_voting_rights": "1.452.396.053", "op_count": 3,
+   "tot_acq_vr_direct": "75.000", "tot_acq_vr_indirect": null,
+   "tot_acq_pct_direct": "0,005", "tot_acq_pct_indirect": "0,000",
+   "tot_tr_vr_direct": "75.058.033", "tot_tr_vr_indirect": null,
+   "tot_tr_pct_direct": "5,168", "tot_tr_pct_indirect": "0,000",
+   "final_total_vr": "34.163.627", "final_pct_total": "2,352"
+  },
+  "REP_2022107158": {
+   "template": "CIRC_2_2022_MODEL_2", "notification_date": "11/08/2022",
+   "op_count": 30,
+   "tot_acq_vr_direct": "14.839.074", "tot_acq_vr_indirect": null,
+   "tot_acq_pct_direct": "1,022", "tot_acq_pct_indirect": "0,000",
+   "tot_tr_vr_direct": "11.317.126", "tot_tr_vr_indirect": null,
+   "tot_tr_pct_direct": "0,779", "tot_tr_pct_indirect": "0,000",
+   "final_total_vr": "37.685.575", "final_pct_total": "2,595"
+  },
+  "REP_2026111797": {
+   "template": "CIRC_2_2022_MODEL_2", "notification_date": "03/08/2026",
+   "op_count": 30,
+   "tot_acq_vr_direct": "5.086.048", "tot_acq_vr_indirect": null,
+   "tot_acq_pct_direct": "0,467", "tot_acq_pct_indirect": "0,000",
+   "tot_tr_vr_direct": "15.878.491", "tot_tr_vr_indirect": null,
+   "tot_tr_pct_direct": "1,457", "tot_tr_pct_indirect": "0,000",
+   "final_total_vr": "1.650.546", "final_pct_total": "0,151"
+  },
+  "REP_2025093199": {
+   "template": "CIRC_2_2022_MODEL_2", "notification_date": "04/07/2025",
+   "op_count": 25,
+   "tot_acq_vr_direct": "12.867.549", "tot_acq_vr_indirect": null,
+   "tot_acq_pct_direct": "1,112", "tot_acq_pct_indirect": "0,000",
+   "tot_tr_vr_direct": "463.153", "tot_tr_vr_indirect": null,
+   "tot_tr_pct_direct": "0,040", "tot_tr_pct_indirect": "0,000",
+   "final_total_vr": "23.511.198", "final_pct_total": "2,031"
+  },
+  "REP_2025116464": {
+   "template": "CIRC_2_2022_MODEL_2", "notification_date": "04/07/2025",
+   "op_count": 25,
+   "tot_acq_vr_direct": "12.867.549", "tot_acq_vr_indirect": null,
+   "tot_acq_pct_direct": "1,112", "tot_acq_pct_indirect": "0,000",
+   "tot_tr_vr_direct": "463.153", "tot_tr_vr_indirect": null,
+   "tot_tr_pct_direct": "0,040", "tot_tr_pct_indirect": "0,000",
+   "final_total_vr": "23.511.198", "final_pct_total": "2,031"
+  }
+ }
+}
