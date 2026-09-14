@@ -23,7 +23,8 @@ identity across amendments (an amendment may reorder blocks).
 | `notifying_party_name_raw` | §1.a literal |
 | `notifying_party_kind` | `NATURAL_PERSON` iff the PDMR checkbox is checked (a PDMR is by definition a natural person); `LEGAL_PERSON` iff the name carries a corporate-form suffix (deterministic lexical list); else `UNKNOWN` |
 | `closely_associated` | checkboxes §2 — CA only → `TRUE`; PDMR only → `FALSE`; neither/both → `UNKNOWN` + unmapped note |
-| `position_status_raw` | §2.a literal. For CA notices this field carries the related-PDMR descriptor (`"NAME - POSITION"`/`"NAME, POSITION"`); separators vary across issuers, so `related_pdmr_*` stay NULL in G2 — no lossy split |
+| `position_status_raw` | §2.a literal, verbatim |
+| `related_pdmr_name_raw` / `related_pdmr_position_raw` | For CA notices the §2.a field carries `"PDMR name - position"` or `"name, position"`. Deterministic split: first `" - "`, else first `", "`. No separator → `PARSED_WITH_UNMAPPED_VALUES` (`related_pdmr_unsplittable`), never a silent NULL for a present field |
 | `notification_kind` | §2.b value: `Inicial`→`INITIAL`, `Modificación`→`AMENDMENT`, else `UNKNOWN` |
 | `amendment_text_raw` | text between the kind value and §3 — the corrected-error explanation; NULL when absent (never the kind value itself) |
 | `issuer_name_document` / `issuer_lei_document` | §3 as stated in the document (cross-checkable against the listing identity, not overwritten by it) |

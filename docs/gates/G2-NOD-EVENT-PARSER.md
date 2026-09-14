@@ -194,10 +194,73 @@ No defect was found via HOLDOUT; holdout was evaluated once.
 - Only exact-match natures normalize; the catalog was not expanded
   speculatively.
 
-## G2 VERDICT: **PASS**
+## G2 VERDICT: **PASS** (pre-audit; see G2-R below)
 
 For the `EU_2016_523_PDMR_CNMV` template, Ownership Radar ES converts a
 NOD notification deterministically into 1..N transaction events with
 execution lines, declared aggregates, party, instrument, nature, date,
 venue and full provenance — no fuzzy matching, OCR or double counting.
+
+---
+
+# G2-R FINAL AUDIT (post-G2 bounded remediation)
+
+## 1. related_pdmr_* audit — defect found and fixed
+
+All 6 corpus CA notices were audited directly against source:
+
+| notice | source | fix |
+|---|---|---|
+| nod:2020131299 | `"SOL DAURELLA COMADRÁN, CONSEJERA"` — **present** | extracted (COMMA rule) |
+| nod:2026035251 | `"ANA PATRICIA BOTÍN-SANZ… - PRESIDENTA…"` — **present** (hyphen inside name, unspaced → safe) | extracted (DASH rule) |
+| nod:2023105509 | `"Carlos Salazar Lomelín - Consejero"` — **present** | extracted (DASH) |
+| nod:2023106224 | idem — **present** | extracted (DASH) |
+| nod:2026043972 | idem — **present** | extracted (DASH) |
+| nod:2022110940 *(holdout)* | `"ISIDRO FAINÉ - VICEPRESIDENTE"` — **present** | extracted (DASH) |
+
+The G2 claim "CA NOT_OBSERVED in holdout" was wrong: `nod:2022110940`
+(CRITERIA CAIXA, S.A.U., legal person) is a CA notice — the earlier
+coverage check only looked at the DEV database. Corrected.
+
+present in source = 6 · absent = 0 · extracted = 6 · failed = 0.
+
+## 2. share_option_program_linked audit
+
+No structured field exists in the CNMV grid rendering; option-program
+references appear only inside free-text "Otra información". `UNKNOWN`
+is therefore *absence of structured data in source*, not an extraction
+failure. Free text is not parsed into booleans (that would be
+inference). Documented, no code change.
+
+## 3. Holdout oracle
+
+Created `corpus/oracle/holdout_expected.json`: all 15 notices
+hand-annotated from `pdftotext` (poppler) output — an engine
+independent of pdfminer. `tests/test_holdout_oracle.py` compares every
+notice field, every event, every execution line, and every declared
+aggregate against the oracle. Result: **15/15 exact**.
+
+## 4. Dependency pinning
+
+`requirements.txt`: `pdfminer-six==20260107` (exact). The engine
+version is also stored per-parse in `nod_notice_semantic.pdf_engine`.
+
+## 5. Determinism re-check
+
+Two independent corpus parses after the G2-R changes: 0 digest diffs.
+
+## Re-evaluated gates
+
+| Gate | Verdict | Note |
+|---|---|---|
+| G2-03 NOTICE_PARTY_EXTRACTION_EXACT | **PASS** | related_pdmr now extracted on all 6 CA notices; holdout CA verified vs oracle |
+| G2-04 INITIAL_AMENDMENT_EXTRACTION_EXACT | **PASS** | unchanged (5 AMENDMENT in DEV; none in holdout — NOT_OBSERVED) |
+| G2-14 HOLDOUT_GENERALIZATION | **PASS** | now backed by independent oracle, not self-consistency |
+| G2-15 SECOND_PARSE_DETERMINISTIC | **PASS** | 0 diffs post-changes |
+
+Structural paths: amendments and CA extraction **proven in DEV**;
+CA also present-and-verified in holdout (1 notice); amendments
+**NOT_OBSERVED_IN_HOLDOUT**.
+
+## G2 VERDICT (post-audit): **PASS**
 

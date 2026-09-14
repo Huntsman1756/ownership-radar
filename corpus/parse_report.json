@@ -1,5 +1,5 @@
 {
- "parsed_at": "2026-09-14T05:15:56+00:00",
+ "parsed_at": "2026-09-14T05:26:56+00:00",
  "parser": "nodpdf-0.1.0",
  "results": [
   {
@@ -15,7 +15,7 @@
    "qa": [
     "MATCH"
    ],
-   "digest": "1584f1d6bdfd4cd9bc11ed167c82b1bad68417e9082b09fd2d574d9f6820f4a6"
+   "digest": "2a2334dd53475dda4555b4d042ec91b4c324c956ff278bd164b7e4672f1c7f26"
   },
   {
    "notice_key": "nod:2018131018",
@@ -30,7 +30,7 @@
    "qa": [
     "MATCH"
    ],
-   "digest": "5f5c36c96387c7271f5499267714a0b86138fc62d823abf53ab2aa9de13a7bbe"
+   "digest": "8de29d4f4d8ae51cf423c0d8a53279205d155e40aa1dc5737489f400aa5f2a1d"
   },
   {
    "notice_key": "nod:2019021561",
@@ -45,7 +45,7 @@
    "qa": [
     "MATCH"
    ],
-   "digest": "47ec28e0325fe50056ebbfb2a9881723f9cf16a4e9ff5b6853a7cfd676ad3e4f"
+   "digest": "73b64991232dfc274c6472e892fc967cd152d385f0c3615e8c468d211271931c"
   },
   {
    "notice_key": "nod:2019027702",
@@ -60,7 +60,7 @@
    "qa": [
     "MATCH"
    ],
-   "digest": "1dc0b59eefac67919df64ae999087092fa886bf42f3e6d1ef59baebbe9a1feda"
+   "digest": "00119c72bd9e95ca3e2f8a6cc605a94c8b77b5a5e04c677612b002d36898286c"
   },
   {
    "notice_key": "nod:2019030149",
@@ -75,7 +75,7 @@
    "qa": [
     "MATCH"
    ],
-   "digest": "6692c019c2ccd0f5a57ae353e631fec4efd413f05680bcd3fc86e8b62b82e278"
+   "digest": "6bd9d645c6d22a7e1efac5b6d565f556bd3ac3656cceacdbf65a8485e7262fb3"
   },
   {
    "notice_key": "nod:2020020409",
@@ -90,7 +90,7 @@
    "qa": [
     "MATCH"
    ],
-   "digest": "3a0e7ee191ef99e5fa27a69927197d49e09fbe83c76b9cc866de21eb8d887637"
+   "digest": "4706b2640bd79793323693e6840a0ce78d829ab9268cfa1f7361b441538a6a94"
   },
   {
    "notice_key": "nod:2020063191",
@@ -105,7 +105,7 @@
    "qa": [
     "MATCH"
    ],
-   "digest": "cbe799a246c3c52d099ea065f6ec8f04db7995a36f4aad23c4a11f599a311cf7"
+   "digest": "d9bc9b86c2ca9a32d69e2e4a027f1eeb31f207a45556b7fc37797de5d564041a"
   },
   {
    "notice_key": "nod:2020131192",
@@ -120,7 +120,7 @@
    "qa": [
     "MATCH"
    ],
-   "digest": "d8986040134442ce0e761a35808b4c8705443bd074e1dc07a4c70e2dea85f6cd"
+   "digest": "f516218712afe0dab617c6ffbecbf3f7566f2801850a178f3d81bee23bfefe77"
   },
   {
    "notice_key": "nod:2020131282",
@@ -135,7 +135,7 @@
    "qa": [
     "MATCH"
    ],
-   "digest": "a09b93283a668836316e692db6f790dfea582f099aa576685e4a8582bcb6f0f7"
+   "digest": "47b7c172de684b578f58670cb9eb44dbc1e322254cd887863b567e435a50dab1"
   },
   {
    "notice_key": "nod:2020131299",
@@ -150,7 +150,7 @@
    "qa": [
     "MATCH"
    ],
-   "digest": "7faef42d8abf408da0e51cd74419938119dd1024c09cb9e906c485f30772a402"
+   "digest": "efdc0f43685a1e729a28becdecffc5ac8659fbd83f8645e23d4d8e53ba489191"
   },
   {
    "notice_key": "nod:2021022417",
@@ -165,7 +165,7 @@
    "qa": [
     "MATCH"
    ],
-   "digest": "9b8bc8fd903ee7fe935b7eaf36f823a1b0b211f399a83fc01e65e736edef391b"
+   "digest": "c08b53a66fc37b293395954896191b969d5e617c848feab280b9f5021718212a"
   },
   {
    "notice_key": "nod:2021022430",
@@ -180,7 +180,7 @@
    "qa": [
     "MATCH"
    ],
-   "digest": "198e2a0d70c6a67efffdfb48eeca6021a1aa634cc11b2af3eb14e683be9ed026"
+   "digest": "d42c644ef3ea848c79f35e293eca38ee407aa75ec4fc55cb6453d1610528623a"
   },
   {
    "notice_key": "nod:2021151554",
@@ -195,7 +195,7 @@
    "qa": [
     "MATCH"
    ],
-   "digest": "878066e225eeb0d9137d0b8881db3ae301cffd991c1d5245616497d75c066fb6"
+   "digest": "26594390addfbbb210ce1e8ef7abc919235b5ff1f45d0f23f192ebbc09d9c617"
   },
   {
    "notice_key": "nod:2022022546",
@@ -210,7 +210,7 @@
    "qa": [
     "MATCH"
    ],
-   "digest": "7101f5ce2dfa26f6c1992a32b2bd79866505c7b50aaee1ad1cc6233ae2586e7e"
+   "digest": "3450ddb2de491c9f037ea558c9dac8517c2dacf31a5d9b7e536c7c6a681911c2"
   },
   {
    "notice_key": "nod:2022079256",
@@ -225,7 +225,7 @@
    "qa": [
     "MATCH"
    ],
-   "digest": "cd4d37ecb3492b22e2458027ae0a2512ab5e597d70710104329c5f3f38c6e823"
+   "digest": "022fe309af53c6d49048453fc51d4dcded2f29b5e03a2a1c551547ac733d1938"
   },
   {
    "notice_key": "nod:2023025044",
@@ -240,7 +240,7 @@
    "qa": [
     "MATCH"
    ],
-   "digest": "c35d5764c6232307d7d120f4d3cb9b9a97169b046aa314e7329f985af56089ce"
+   "digest": "ef1852fb024b17be055e199026db24a4981a49770e548885e3de6b24c64857cb"
   },
   {
    "notice_key": "nod:2023032928",
@@ -255,7 +255,7 @@
    "qa": [
     "MATCH"
    ],
-   "digest": "92f05d1bbb9d1dca3380a0cdb30249cb60fbf12fc848abbdac942e538d025533"
+   "digest": "c7cc6c1aa7867123649af6e372b6630052588f96c1ce61fe1d6a2b1674e183b4"
   },
   {
    "notice_key": "nod:2024020225",
@@ -271,7 +271,7 @@
     "MATCH",
     "MATCH"
    ],
-   "digest": "e56385aa5e03b7f6d73e3ffb0a77e0b4e8ea75f01f3ea194e5d277c8a1a1601f"
+   "digest": "c21efdccf53d98347f08ed4aa82468eda512cf007e16de20e27db9a1900486c1"
   },
   {
    "notice_key": "nod:2024025997",
@@ -286,7 +286,7 @@
    "qa": [
     "MATCH"
    ],
-   "digest": "fbf62f6f7f9b0b064ee71bb7a3eb241f3f863cf167acccb9383738613dfa5464"
+   "digest": "67e0149aa574d71c8a07e682617d13611798a41379a9bd578684f24a06a65d13"
   },
   {
    "notice_key": "nod:2024039561",
@@ -302,7 +302,7 @@
     "MATCH",
     "MATCH"
    ],
-   "digest": "2a0213c513cbd19c82ce4466f5d6e4ec9fe36f777b1bc40a76ee11dfceeb4c87"
+   "digest": "c1b4f9d1a11e1db2446e85760c6fe84a3a8ebd7898fd3fee7d04d0f7180c3618"
   },
   {
    "notice_key": "nod:2025025210",
@@ -317,7 +317,7 @@
    "qa": [
     "MATCH"
    ],
-   "digest": "27089280e124d308260075714d04db8dd3ad43e0308e59f2e08862389ac9e479"
+   "digest": "07fcacaf052f55901ba96b3fd39b6ac19773a12ab1d27bba3acf1f69144ec738"
   },
   {
    "notice_key": "nod:2025025615",
@@ -332,7 +332,7 @@
    "qa": [
     "MATCH"
    ],
-   "digest": "5f13936fc1c05d02dcbbe36fb62dee74aa6387f8ca721836b71f5dc150767855"
+   "digest": "2625bb856819915665f5c1fcdd0645ec02382f70a924e64271999c4b06a724e8"
   },
   {
    "notice_key": "nod:2025038309",
@@ -347,7 +347,7 @@
    "qa": [
     "MATCH"
    ],
-   "digest": "f62459791bdf8f0437e7e52dbe528cc4b7c2c8cb10028f6923a4ff5f16a73f6d"
+   "digest": "6f476bf18eb69893ae9e5ab9331892e0b88885c7ebde582f01a125b62ad16b95"
   },
   {
    "notice_key": "nod:2025115942",
@@ -362,7 +362,7 @@
    "qa": [
     "MATCH"
    ],
-   "digest": "d8fbac7132d65b30b9ccd272db66b4c588ec193ddbf227c6f477b736fbf89937"
+   "digest": "2cadcfc9e430a2d8c8356c16b458951cf3b74879520c06e98cff484cbd3f8350"
   },
   {
    "notice_key": "nod:2025137241",
@@ -377,7 +377,7 @@
    "qa": [
     "MATCH"
    ],
-   "digest": "36ef689275c0bef7672232b977b2803af2e85f5f60289216fe8d1094bf0826dc"
+   "digest": "6cd42f808f207292c454e5d721ca582b4c755baed14ca06f7f5d68d58600570e"
   },
   {
    "notice_key": "nod:2025137322",
@@ -392,7 +392,7 @@
    "qa": [
     "MATCH"
    ],
-   "digest": "0d4d22d3af65dbaef36d32265bd1e65253326508764bf9aa6b7c87b8852739f2"
+   "digest": "7df3dae38f9cf1a1cdf98076eac86e96a74a5620bc35997f2fc2030560b3b76d"
   },
   {
    "notice_key": "nod:2026019374",
@@ -408,7 +408,7 @@
     "MATCH",
     "MATCH"
    ],
-   "digest": "2d3cffe8e61b4db03a81d006e7fe11f856b36334ab4e7a4a2ab0e995f2f1863a"
+   "digest": "c38734582eeaea5c48f63ec5322c273e14cf6a96cbd13ca4f6f18722cecf5142"
   },
   {
    "notice_key": "nod:2026025351",
@@ -423,7 +423,7 @@
    "qa": [
     "MATCH"
    ],
-   "digest": "273461b8e9f7e447b8c20682d8952368f082cec45e44f7c3bb569446a2ea5f88"
+   "digest": "938f8fb4b59546b6566ac4d4207b573564af950ba1c5ade3dc81e70a5bf008c9"
   },
   {
    "notice_key": "nod:2026035251",
@@ -439,7 +439,7 @@
     "MATCH",
     "MATCH"
    ],
-   "digest": "3ab565cc39d01a5418f19077a6cffe85eb937e3b906014cb6f395840d8da9aa1"
+   "digest": "3474d727830881a7a2730482d907e6b0bd1606252035c07d00d8a3402899274e"
   },
   {
    "notice_key": "nod:2026113065",
@@ -454,7 +454,7 @@
    "qa": [
     "MATCH"
    ],
-   "digest": "ed8e6e4d8c2f6c83cc629a8257efb80ba774e64a1618ca6a908304a92d460988"
+   "digest": "7e28b5d0fb03f6de89ef828ef75091dbf4ba62220f6afdbb27e553d9b735846d"
   },
   {
    "notice_key": "nod:2026120682",
@@ -469,7 +469,7 @@
    "qa": [
     "MATCH"
    ],
-   "digest": "83047295c70660fee4523beebcde04ca65ff12847e568a56eeda251c9768fd2d"
+   "digest": "a1074a88c8bdfb6171063a8426bf75f5776608cb096283747284dc2318797361"
   },
   {
    "notice_key": "nod:2018109299",
@@ -484,7 +484,7 @@
    "qa": [
     "MATCH"
    ],
-   "digest": "575c22685245e0fe1996ab6a9ddf8e329edd0f1eeb3d125d437a577b1b572562"
+   "digest": "2b62a860ef0724a826c1f7d53523b1b6a2df88fe7c0483866503c9ea0b9955a6"
   },
   {
    "notice_key": "nod:2019038472",
@@ -499,7 +499,7 @@
    "qa": [
     "MATCH"
    ],
-   "digest": "35f59ab7ed1254651b353fe8d79b832fe4a8ede9785767667f5df9ae837bd47c"
+   "digest": "e16d82b395c0461f4ede9c0c7e1b5ab6ee2c471a0c8f5b878bc9a7801bac09ea"
   },
   {
    "notice_key": "nod:2019038807",
@@ -514,7 +514,7 @@
    "qa": [
     "MATCH"
    ],
-   "digest": "af0d91670f52d7a1bf054d4dd1c7b06fcd2794b6b2579dfb504931d0285c57ba"
+   "digest": "0c7d1ac5b4baf4cc0dcab10692c0774c4664a5a8ae59e9abf0224b0ddf8fc744"
   },
   {
    "notice_key": "nod:2020025599",
@@ -529,7 +529,7 @@
    "qa": [
     "MATCH"
    ],
-   "digest": "87238fb65e0b9058217fcbc0ebba2c0fdc6a1b3b391f7b21470bb7218eeffa95"
+   "digest": "ad6dd6961904ca4b907efd8d55e20ac9c93f2eb1ed80e72215d5ee5dbabd1d3f"
   },
   {
    "notice_key": "nod:2020027303",
@@ -544,7 +544,7 @@
    "qa": [
     "MATCH"
    ],
-   "digest": "59cabff9b701fd1638c63f298947c186efe3046703f0e267d3d4ac7bca95d785"
+   "digest": "775d7ac73ed4aef7d23243a629d7ea4d5fd54a9400b3887d8cb677e916dea0db"
   },
   {
    "notice_key": "nod:2021025505",
@@ -559,7 +559,7 @@
    "qa": [
     "MATCH"
    ],
-   "digest": "e9b07dc740cb1fc10c80e3a2004a4c7a1f8875a6c8dfb44d5c0f02103b9b40ed"
+   "digest": "700c95985ffa761e0b61eb17fcf7af21a676b3984c488f5d044c28584f8905cb"
   },
   {
    "notice_key": "nod:2021025533",
@@ -574,7 +574,7 @@
    "qa": [
     "MATCH"
    ],
-   "digest": "bc81295ca624f6667d5a3def98c2316555c9078b5b8d0bab464078c27935e5d0"
+   "digest": "cb9087a0edb37498e51633f2582402062459030d57e998a1878fa933d3a4b1ca"
   },
   {
    "notice_key": "nod:2022026428",
@@ -589,7 +589,7 @@
    "qa": [
     "MATCH"
    ],
-   "digest": "a72f15c929c8b918c2bd1e6070add1fd4bfca981ee942a75abb7d11500198781"
+   "digest": "b4ed4802941ab705ce46a2c3ecb02decd4066a82c38e408f4b9af6482f08c910"
   },
   {
    "notice_key": "nod:2022026862",
@@ -604,7 +604,7 @@
    "qa": [
     "MATCH"
    ],
-   "digest": "778f8b8c5ca8661e3c2af3d3383bdd80d73fe256b973dddfe164c4306873da3e"
+   "digest": "e9c5ed120b6605656aebf20025744b85e723b4876cc9940bb5d9364e25990c06"
   },
   {
    "notice_key": "nod:2022118962",
@@ -619,7 +619,7 @@
    "qa": [
     "MATCH"
    ],
-   "digest": "77f7ad5d0aebd1ad8bcb4cd109d9ef06140fd9894be71665991cb169e6ccc277"
+   "digest": "d6ccb4890731dae8283a4692088f2594dfccff7563d6c43ed7ad70f7f2d6fcea"
   },
   {
    "notice_key": "nod:2023039767",
@@ -634,7 +634,7 @@
    "qa": [
     "MATCH"
    ],
-   "digest": "daae7513f440ac62a2f813ea60eb5e86bc41ee662ed2c49164903251dd9c0208"
+   "digest": "68499b603a37847f69e986a23d322fcb30050a68d797322e480dbf2ed7a5965a"
   },
   {
    "notice_key": "nod:2023039783",
@@ -649,7 +649,7 @@
    "qa": [
     "MATCH"
    ],
-   "digest": "ae4d213fef494177a28de8adfcb63a781b4f44da908786a1a4c338dd0d5e9f92"
+   "digest": "230540144b98da2c2fd9c01046f20b6bf2453ec8e2cd8dc3b314dbbdacf07a0f"
   },
   {
    "notice_key": "nod:2023105506",
@@ -664,7 +664,7 @@
    "qa": [
     "MATCH"
    ],
-   "digest": "625949d96b7002708400fc5834f04082db172a47f9e1ab7502a110082d7f5f5d"
+   "digest": "bbb6116a2b3d74c3acf68c0c60b74035698e4db00e820bf2af78e1bbc8e94e2b"
   },
   {
    "notice_key": "nod:2023105509",
@@ -683,7 +683,7 @@
     "MATCH",
     "MATCH"
    ],
-   "digest": "ffc3267db9d1a2f87004bd666f2f8753393f8e31f2eca32f5726f8c125206dd1"
+   "digest": "d324fe72c897928512dddc4484e97ce81c77aeaf8fbfa6673c64a3087c5b5389"
   },
   {
    "notice_key": "nod:2023105878",
@@ -698,7 +698,7 @@
    "qa": [
     "MATCH"
    ],
-   "digest": "a213b9f523a62270dbf878967194b25e35f322a436944c8c353417c55ff41117"
+   "digest": "e8906a157b172fcf477e2f89546d810ccf6427d8312c43f820806e6cb26f4ed0"
   },
   {
    "notice_key": "nod:2023106224",
@@ -717,7 +717,7 @@
     "MATCH",
     "MATCH"
    ],
-   "digest": "75eb95ed11caaf47000e3a642fe9f3171a22737046a508430a4d4eb1ee044309"
+   "digest": "0bee74800409641719ba3a4a5d4987cbde4267f93bab37d4da02955f26ad1f95"
   },
   {
    "notice_key": "nod:2024032167",
@@ -732,7 +732,7 @@
    "qa": [
     "MATCH"
    ],
-   "digest": "31bf6c78f7af3aa3817c3148e2d7646df8831d41885d84bdb2ab0d06f57e2352"
+   "digest": "25905043b08021268fcd8d52e176a8988458b68f32efdb2b16e306f90ce445fc"
   },
   {
    "notice_key": "nod:2024033819",
@@ -747,7 +747,7 @@
    "qa": [
     "MATCH"
    ],
-   "digest": "824142e3fea7a5331d3320a6c27b6d8f99eb07264388bc3e2eb0974a7710dae4"
+   "digest": "512a54f19f015349e81618476b5d5e4ce572fc8933ad5f1a5d33754a255a9e28"
   },
   {
    "notice_key": "nod:2024043765",
@@ -762,7 +762,7 @@
    "qa": [
     "MATCH"
    ],
-   "digest": "4044cb38451f9c38d1cccc193ab055599c01705878b545d23135c1dbd58ad2f8"
+   "digest": "4bd60f7134a9717d4903a34bfed21b35b4db8fc9439ca62377ce5f15be7eb43c"
   },
   {
    "notice_key": "nod:2025032697",
@@ -777,7 +777,7 @@
    "qa": [
     "MATCH"
    ],
-   "digest": "fec40a00ac06d181e78b32c873d4d38e8b9e3a4b0f47e1d9b20b75557254ebbd"
+   "digest": "e35072488aef1d3b6d4104a7ba6cfb58206e4f7600884f028d608d96dc7fca62"
   },
   {
    "notice_key": "nod:2025147694",
@@ -792,7 +792,7 @@
    "qa": [
     "MATCH"
    ],
-   "digest": "58cf38dd3906149a43c3bd5ddbd6a0964873912f39e9476a5293a9599fd265fc"
+   "digest": "d472d44b7805bc68e1bf864dcab7ad91c8255f4aa13cd399dd1415494f29e7c9"
   },
   {
    "notice_key": "nod:2026025253",
@@ -807,7 +807,7 @@
    "qa": [
     "MATCH"
    ],
-   "digest": "dd08bc15110f5c29ea06503ab877075ae8d84b000b9134650c794ec40a7d8dd9"
+   "digest": "396b28f6675c315cf046d73f240b3dfedd5d2d45bd9a65de2bc5a5918441cd0a"
   },
   {
    "notice_key": "nod:2026031522",
@@ -822,7 +822,7 @@
    "qa": [
     "MATCH"
    ],
-   "digest": "1d0eb8ce4ab1ee7720c7f7b37c037afe529af367d4efafb568e5d6ac2b5a2c8a"
+   "digest": "8e5dcdc61df28103ca76b65489cd84568b84a7fc4539d5543ebc878b1334b586"
   },
   {
    "notice_key": "nod:2026031544",
@@ -837,7 +837,7 @@
    "qa": [
     "MATCH"
    ],
-   "digest": "e0f656e7e0b27dcf0232b404d85c47e674631b42dff0bb4205cc946bd4dc0a85"
+   "digest": "04d07201562fb3e2cf4ac5394880e4ed04ffdbedfbc44769cfac9d2af8f4e21a"
   },
   {
    "notice_key": "nod:2026043972",
@@ -852,7 +852,7 @@
    "qa": [
     "MATCH"
    ],
-   "digest": "2bfe8c80aa135c1f604755b6355471af03bfa4f03c556fab362c8094f5796e4b"
+   "digest": "451db15b037c824bc814387433d1472d0595762dd96682287b3c7e67441bf3ba"
   },
   {
    "notice_key": "nod:2019038807",
@@ -867,7 +867,7 @@
    "qa": [
     "MATCH"
    ],
-   "digest": "af0d91670f52d7a1bf054d4dd1c7b06fcd2794b6b2579dfb504931d0285c57ba"
+   "digest": "0c7d1ac5b4baf4cc0dcab10692c0774c4664a5a8ae59e9abf0224b0ddf8fc744"
   },
   {
    "notice_key": "nod:2025153790",
@@ -882,7 +882,7 @@
    "qa": [
     "MATCH"
    ],
-   "digest": "f7147fd99ea017df43ac6a1d5b1e84a5b53cad711f0b82684e70ffc7cf5c261b"
+   "digest": "2a13074b4e1b0d6cdc2ecf163de7f6923fb12aa7a4c706b96b441f7c30c449d1"
   },
   {
    "notice_key": "nod:2019021570",
@@ -897,7 +897,7 @@
    "qa": [
     "MATCH"
    ],
-   "digest": "5becb72d953bd320cd728f4ee1129a9fd3e96b07b3665b84f8c79e5d90bac985"
+   "digest": "bf12cae8b9f07369206205dc3ae564d4ec8914f136cebc967805a10884d6c816"
   },
   {
    "notice_key": "nod:2021022416",
@@ -912,7 +912,7 @@
    "qa": [
     "MATCH"
    ],
-   "digest": "519670be6424de5523acaa5576597c8d7d8114b92ec5ec8406fbfa8eb701fd6b"
+   "digest": "51de7a88256e22e1dc4d6004f5976655fb8a026fbf68763aced41f7036eb975a"
   },
   {
    "notice_key": "nod:2025033179",
@@ -927,7 +927,7 @@
    "qa": [
     "MATCH"
    ],
-   "digest": "f890edb2b843e261c70f09a117ac303900e97e462ae43ddabda540593599dbb2"
+   "digest": "429ec149cd1af13303a95780c3ea20b9511e51c18b9bda7d0774bbb323cea7ec"
   },
   {
    "notice_key": "nod_legacy:2017026125",
@@ -940,7 +940,7 @@
    "events": 0,
    "lines": 0,
    "qa": [],
-   "digest": "b2edffe626c9bc3e509b5818bd6b732f2df48e4b4350ef552b14331aa7db23aa"
+   "digest": "07b3864027615a0b7c5d30c450398312d0b378c972b3f6d1c716a11f7fca28f4"
   },
   {
    "notice_key": "nod_legacy:2011144527",
@@ -953,7 +953,7 @@
    "events": 0,
    "lines": 0,
    "qa": [],
-   "digest": "c3cbaaad32fce9d190f6c6e881cba5e31691f16f7e0e09523691b7432ae00b59"
+   "digest": "3481202eb7abbcbb57b7c56d539ae27510f51e99a28f497ed65f1036a9c1730c"
   },
   {
    "notice_key": "nod_legacy:2017021859",
@@ -966,7 +966,7 @@
    "events": 0,
    "lines": 0,
    "qa": [],
-   "digest": "392d8c24ac2039811c35a3d9e948380c89778f3473521bf011cf550513e9ccbc"
+   "digest": "0e92accb15f52e885ce31760f9c1f20967e56378cc37b856bfb23ad0c530461a"
   },
   {
    "notice_key": "nod:2018105375",
@@ -981,7 +981,7 @@
    "qa": [
     "MATCH"
    ],
-   "digest": "4c3efbc1c928894137211f599abe521fce1a7c045ea75105d4ab87eebe644655"
+   "digest": "b9974a28bd181b6c66259e047d9b0189b0d45e05a13f571a79d7efc7b76c3cb6"
   },
   {
    "notice_key": "nod:2021050582",
@@ -996,7 +996,7 @@
    "qa": [
     "MATCH"
    ],
-   "digest": "92a44ae43e906f7791d1463ec604ab11a7059fea29547b992da19d6544d13992"
+   "digest": "6590dd36e856f781ba35a906ffb2ba766ef6953b3b1f3f3efdba2b716b4ba41c"
   },
   {
    "notice_key": "nod:2023068949",
@@ -1011,7 +1011,7 @@
    "qa": [
     "MATCH"
    ],
-   "digest": "db988d5b26c4edee1ee0e73fbee892d063f0217b914483b5b92c7e6b8a1ff2fc"
+   "digest": "345176ec1813bb2d6c767dcfad2f46574b93ce36ac3d79599e2e4063925e00d1"
   },
   {
    "notice_key": "nod:2025031727",
@@ -1026,7 +1026,7 @@
    "qa": [
     "MATCH"
    ],
-   "digest": "c4bba09bb770b7d9756ee81c38f9bf54fdc3016344286c31bb6286c2d0a0f723"
+   "digest": "c3c53630ed3a1b53eb95d322b1c9f2070e7bebf7839d03efc0247514ffc8eaa8"
   },
   {
    "notice_key": "nod:2026089639",
@@ -1041,7 +1041,7 @@
    "qa": [
     "MATCH"
    ],
-   "digest": "7d873e1af0cdc0f407dc62130a002657fe2c086dea721c07470f63d45d98347c"
+   "digest": "144783d8f63bbc09f4e096028e19e5fcdc4be697897648f6bfab7e28a4c36eca"
   },
   {
    "notice_key": "nod:2018062819",
@@ -1057,7 +1057,7 @@
     "MATCH",
     "MATCH"
    ],
-   "digest": "d54a622a329cb1938e31e7d34515a1b239ab3614b26dd310ec0ed342d53c6963"
+   "digest": "9b6102fdafe8b267a7d830422683d314d0160f7656b9926c0a4fc91f4331db06"
   },
   {
    "notice_key": "nod:2021041178",
@@ -1072,7 +1072,7 @@
    "qa": [
     "MATCH"
    ],
-   "digest": "229a24e8ffdbba413b6b091caab770fb88af21fd0dd5aa3a8f8bd95c32997a76"
+   "digest": "a7a01fb9e81be08bed8b9a0a072f2d7cd7ea0bb1cf0afa9cc303411759e99b67"
   },
   {
    "notice_key": "nod:2022110940",
@@ -1087,7 +1087,7 @@
    "qa": [
     "MATCH"
    ],
-   "digest": "d9ef616ca01e5ad40c7ef0f1916f995d87f0f0665b710f308e777ce09f1cb42c"
+   "digest": "a38a921fed6208852f25a29d2ed82f0564ca63c5f0ffcb56078a2f6c637c4323"
   },
   {
    "notice_key": "nod:2023075392",
@@ -1102,7 +1102,7 @@
    "qa": [
     "MATCH"
    ],
-   "digest": "26845a8d87a006017784abf2a07e4774b59bcf31a41701616d5c3f806070788c"
+   "digest": "c482efe0cd4808e7a87978060da8234c0807ca34bec21cc50d0b5f658abb48d8"
   },
   {
    "notice_key": "nod:2026090693",
@@ -1117,7 +1117,7 @@
    "qa": [
     "MATCH"
    ],
-   "digest": "85029a87443a8166b2c4ba253088e5af6782c172bfdfda873cf4c007999ffac8"
+   "digest": "3a8a16cff9b2811df2864b4a7d1fb9c0c31247ae1d02ef37ed807b178abf66b7"
   },
   {
    "notice_key": "nod:2018065124",
@@ -1132,7 +1132,7 @@
    "qa": [
     "MATCH"
    ],
-   "digest": "923fc279e2d80327c895c502700fa98adab69bc9047767896af00c00970c1041"
+   "digest": "4cd7235d7865c3d29da1232608a099149c80edb9874f6063bcabd62f1072cbb3"
   },
   {
    "notice_key": "nod:2019133604",
@@ -1147,7 +1147,7 @@
    "qa": [
     "MATCH"
    ],
-   "digest": "4824fb1348107e832c33baf5a2e8275f5404ca2495aabc6944ce27ab59b82983"
+   "digest": "58369864fda88c9e34e8c31c6fcff015ef887244dc9b3c43ba22d96b71199d6b"
   },
   {
    "notice_key": "nod:2021006492",
@@ -1162,7 +1162,7 @@
    "qa": [
     "MATCH"
    ],
-   "digest": "ef181e230fac135ac85dccdf6eaf028cecdd87524742b8ef45449178356adeaf"
+   "digest": "90bbdd597f85a309e4c4a791ba9bf3457dfa2b078f69fd3ea3c53f5a96422d43"
   },
   {
    "notice_key": "nod:2023134119",
@@ -1177,7 +1177,7 @@
    "qa": [
     "MATCH"
    ],
-   "digest": "134e6af59a4e39704c17586458ece02ba4b653575e08904efa4f267e550005c4"
+   "digest": "df56aa99f77f8fc649a6b4799b3de538e467430197faa8c7c791553c250435f7"
   },
   {
    "notice_key": "nod:2026118023",
@@ -1192,7 +1192,7 @@
    "qa": [
     "MATCH"
    ],
-   "digest": "fa70665f36395ce6e8811693206c53fc8c38d7fe3b0ff5ca2b113c2fa26b4482"
+   "digest": "8ef2b217f32aa47744932252eb45d37e92e6da673c42f634b31db650b4e968d4"
   }
  ]
 }

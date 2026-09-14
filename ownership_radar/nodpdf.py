@@ -210,6 +210,25 @@ def parse_lines(pages):
             k += 1
         out["position_status_raw"] = " ".join([v or ""] + extra).strip() or None
 
+    # For closely-associated parties the §2.a field is used by filers
+    # to carry "PDMR name <sep> PDMR position". Deterministic split:
+    # first " - " (a bare hyphen inside a name like BOTÍN-SANZ is not
+    # spaced, so it cannot false-split), else first ", ". If neither
+    # separator exists the field is present but unsplittable -> the
+    # notice is PARSED_WITH_UNMAPPED_VALUES, never silently NULL.
+    if out["closely_associated"] == "TRUE" and out["position_status_raw"]:
+        f = out["position_status_raw"]
+        if " - " in f:
+            out["related_pdmr_name_raw"], out["related_pdmr_position_raw"] = \
+                (s.strip() for s in f.split(" - ", 1))
+            out["related_pdmr_rule"] = "DASH"
+        elif ", " in f:
+            out["related_pdmr_name_raw"], out["related_pdmr_position_raw"] = \
+                (s.strip() for s in f.split(", ", 1))
+            out["related_pdmr_rule"] = "COMMA"
+        else:
+            out["unmapped"].append("related_pdmr_unsplittable")
+
     i = _find_anchor(lines, "Notificación inicial", "Initial Noti")
     if i >= 0:
         v, j = _next_value(lines, i)
@@ -354,5 +373,7 @@ def parse_pdf(pdf_bytes):
                 "parse_status": EXTRACTION_ERROR,
                 "error": repr(e), "events": []}
     out = parse_lines(pages)
+    import pdfminer
+    out["pdf_engine"] = f"pdfminer.six=={pdfminer.__version__}"
     out["doc_sha256"] = hashlib.sha256(pdf_bytes).hexdigest()
     return out

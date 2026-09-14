@@ -153,6 +153,20 @@ class TestHeaderParsing(unittest.TestCase):
         self.assertEqual(r["notifying_party_kind"], "LEGAL_PERSON")
         self.assertEqual(r["notifying_party_name_raw"],
                          "VEHÍCULO INVERSOR, S.A.")
+        self.assertEqual(r["related_pdmr_name_raw"], "JUAN EJEMPLO PÉREZ")
+        self.assertEqual(r["related_pdmr_position_raw"], "CONSEJERO")
+
+    def test_ca_unsplittable_pdmr_field_fails_closed(self):
+        lines = [l[:] for l in HEADER]
+        lines[7] = ["[ √ ] Persona estrechamente vinculada"]
+        lines[6] = ["[ ] Persona con responsabilidad de dirección"]
+        lines[9] = ["CONSEJERO"]   # present but no name/position separator
+        r = nodpdf.parse_lines(mk_pages(lines + [
+            ["ES0000000001", "Acción", "Compra", "01/03/2025", "XMAD",
+             "10,00", "5,00", "EUR"]] + AGG + [["10,00", "5,00"]]))
+        self.assertEqual(r["parse_status"],
+                         nodpdf.PARSED_UNMAPPED)
+        self.assertIn("related_pdmr_unsplittable", r["unmapped"])
 
     def test_pdmr_is_natural_person(self):
         r = nodpdf.parse_lines(doc([

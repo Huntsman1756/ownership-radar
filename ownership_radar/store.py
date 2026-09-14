@@ -68,7 +68,7 @@ CREATE TABLE IF NOT EXISTS nod_notice_semantic(
  related_pdmr_name_raw TEXT, related_pdmr_position_raw TEXT,
  issuer_name_document TEXT, issuer_lei_document TEXT,
  additional_info_raw TEXT,
- doc_sha256 TEXT, corpus_split TEXT, parsed_at TEXT);
+ doc_sha256 TEXT, pdf_engine TEXT, corpus_split TEXT, parsed_at TEXT);
 CREATE TABLE IF NOT EXISTS transaction_event(
  event_id TEXT PRIMARY KEY,          -- notice_key:NN (doc order only)
  notice_key TEXT NOT NULL, source_order INTEGER NOT NULL,
@@ -116,6 +116,12 @@ def init_db(path):
     os.makedirs(os.path.dirname(path), exist_ok=True)
     cx = connect(path)
     cx.executescript(SCHEMA)
+    # forward-only column migrations for existing databases
+    cols = {r[1] for r in cx.execute(
+        "PRAGMA table_info(nod_notice_semantic)")}
+    if "pdf_engine" not in cols:
+        cx.execute("ALTER TABLE nod_notice_semantic "
+                   "ADD COLUMN pdf_engine TEXT")
     cx.commit()
     return cx
 
@@ -209,8 +215,8 @@ def store_semantic(cx, notice_key, p, corpus_split=None):
         notifying_party_name_raw,notifying_party_kind,
         position_status_raw,closely_associated,related_pdmr_name_raw,
         related_pdmr_position_raw,issuer_name_document,
-        issuer_lei_document,additional_info_raw,doc_sha256,
-        corpus_split,parsed_at) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)""",
+        issuer_lei_document,additional_info_raw,doc_sha256,pdf_engine,
+        corpus_split,parsed_at) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)""",
         (notice_key, p.get("semantic_parser_version"),
          p.get("regulatory_template"), p.get("parse_status"),
          json.dumps(p.get("unmapped") or [], ensure_ascii=False) or None,
@@ -220,7 +226,7 @@ def store_semantic(cx, notice_key, p, corpus_split=None):
          p.get("related_pdmr_name_raw"), p.get("related_pdmr_position_raw"),
          p.get("issuer_name_document"), p.get("issuer_lei_document"),
          p.get("additional_info_raw"), p.get("doc_sha256"),
-         corpus_split, now))
+         p.get("pdf_engine"), corpus_split, now))
     if p.get("regulatory_template") and \
             p["regulatory_template"].startswith("EU_"):
         cx.execute("UPDATE notice SET regulatory_template=? WHERE notice_key=?",
