@@ -1,0 +1,7 @@
+{
+ "requested_url": "https://www.cnmv.es/portal/consultas/directivos-resultado?nif=A48265169&fechad=01/01/2025&fechah=31/12/2025&page=1",
+ "final_url": null,
+ "retrieved_at": "2026-09-14T03:48:32.054+00:00",
+ "raw_sha256": "ff9d77d9267852cb0d7f7d618f08be65d81bb8771bf850adf19550ed7512049a",
+ "raw_file": "evidence/windowed/BBVA_01012025_31122025_p1.html"
+}

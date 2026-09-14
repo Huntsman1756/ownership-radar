@@ -1,0 +1,13 @@
+{
+ "reg": "2011144527",
+ "family": "nod_legacy",
+ "issuer": "SAN",
+ "filing_date": "2011-11-10",
+ "url": "https://www.cnmv.es/webservices/verdocumento/ver?e=QIVB9H1qzeJ9fGQrRF06b2svAI4YcJqlx4Fau%2fjmfWqY1bLbSDf76rU2Umyew0mw",
+ "final_url": "https://www.cnmv.es/webservices/verdocumento/ver?e=QIVB9H1qzeJ9fGQrRF06b2svAI4YcJqlx4Fau%2fjmfWqY1bLbSDf76rU2Umyew0mw",
+ "status": 200,
+ "content_type": "application/pdf",
+ "retrieved_at": "2026-09-14T03:45:54.538+00:00",
+ "raw_sha256": "e957930d92cebded179bae3ccb7cb7de6e5dedc598693ab4019160953d9be796",
+ "bytes": 67335
+}

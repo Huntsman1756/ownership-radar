@@ -1,0 +1,13 @@
+{
+ "reg": "2019021570",
+ "family": "nod",
+ "issuer": "SAN",
+ "filing_date": "2019-02-18",
+ "url": "https://www.cnmv.es/webservices/verdocumento/ver?e=Bkp%2bTi9bW%2bLdiW2ig7VRGcj%2f07JLXY2YAvSJ2QxZTDf00jEuhbk%2bTc0vHNC%2bVxBv",
+ "final_url": "https://www.cnmv.es/webservices/verdocumento/ver?e=Bkp%2bTi9bW%2bLdiW2ig7VRGcj%2f07JLXY2YAvSJ2QxZTDf00jEuhbk%2bTc0vHNC%2bVxBv",
+ "status": 200,
+ "content_type": "application/pdf",
+ "retrieved_at": "2026-09-14T03:45:48.458+00:00",
+ "raw_sha256": "bcc0286bd0c55b8db1b868f5a627151fc4630896e8a7b5d790abefd4b7977cf1",
+ "bytes": 93568
+}

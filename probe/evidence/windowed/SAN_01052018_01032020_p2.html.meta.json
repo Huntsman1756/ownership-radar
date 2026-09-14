@@ -1,0 +1,7 @@
+{
+ "requested_url": "https://www.cnmv.es/portal/consultas/directivos-resultado?nif=A39000013&fechad=01/05/2018&fechah=01/03/2020&page=2",
+ "final_url": null,
+ "retrieved_at": "2026-09-14T03:47:22.608+00:00",
+ "raw_sha256": "fb88a5d5c73ae46edc8ee0fc46dc895e4e27c8570913734378796b306d249cf6",
+ "raw_file": "evidence/windowed/SAN_01052018_01032020_p2.html"
+}

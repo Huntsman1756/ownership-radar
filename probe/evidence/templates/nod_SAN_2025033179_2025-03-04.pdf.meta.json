@@ -1,0 +1,13 @@
+{
+ "reg": "2025033179",
+ "family": "nod",
+ "issuer": "SAN",
+ "filing_date": "2025-03-04",
+ "url": "https://www.cnmv.es/webservices/verdocumento/ver?e=1EkyNNSNVAa23u7Uo%2fwBZlFkhbj4qO%2bWArJEeUkfuX700jEuhbk%2bTc0vHNC%2bVxBv",
+ "final_url": "https://www.cnmv.es/webservices/verdocumento/ver?e=1EkyNNSNVAa23u7Uo%2fwBZlFkhbj4qO%2bWArJEeUkfuX700jEuhbk%2bTc0vHNC%2bVxBv",
+ "status": 200,
+ "content_type": "application/pdf",
+ "retrieved_at": "2026-09-14T03:45:50.867+00:00",
+ "raw_sha256": "64c8aae2d242c6cad3d9e907cc95d6384661769a15fe86e3b6a5ad48bc07d83d",
+ "bytes": 93568
+}

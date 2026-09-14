@@ -1,0 +1,13 @@
+{
+ "reg": "2025091655",
+ "family": "ps",
+ "issuer": "SAN",
+ "filing_date": "2025-07-04",
+ "url": "https://www.cnmv.es/webservices/verdocumento/ver?e=4XQp9fmGld4Bw9i5A7WhX1WqNh8%2bFRv1rrvvzgHm5DyY1bLbSDf76rU2Umyew0mw",
+ "final_url": "https://www.cnmv.es/webservices/verdocumento/ver?e=4XQp9fmGld4Bw9i5A7WhX1WqNh8%2bFRv1rrvvzgHm5DyY1bLbSDf76rU2Umyew0mw",
+ "status": 200,
+ "content_type": "application/pdf",
+ "retrieved_at": "2026-09-14T03:45:59.383+00:00",
+ "raw_sha256": "08a91b8c1db0b94cd339cd82495c336d35237ed1c07d00eea307a055ffcf3909",
+ "bytes": 146510
+}

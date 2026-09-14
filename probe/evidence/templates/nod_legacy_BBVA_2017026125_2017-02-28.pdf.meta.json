@@ -1,0 +1,13 @@
+{
+ "reg": "2017026125",
+ "family": "nod_legacy",
+ "issuer": "BBVA",
+ "filing_date": "2017-02-28",
+ "url": "https://www.cnmv.es/webservices/verdocumento/ver?e=jnkaocOFp3N5EhoTK7q4wcJHyOuxNE7fXA40xkG3dCCY1bLbSDf76rU2Umyew0mw",
+ "final_url": "https://www.cnmv.es/webservices/verdocumento/ver?e=jnkaocOFp3N5EhoTK7q4wcJHyOuxNE7fXA40xkG3dCCY1bLbSDf76rU2Umyew0mw",
+ "status": 200,
+ "content_type": "application/pdf",
+ "retrieved_at": "2026-09-14T03:45:56.967+00:00",
+ "raw_sha256": "1768a3defe47b39dcaa699b7990a3103a46abaa41a4cc34cd883387e719a973b",
+ "bytes": 52112
+}

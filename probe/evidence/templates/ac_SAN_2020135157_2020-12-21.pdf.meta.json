@@ -1,0 +1,13 @@
+{
+ "reg": "2020135157",
+ "family": "ac",
+ "issuer": "SAN",
+ "filing_date": "2020-12-21",
+ "url": "https://www.cnmv.es/webservices/verdocumento/ver?e=ziWhG2utWNWoDGzbxCXPuVggXn1BSkgMdf3itqvDR3yY1bLbSDf76rU2Umyew0mw",
+ "final_url": "https://www.cnmv.es/webservices/verdocumento/ver?e=ziWhG2utWNWoDGzbxCXPuVggXn1BSkgMdf3itqvDR3yY1bLbSDf76rU2Umyew0mw",
+ "status": 200,
+ "content_type": "application/pdf",
+ "retrieved_at": "2026-09-14T03:46:03.162+00:00",
+ "raw_sha256": "4294c0b1c1dcb0e558fdffeaba6f24525fe925b18f9e01608cfb1efd83da8acd",
+ "bytes": 105623
+}

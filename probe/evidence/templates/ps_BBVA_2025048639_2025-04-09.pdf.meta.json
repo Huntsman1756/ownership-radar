@@ -1,0 +1,13 @@
+{
+ "reg": "2025048639",
+ "family": "ps",
+ "issuer": "BBVA",
+ "filing_date": "2025-04-09",
+ "url": "https://www.cnmv.es/webservices/verdocumento/ver?e=QsC86xCgzx1LIQDN0uB22fHI0WXh%2f5v2jOy1swvknpCY1bLbSDf76rU2Umyew0mw",
+ "final_url": "https://www.cnmv.es/webservices/verdocumento/ver?e=QsC86xCgzx1LIQDN0uB22fHI0WXh%2f5v2jOy1swvknpCY1bLbSDf76rU2Umyew0mw",
+ "status": 200,
+ "content_type": "application/pdf",
+ "retrieved_at": "2026-09-14T03:46:01.909+00:00",
+ "raw_sha256": "84c0cd1e456f313a8434512710ae55cf960f996c64c483c7707fde7c171b9df1",
+ "bytes": 246927
+}

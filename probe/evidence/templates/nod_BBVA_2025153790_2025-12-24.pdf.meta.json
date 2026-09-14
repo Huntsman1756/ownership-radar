@@ -1,0 +1,13 @@
+{
+ "reg": "2025153790",
+ "family": "nod",
+ "issuer": "BBVA",
+ "filing_date": "2025-12-24",
+ "url": "https://www.cnmv.es/webservices/verdocumento/ver?e=5IBvz3BvUSjEdu80oqK8QiBvFgMQkUCtTvqXsMfFy3v00jEuhbk%2bTc0vHNC%2bVxBv",
+ "final_url": "https://www.cnmv.es/webservices/verdocumento/ver?e=5IBvz3BvUSjEdu80oqK8QiBvFgMQkUCtTvqXsMfFy3v00jEuhbk%2bTc0vHNC%2bVxBv",
+ "status": 200,
+ "content_type": "application/pdf",
+ "retrieved_at": "2026-09-14T03:45:53.310+00:00",
+ "raw_sha256": "09f1688a91ea06531b97ab47a68cf6d7f828c4b3fa3f6d6365b0a362ad24f0eb",
+ "bytes": 93568
+}

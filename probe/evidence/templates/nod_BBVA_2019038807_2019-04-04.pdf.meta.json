@@ -1,0 +1,13 @@
+{
+ "reg": "2019038807",
+ "family": "nod",
+ "issuer": "BBVA",
+ "filing_date": "2019-04-04",
+ "url": "https://www.cnmv.es/webservices/verdocumento/ver?e=3lNCn9fogKPLXKhurBNYe6jUPi8DmhCCa6CeR6u1O8300jEuhbk%2bTc0vHNC%2bVxBv",
+ "final_url": "https://www.cnmv.es/webservices/verdocumento/ver?e=3lNCn9fogKPLXKhurBNYe6jUPi8DmhCCa6CeR6u1O8300jEuhbk%2bTc0vHNC%2bVxBv",
+ "status": 200,
+ "content_type": "application/pdf",
+ "retrieved_at": "2026-09-14T03:45:52.074+00:00",
+ "raw_sha256": "6a8e15703121dd330a56b3207cb058255807504fbdafd47b38be73d546dcf4fd",
+ "bytes": 93568
+}

@@ -1,0 +1,13 @@
+{
+ "reg": "2024120356",
+ "family": "ac",
+ "issuer": "SAN",
+ "filing_date": "2024-10-07",
+ "url": "https://www.cnmv.es/webservices/verdocumento/ver?e=UntW7iiinfq101MVsewUOmJXV9j8bs8uEgJZXHGaB8iY1bLbSDf76rU2Umyew0mw",
+ "final_url": "https://www.cnmv.es/webservices/verdocumento/ver?e=UntW7iiinfq101MVsewUOmJXV9j8bs8uEgJZXHGaB8iY1bLbSDf76rU2Umyew0mw",
+ "status": 200,
+ "content_type": "application/pdf",
+ "retrieved_at": "2026-09-14T03:46:04.426+00:00",
+ "raw_sha256": "f61bd0ee0828864cb84849abb32029d43943d651d3776f2899bb3ec4a78a7ac3",
+ "bytes": 131867
+}

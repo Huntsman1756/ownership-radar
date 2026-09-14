@@ -1,0 +1,13 @@
+{
+ "reg": "2017021859",
+ "family": "nod_legacy",
+ "issuer": "SAN",
+ "filing_date": "2017-02-20",
+ "url": "https://www.cnmv.es/webservices/verdocumento/ver?e=IKst2Aj5mPlmy%2bWpTkJ02Xag%2fhsZu9a0AehHKu32A6eY1bLbSDf76rU2Umyew0mw",
+ "final_url": "https://www.cnmv.es/webservices/verdocumento/ver?e=IKst2Aj5mPlmy%2bWpTkJ02Xag%2fhsZu9a0AehHKu32A6eY1bLbSDf76rU2Umyew0mw",
+ "status": 200,
+ "content_type": "application/pdf",
+ "retrieved_at": "2026-09-14T03:45:55.772+00:00",
+ "raw_sha256": "7a3a6439eaa54fae8c331e9f9a953cac89f6fb279f00407bd908edcccd570081",
+ "bytes": 51592
+}

@@ -1,0 +1,13 @@
+{
+ "reg": "2019021574",
+ "family": "ps",
+ "issuer": "SAN",
+ "filing_date": "2019-02-18",
+ "url": "https://www.cnmv.es/webservices/verdocumento/ver?e=Bkp%2bTi9bW%2bLdiW2ig7VRGVKnLEE0TeX4q6zyeWniWBeY1bLbSDf76rU2Umyew0mw",
+ "final_url": "https://www.cnmv.es/webservices/verdocumento/ver?e=Bkp%2bTi9bW%2bLdiW2ig7VRGVKnLEE0TeX4q6zyeWniWBeY1bLbSDf76rU2Umyew0mw",
+ "status": 200,
+ "content_type": "application/pdf",
+ "retrieved_at": "2026-09-14T03:45:58.156+00:00",
+ "raw_sha256": "64e42a1e5fd3d0f06db4a89b38b390898f925ff7fdc96ea8295f504562722473",
+ "bytes": 132489
+}

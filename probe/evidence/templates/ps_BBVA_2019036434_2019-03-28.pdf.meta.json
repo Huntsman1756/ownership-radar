@@ -1,0 +1,13 @@
+{
+ "reg": "2019036434",
+ "family": "ps",
+ "issuer": "BBVA",
+ "filing_date": "2019-03-28",
+ "url": "https://www.cnmv.es/webservices/verdocumento/ver?e=W3qlIK0retveaHYw2WMbZwWE75Sv9llhzDLJJF8i6MWY1bLbSDf76rU2Umyew0mw",
+ "final_url": "https://www.cnmv.es/webservices/verdocumento/ver?e=W3qlIK0retveaHYw2WMbZwWE75Sv9llhzDLJJF8i6MWY1bLbSDf76rU2Umyew0mw",
+ "status": 200,
+ "content_type": "application/pdf",
+ "retrieved_at": "2026-09-14T03:46:00.592+00:00",
+ "raw_sha256": "4a9f2e19be09b7beb035cfe12b9ba7edc7fa60069cc3d0b917539eed8b04f9b2",
+ "bytes": 390137
+}

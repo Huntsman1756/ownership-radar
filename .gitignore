@@ -1,0 +1,17 @@
+# Crawl output and local state
+data/raw/
+data/radar.sqlite*
+data/runs/
+
+# G0 probe raw payloads — CNMV documents are NOT redistributed
+# (see DATA-NOTICE.md); provenance metadata (*.meta.json) is committed
+probe/raw/
+probe/probe.sqlite*
+probe/evidence/templates/*.pdf
+probe/evidence/templates/*.txt
+probe/evidence/windowed/*.html
+probe/evidence/legal/*.html
+probe/evidence/*.html
+
+__pycache__/
+*.pyc
