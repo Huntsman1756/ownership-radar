@@ -295,9 +295,12 @@ Extraction totals: 5332 PS instrument rows, 2333 chain rows,
 
 `NOT_OBSERVED` (declared, never faked): populated §11 loyalty values
 (25 C2 docs carry the structure, all empty); concerted-agreement
-checkbox checked; `reason_issuer_voting_rights_change` checked.
-In-form annulment block observed ×2 (PS); `notice_relation` ANNULS
-links preserved for 15 ps + 30 ac pairs.
+checkbox checked; `reason_issuer_voting_rights_change` checked;
+AC `single-operation`, `acquisition-only` and `disposal-only`
+notices — all 48 parsed AC notices are mixed AND multi-operation
+(both row types are exercised, but coverage is not generalized to
+shapes not observed). In-form annulment block observed ×2 (PS);
+`notice_relation` ANNULS links preserved for 15 ps + 30 ac pairs.
 
 Holdout oracle `corpus/oracle/g3_holdout_expected.json` (hand-
 annotated from `pdftotext` — Poppler, independent of pdfminer):
