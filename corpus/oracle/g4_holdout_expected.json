@@ -1,0 +1,47 @@
+{
+ "method": "hand-annotated 2026-09-14 from declared semantic rows (ac_operation op counts, transaction_event nature/dates, ps_notice_semantic threshold dates, notice_relation ANNULS). Expectations are counts/types/dates of source-declared content, never generated from ledger.py output.",
+ "notices": {
+  "nod:2018062819": {
+   "INSIDER_ACQUISITION": 2, "NOTICE_FILED": 1,
+   "effective_dates": ["2018-05-04", "2018-05-07"]},
+  "nod:2018105375": {
+   "INSIDER_DISPOSAL": 1, "NOTICE_FILED": 1,
+   "effective_dates": ["2018-09-06"]},
+  "nod:2021041178": {
+   "INSIDER_TRANSACTION_OTHER": 1, "NOTICE_FILED": 1,
+   "effective_dates": ["2021-03-30"]},
+  "nod:2022110940": {
+   "INSIDER_ACQUISITION": 1, "NOTICE_FILED": 1,
+   "effective_dates": ["2022-08-26"]},
+  "ps:2022089634": {
+   "SIGNIFICANT_HOLDING_POSITION_DISCLOSED": 1, "NOTICE_FILED": 1,
+   "effective_dates": ["2022-07-06"],
+   "disclosure_subject": "CAPITAL RESEARCH AND MANAGEMENT COMPANY"},
+  "ps:2026121404": {
+   "SIGNIFICANT_HOLDING_POSITION_DISCLOSED": 1, "NOTICE_FILED": 1,
+   "effective_dates": ["2026-09-04"],
+   "disclosure_subject": "Morgan Stanley"},
+  "ac:2022104053": {
+   "TREASURY_OPERATION_REPORTED": 12,
+   "TREASURY_STOCK_POSITION_DISCLOSED": 1, "NOTICE_FILED": 1,
+   "position_effective_date": "2022-07-28"},
+  "ac:2026072826": {
+   "TREASURY_OPERATION_REPORTED": 173,
+   "TREASURY_STOCK_POSITION_DISCLOSED": 1, "NOTICE_FILED": 1,
+   "position_effective_date": "2026-05-20"},
+  "ac:2025093199": {
+   "TREASURY_OPERATION_REPORTED": 25,
+   "TREASURY_STOCK_POSITION_DISCLOSED": 1, "NOTICE_FILED": 1,
+   "NOTICE_CANCELLED": 1,
+   "annulled_by": "ac:2025116464"},
+  "ac:2025116464": {
+   "TREASURY_OPERATION_REPORTED": 25,
+   "TREASURY_STOCK_POSITION_DISCLOSED": 1, "NOTICE_FILED": 1,
+   "annuls": "ac:2025093199"}
+ },
+ "chains": {
+  "ps:2020135555": {"annuls_terminal": "ps:2021016444",
+    "note": "A->B->C two-hop: 2020135555 and 2021012946 both annulled by 2021016415, itself annulled by 2021016444"},
+  "ac:2025093199": {"annuls_terminal": "ac:2025116464"}
+ }
+}

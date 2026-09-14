@@ -64,6 +64,46 @@ def run(tag=""):
                     "template": p.get("regulatory_template"),
                     "unmapped": p.get("unmapped"),
                     "digest": canonical_digest(p)})
+    # Backfill canonical notice/observation rows for manifest entries
+    # that were fetched directly by document (no listing row). The
+    # manifest's fetch timestamp is the observation's knowledge time —
+    # recorded once, never rewritten.
+    for surface, _p in (("ps", None), ("ac", None)):
+        for split in ("dev", "holdout"):
+            for e in m.get(f"{surface}_{split}") or []:
+                nk = e["notice_key"]
+                if not cx.execute(
+                        "SELECT 1 FROM notice WHERE notice_key=?",
+                        (nk,)).fetchone():
+                    cx.execute(
+                        "INSERT INTO notice(notice_key,source_surface,"
+                        "source_registration_number,issuer_id,"
+                        "filing_date,notice_status) VALUES(?,?,?,?,?,?)",
+                        (nk, surface, e["reg"], e["issuer"],
+                         e["filing_date"], "ACTIVE"))
+                if not cx.execute(
+                        "SELECT 1 FROM notice_observation WHERE "
+                        "notice_key=?", (nk,)).fetchone():
+                    # manifest 'fetched'; for G0 template samples the
+                    # sibling .meta.json carries retrieved_at
+                    obs_at, rsha = e.get("fetched"), \
+                        e.get("raw_sha256") or e.get("sha256")
+                    if not obs_at and e.get("file"):
+                        mp = os.path.join(ROOT, e["file"] +
+                                          ".meta.json")
+                        if os.path.isfile(mp):
+                            me = json.load(open(mp,
+                                                encoding="utf-8"))
+                            obs_at = me.get("retrieved_at")
+                            rsha = rsha or me.get("raw_sha256")
+                    if obs_at:
+                        cx.execute(
+                            "INSERT INTO notice_observation(run_id,"
+                            "notice_key,observed_at,raw_sha256,"
+                            "status_observed,present_in_source) "
+                            "VALUES(?,?,?,?,?,1)",
+                            (m["run_id"], nk, obs_at, rsha,
+                             "FETCHED"))
     cx.commit()
     out = os.path.join(ROOT, "corpus", f"g3_parse_report{tag}.json")
     with open(out, "w", encoding="utf-8") as f:

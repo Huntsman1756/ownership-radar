@@ -178,6 +178,37 @@ CREATE TABLE IF NOT EXISTS ac_indirect_row(
  notice_key TEXT NOT NULL, section TEXT NOT NULL, row_index INTEGER NOT NULL,
  name_raw TEXT, pct_raw TEXT,
  PRIMARY KEY(notice_key, section, row_index));
+-- G4 ledger layer (ledger.py). source_fact rows are SOURCE_DECLARED
+-- content with deterministic identity; ledger_event rows are built by
+-- versioned derivation rules and are fully rebuildable from facts +
+-- relations + the rule registry. derived_at is intentionally absent:
+-- no wallclock may contaminate deterministic digests.
+CREATE TABLE IF NOT EXISTS source_fact(
+ fact_id TEXT PRIMARY KEY,
+ notice_key TEXT NOT NULL, fact_type TEXT NOT NULL,
+ fact_index INTEGER NOT NULL,
+ effective_date TEXT, filing_date TEXT,
+ semantic_parser TEXT, semantic_parser_version TEXT,
+ source_payload_json TEXT, source_payload_sha256 TEXT,
+ raw_sha256 TEXT, first_observed_at TEXT);
+CREATE TABLE IF NOT EXISTS fact_version_relation(
+ from_fact_id TEXT NOT NULL, to_fact_id TEXT NOT NULL,
+ relation_type TEXT NOT NULL, basis TEXT NOT NULL,
+ annulling_notice_key TEXT, observed_at TEXT,
+ PRIMARY KEY(from_fact_id, to_fact_id, relation_type));
+CREATE TABLE IF NOT EXISTS derivation_rule(
+ rule_id TEXT PRIMARY KEY, rule_version TEXT NOT NULL,
+ event_type TEXT NOT NULL, description TEXT,
+ legal_basis TEXT, effective_from TEXT, effective_to TEXT);
+CREATE TABLE IF NOT EXISTS ledger_event(
+ event_id TEXT PRIMARY KEY,
+ event_type TEXT NOT NULL, event_basis TEXT NOT NULL,
+ issuer_id TEXT,
+ effective_date TEXT, filing_date TEXT,
+ source_notice_key TEXT, source_fact_id TEXT,
+ rule_id TEXT, derivation_version TEXT,
+ payload_json TEXT, payload_sha256 TEXT,
+ first_observed_at TEXT);
 """
 
 # Conservative surface-level defaults only. The ps surface deliberately
