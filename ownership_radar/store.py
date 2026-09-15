@@ -242,6 +242,14 @@ CREATE TABLE IF NOT EXISTS notice_doc(
  notice_key TEXT PRIMARY KEY, doc_status TEXT, raw_sha256 TEXT,
  fetched_at TEXT, fetch_run_id TEXT, parse_status TEXT,
  semantic_parser_version TEXT);
+-- G5 scale indexes: _first_observed / AS_KNOWN_AT / coverage queries
+-- do per-notice lookups; without these, materialize is O(facts*obs).
+CREATE INDEX IF NOT EXISTS ix_obs_notice ON notice_observation(notice_key, observed_at);
+CREATE INDEX IF NOT EXISTS ix_notice_issuer ON notice(issuer_id, source_surface);
+CREATE INDEX IF NOT EXISTS ix_notice_token ON notice(doc_token);
+CREATE INDEX IF NOT EXISTS ix_relation_annulled ON notice_relation(annulled_key);
+CREATE INDEX IF NOT EXISTS ix_fact_notice ON source_fact(notice_key);
+CREATE INDEX IF NOT EXISTS ix_event_issuer ON ledger_event(issuer_id);
 """
 
 # Conservative surface-level defaults only. The ps surface deliberately
@@ -610,10 +618,12 @@ def store_ac_semantic(cx, notice_key, p, corpus_split=None):
                         r.get("pct_raw")))
 
 
-def mark_disappearances(cx, run_id, issuer_ids=None):
+def mark_disappearances(cx, run_id, issuer_ids=None, surfaces=None):
     """Record SOURCE_DISAPPEARANCE_OBSERVED for notices absent from a
-    run. Scoped to the issuers actually enumerated — G1's global
-    variant would false-positive on partial-scope runs."""
+    run. Scoped to the issuers AND surfaces actually enumerated —
+    a run that never consulted `nod_legacy` must not mark its
+    notices as disappeared (bug found by scout-12 reconciliation:
+    1,419 false positives)."""
     sql = """SELECT n.notice_key FROM notice n
              WHERE n.last_seen_run<>? AND n.first_seen_run<>?"""
     params = [run_id, run_id]
@@ -621,6 +631,10 @@ def mark_disappearances(cx, run_id, issuer_ids=None):
         sql += " AND n.issuer_id IN (%s)" % ",".join(
             "?" * len(issuer_ids))
         params += list(issuer_ids)
+    if surfaces is not None:
+        sql += " AND n.source_surface IN (%s)" % ",".join(
+            "?" * len(surfaces))
+        params += list(surfaces)
     rows = cx.execute(sql, params).fetchall()
     now = datetime.now(timezone.utc).isoformat(timespec="milliseconds")
     for (k,) in rows:

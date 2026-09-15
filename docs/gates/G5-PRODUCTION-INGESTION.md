@@ -106,26 +106,151 @@ swapped after seeing its results.
    (BKT/BBVA/GRF/GRE) — expected class
    `UNSUPPORTED_NO_TEXT_LAYER`, not an error.
 
+## Stage B + incremental — results (2026-09-15)
+
+Runs (all `OK`): `scout-a-2026`, `scout-a-sacyr-fix`,
+`stage-b-2026` (BACKFILL, 10h03m, 24,503 requests),
+`incremental-20260914T225326Z` (INCREMENTAL, 10-day NOD window),
+`recon-scout-2026` + `recon-legacy-fix` (RECONCILIATION).
+
+```text
+notices enumerated            34,981   (ac 2,066 · nod 8,617 ·
+                                        nod_legacy 2,149 · ps 22,149)
+observations                  69,074   (append-only, incl. 1,419
+                                        historical false-positive
+                                        disappearances — kept, latest=0)
+raw blobs                     29,829 unique sha256 / 4.66 GB
+notice_doc rows               34,981   (no gap; nod_legacy classified
+                                        NOT_FETCHED_LEGACY_ERA)
+failed_items                  0
+discovered_issuers            6        (non-universe NIFs from global
+                                        NOD window — candidates only)
+```
+
+Document status (every notice has a row):
+
+```text
+PARSED                        15,670
+PARSED_WITH_UNMAPPED_VALUES      534
+UNSUPPORTED_NO_TEXT_LAYER      1,943   (scanned holder uploads)
+UNSUPPORTED_TEMPLATE           1,087   (1,079 ps + 8 ac; dominated by
+                                        free-form annulment letters —
+                                        scout finding 2, fail-closed)
+UNSUPPORTED_LEGACY_TEMPLATE    1,690
+NOT_FETCHED_LEGACY_ERA        14,056
+NOT_PDF                            1   (nod:2023020749 — CNMV returns
+                                        empty body for this token;
+                                        retried, still empty →
+                                        permanent source anomaly)
+EXTRACTION_ERROR                   0   (both retried from local blobs
+                                        → PARSED; offline reparse
+                                        works, §32)
+```
+
+Ledger materialized (production DB, 3.6 GB):
+
+```text
+source_fact    141,489   (TREASURY_OPERATION 123,251 ·
+                          NOD_TRANSACTION_EVENT 10,829 ·
+                          SIGNIFICANT_HOLDING_DISCLOSURE 6,479 ·
+                          TREASURY_RESULTING_POSITION 930)
+ledger_event   158,083   (SOURCE_DECLARED 16,594 · derived 141,489)
+relations        1,295   (ANNULS 1,240 · RECTIFIES 55)
+  cancellation_relations_observed  1,240
+  cancelled_notice_raw_observed      362   (§22 split surfaced)
+digest        268e41b1e603701e5f5efe4341d6e7c29944418461fe6a980fcdd75da8934e65
+              identical across repeated materialize() — G5-15
+```
+
+### Scale findings beyond the scout
+
+5. **Surface-scoped disappearance (bug, fixed)**: `recon-scout-2026`
+   enumerated `nod`/`ps_ac` only; `mark_disappearances` was
+   issuer-scoped but not surface-scoped → 1,419 `nod_legacy` notices
+   falsely marked `SOURCE_DISAPPEARANCE_OBSERVED`. Fixed by scoping
+   disappearances to the surfaces actually enumerated
+   (`FAMILY_SURFACES` in `ingest.py`); regression test added. The
+   1,419 historical observations remain append-only evidence; a
+   corrective `recon-legacy-fix` re-enumerated `nod_legacy` →
+   latest-state disappearances: **0**.
+
+6. **Multiple annulling notices (real CNMV ambiguity)**: 3 `ps`
+   targets (`ps:2015140636`, `ps:2014053922`, `ps:2018020031`) are
+   annulled by two distinct notices each (batch-annulment pattern).
+   `resolve_annulment_chains` fails closed (`multiple_annulling_
+   notices`) — relations preserved, no winner picked. Reported as
+   `graph_anomalies`/`ambiguous_annulment_targets`, not corruption.
+
+7. **fact_version_relation all-pairs amplification**: G4's
+   fact-level `CANCELLED_BY`/`RECTIFIED_BY` expansion is all-pairs
+   between the two notices' facts. On large treasury annexes this
+   produced 7.65M rows — semantically frozen G4 behaviour, honest
+   but heavy. Notice-level `notice_relation` remains the primary
+   evidence; flag for a G6 revisit (relation-at-notice-level may
+   suffice publicly).
+
+8. **Scale performance note**: with no index on
+   `notice_observation(notice_key)` the first materialize did not
+   complete in reasonable time (per-fact `MIN(observed_at)` scans).
+   Added covering indexes (`ix_obs_notice` et al.) — forward-only
+   migration, semantics unchanged; materialize ≈ 200–290 s.
+
+9. **Incremental poll**: 16 new notices (filed during backfill),
+   8 issuers re-enumerated from last-5-days hints, 5 new discovered
+   NIFs, 0 duplicates. Second-run set stable: scout keys ⊂ stage-b
+   keys, no missing, no dupes.
+
 ## Gates
 
-Scout: G5-S01..S07 (selection frozen, issuer identity exact, no new
-transport assumptions, unknown templates fail-closed, supported
-templates parse exact, ledger materialization exact, no cross-issuer
-contamination).
+Scout: G5-S01..S07 — all PASS (selection frozen pre-parse; NIF exact;
+only the deterministic NIF-form retry added, §1; unknowns fail-closed;
+supported templates parse; ledger exact; no cross-issuer rows).
 
-Universe: G5-01..G5-20 (reproducible universe, full enumeration,
-registration-identity stability, content-addressable raw,
-append-only observations, exact issuer binding, unknown templates
-accounted, extraction failures accounted, idempotent incremental,
-reconciliation detects changes, backfill vs live distinct,
-non-destructive disappearance, cancellation relations preserved,
-semantic rebuild without network, identical ledger rebuild,
-AS_KNOWN_AT at scale, checkpoint resume exact, stable second-run set,
-production invariants, clean-clone tests).
+Universe gates:
 
-Verdicts: `PASS` / `FAIL` / `INCONCLUSIVE` only.
+```text
+G5-01 UNIVERSE_DEFINITION_REPRODUCIBLE     PASS  itf2026-v1 + sha256
+G5-02 FULL_ENUMERATION_COMPLETES           PASS  60/60, 0 failed_items
+G5-03 REGISTRATION_IDENTITY_STABLE         PASS  34,981 unique keys
+G5-04 RAW_CONTENT_ADDRESSABLE              PASS  29,829 blobs dedup
+G5-05 SOURCE_OBSERVATIONS_APPEND_ONLY      PASS  69,074, never deleted
+G5-06 ISSUER_BINDING_EXACT                 PASS  NIF-only; no fuzzy
+G5-07 UNKNOWN_TEMPLATE_ACCOUNTED           PASS  1,087 classified
+G5-08 EXTRACTION_FAILURES_ACCOUNTED        PASS  2→0 after offline retry
+G5-09 INCREMENTAL_DISCOVERY_IDEMPOTENT     PASS  dedupe by notice_key
+G5-10 PERIODIC_RECONCILIATION_DETECTS      PASS  scoped by family
+G5-11 BACKFILL_VS_LIVE_DISTINCT            PASS  run_type recorded
+G5-12 DISAPPEARANCE_NON_DESTRUCTIVE        PASS  observe-only, scoped
+G5-13 CANCELLATION_RELATIONS_PRESERVED     PASS  1,240 + 3 ambiguous
+G5-14 SEMANTIC_REBUILD_WITHOUT_NETWORK     PASS  blob→parse retries OK
+G5-15 LEDGER_REBUILD_IDENTICAL             PASS  digest 268e41b1…
+G5-16 AS_KNOWN_AT_NO_RETROPROJECTION       PASS  real ACTIVE→CANCELLED
+G5-17 CHECKPOINT_RESUME_EXACT              PASS  (run resumed across
+                                                sessions during Stage B)
+G5-18 SECOND_RUN_SET_STABLE                PASS  scout ⊂ stage-b, 0 gap
+G5-19 PRODUCTION_INVARIANTS_PASS           PASS  0 violations; 3
+                                                ambiguous ANNULS accounted
+G5-20 CLEAN_CLONE_TESTS_PASS               PASS  72 + 30 subtests
+```
 
 ## Kill criteria
+
+K1–K7: none triggered. No fuzzy matching anywhere; all unknowns
+fail-closed; incremental lost nothing; history never rewritten;
+offline rebuild proven; digest deterministic; universe reproducible.
+
+## Verdict
+
+```text
+G5 PASS
+```
+
+Recommendation: `PROCEED TO G6 PUBLIC PYTHON API / CLI / DAILY FEED`.
+Known follow-ups for G6 scope decisions: fact_version_relation
+amplification (finding 7), dedicated extractor for free-form
+annulment letters (1,079 docs), 3 ambiguous ANNULS targets.
+
+## Kill criteria (contract, pre-registered)
 
 K1 fuzzy issuer matching needed → FAIL.
 K2 frequent new templates that can't fail-close → FAIL.

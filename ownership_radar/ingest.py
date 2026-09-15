@@ -144,7 +144,11 @@ def docs_universe(cx, fx, issuers, run_id, per_issuer_checkpoint=True,
     return stats
 
 
-def finalize(cx, fx, run_id, issuer_ids):
+FAMILY_SURFACES = {"nod": ("nod",), "nod_legacy": ("nod_legacy",),
+                   "ps_ac": ("ps", "ac")}
+
+
+def finalize(cx, fx, run_id, issuer_ids, families=None):
     """Post-pass: status propagation, scoped disappearances, blobs."""
     cx.execute("""UPDATE notice SET notice_status='ANULLED'
         WHERE notice_key IN (SELECT annulled_key FROM notice_relation
@@ -153,8 +157,11 @@ def finalize(cx, fx, run_id, issuer_ids):
         WHERE notice_key IN (SELECT annulled_key FROM notice_relation
                              WHERE relation_type='RECTIFIES')
           AND notice_status NOT IN ('ANULLED')""")
-    n_disp = store.mark_disappearances(cx, run_id,
-                                       issuer_ids=issuer_ids)
+    surfaces = None
+    if families is not None:
+        surfaces = [s for f in families for s in FAMILY_SURFACES[f]]
+    n_disp = store.mark_disappearances(cx, run_id, issuer_ids=issuer_ids,
+                                       surfaces=surfaces)
     register_blobs(cx, fx)
     cx.commit()
     return {"disappearances_marked": n_disp, "requests": fx.n}
@@ -179,7 +186,8 @@ def backfill(db_path, universe, families=("nod", "ps_ac", "nod_legacy"),
         if docs:
             stats["docs"] = docs_universe(cx, fx, issuers, run_id,
                                           filing_since=filing_since)
-        stats.update(finalize(cx, fx, run_id, list(issuers)))
+        stats.update(finalize(cx, fx, run_id, list(issuers),
+                                  families))
         finish_run(cx, run_id, {"stats": stats})
     except Exception as e:  # noqa
         finish_run(cx, run_id, {"stats": stats, "error": repr(e)},
@@ -215,7 +223,8 @@ def reconcile(db_path, universe, families=("nod", "ps_ac"),
             "SELECT annulling_key,annulled_key FROM notice_relation")}
         stats["new_notices"] = len(after - before)
         stats["new_relations"] = len(rel_after - rel_before)
-        stats.update(finalize(cx, fx, run_id, list(issuers)))
+        stats.update(finalize(cx, fx, run_id, list(issuers),
+                                  families))
         finish_run(cx, run_id, {"stats": stats})
     except Exception as e:  # noqa
         finish_run(cx, run_id, {"stats": stats, "error": repr(e)},

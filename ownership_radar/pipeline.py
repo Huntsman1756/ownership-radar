@@ -116,7 +116,8 @@ def _register_blob(cx, meta):
                 meta.get("run_id"), meta.get("retrieved_at")))
 
 
-def scan_docs(cx, fx, run_id, issuer_ids=None, surfaces=("nod", "ps", "ac"),
+def scan_docs(cx, fx, run_id, issuer_ids=None,
+              surfaces=("nod", "ps", "ac", "nod_legacy"),
               limit=None, filing_since=None, retry_statuses=()):
     """Fetch+process pending docs for a scope. Resumable: notices
     already classified in notice_doc are skipped. `filing_since`

@@ -65,6 +65,7 @@ def global_metrics(cx, universe_issuers=None):
                          WHERE r.relation_type='ANNULS'""").fetchone()[0]
     fails = cx.execute("SELECT COUNT(*) FROM failed_item").fetchone()[0]
     disc = cx.execute("SELECT COUNT(*) FROM discovered_issuer").fetchone()[0]
+    ambiguous = len(graph_anomalies(cx))
     return {
         "issuers_attempted": len(iss_attempted),
         "issuers_universe": len(universe_issuers or {}),
@@ -79,6 +80,7 @@ def global_metrics(cx, universe_issuers=None):
         "cancelled_notice_raw_observed": cnro,
         "failed_items": fails,
         "discovered_issuers": disc,
+        "ambiguous_annulment_targets": ambiguous,
     }
 
 
@@ -140,9 +142,23 @@ def invariants(cx):
          "LIKE '%:%' OR annulled_key NOT LIKE '%:%'"):
         v.append("malformed notice key in relation")
     _t, errors = ledger.resolve_annulment_chains(cx)
-    if errors:
-        v.append("ANNULS graph errors: %r" % errors[:5])
+    # Structural corruption (cycles) is an invariant violation. A target
+    # annulled by >1 notice is real CNMV ambiguity — fail-closed in the
+    # resolver, accounted in metrics, not corruption.
+    structural = [e for e in errors
+                  if e.get("detail", "").startswith("cycle:")]
+    if structural:
+        v.append("ANNULS graph errors: %r" % structural[:5])
     return v
+
+
+def graph_anomalies(cx):
+    """Counted, non-corrupting ANNULS ambiguity (e.g. CNMV filings that
+    annul the same target twice). Preserved in notice_relation; the
+    resolver refuses to pick a winner."""
+    _t, errors = ledger.resolve_annulment_chains(cx)
+    return [e for e in errors
+            if not e.get("detail", "").startswith("cycle:")]
 
 
 def dataset_manifest(cx, universe_meta):

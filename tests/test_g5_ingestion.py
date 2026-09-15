@@ -215,6 +215,24 @@ class TestG5(unittest.TestCase):
                              "notice_key=?", (k,)).fetchone()[0]
             self.assertEqual(iid, "A00000001")
 
+    def test_disappearance_scoped_by_surface(self):
+        """Regression: recon run that never enumerated nod_legacy
+        must not mark nod_legacy notices as disappeared (scout-12
+        reconciliation produced 1,419 false positives before fix)."""
+        tmp = tempfile.mkdtemp()
+        cx = mkdb(tmp)
+        now = _now()
+        cx.execute("""INSERT INTO notice(notice_key,source_surface,
+            source_registration_number,issuer_id,filing_date,
+            notice_status,first_seen_run,last_seen_run)
+            VALUES('nod_legacy:1','nod_legacy','1','A00000001',
+            '2010-01-01','ACTIVE','r1','r1')""")
+        cx.commit()
+        # run r2 enumerated only ps+ac for this issuer
+        n = store.mark_disappearances(
+            cx, "r2", issuer_ids=["A00000001"], surfaces=("ps", "ac"))
+        self.assertEqual(n, 0)
+
     def test_blob_dedupe(self):
         tmp = tempfile.mkdtemp()
         cx = mkdb(tmp)
