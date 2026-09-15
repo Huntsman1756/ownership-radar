@@ -283,9 +283,9 @@ class TestTemporalSemantics(unittest.TestCase):
         ledger.materialize(cx)
         d2 = ledger.ledger_digest(cx)
         self.assertEqual(d1, d2)
-        # drop + rebuild
-        for t in ("source_fact", "fact_version_relation",
-                  "ledger_event", "derivation_rule"):
+        # drop + rebuild (fact_version_relation is a view since G6-A —
+        # no storage to drop; the digest still covers its logical rows)
+        for t in ("source_fact", "ledger_event", "derivation_rule"):
             cx.execute(f"DELETE FROM {t}")
         cx.commit()
         ledger.materialize(cx)

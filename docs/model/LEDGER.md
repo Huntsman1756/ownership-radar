@@ -50,9 +50,14 @@ of the annulling notice, `basis = NOTICE_RELATION:<type>`, with the
 annulling notice's first-observation time as `observed_at`. Never
 inferred — only explicit `notice_relation` rows.
 
+Since G6-A this is a SQL **view** over `notice_relation` x
+`source_fact`, not a stored table: identical logical rows and
+identical `ledger_digest`, without storing the quadratic expansion
+(7.65M rows at Stage B scale).
+
 ## Rebuildability
 
-`ledger.materialize(cx)` deletes and rebuilds all four derived tables
+`ledger.materialize(cx)` deletes and rebuilds the derived tables
 from the semantic layer + `notice_relation`. Same inputs → identical
 `ledger_digest`. The semantic and observation layers are never
 touched.

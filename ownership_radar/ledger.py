@@ -451,7 +451,6 @@ def build_events(cx, facts):
 def materialize(cx):
     """Rebuild the derived ledger from semantic tables + relations.
     Idempotent: identical inputs -> identical digest."""
-    cx.execute("DELETE FROM fact_version_relation")
     cx.execute("DELETE FROM ledger_event")
     cx.execute("DELETE FROM source_fact")
     cx.execute("DELETE FROM derivation_rule")
@@ -469,25 +468,9 @@ def materialize(cx):
              f["semantic_parser"], f["semantic_parser_version"],
              _canon(f["payload"]), f["payload_sha256"],
              f["raw_sha256"], f["first_observed_at"]))
-    by_notice = {}
-    for f in facts:
-        by_notice.setdefault(f["notice_key"], []).append(f)
-    for annulling, annulled, rtype in cx.execute(
-            "SELECT annulling_key,annulled_key,relation_type "
-            "FROM notice_relation"):
-        rel = {"ANNULS": "CANCELLED_BY",
-               "RECTIFIES": "RECTIFIED_BY"}.get(rtype)
-        if not rel or annulled not in by_notice or \
-                annulling not in by_notice:
-            continue
-        obs = _first_observed(cx, annulling)
-        for fa in by_notice[annulled]:
-            for fb in by_notice[annulling]:
-                cx.execute(
-                    "INSERT OR IGNORE INTO fact_version_relation "
-                    "VALUES(?,?,?,?,?,?)",
-                    (fa["fact_id"], fb["fact_id"], rel,
-                     "NOTICE_RELATION:" + rtype, annulling, obs))
+    # fact_version_relation is a VIEW over notice_relation + source_fact
+    # (G6-A): the logical all-pairs projection is preserved without
+    # storing 7.65M derived rows.
     for e in build_events(cx, facts):
         cx.execute(
             "INSERT INTO ledger_event VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)",
@@ -550,6 +533,53 @@ def resolve_annulment_chains(cx):
         else:
             terminal[start] = cur
     return terminal, errors
+
+
+def annulment_status(cx, notice_key):
+    """Public relation view for one notice (G6-A3). A target annulled
+    by >1 notice is real CNMV ambiguity — it is NEVER resolved to a
+    single terminal. Returns:
+      NONE       not annulled by any observed relation
+      RESOLVED   single chain to an unambiguous terminal
+      AMBIGUOUS  multiple annulling notices — all listed, none picked
+      CYCLE      cyclic annulment graph"""
+    terminal, errors = resolve_annulment_chains(cx)
+    annulling = sorted(r[0] for r in cx.execute(
+        "SELECT annulling_key FROM notice_relation WHERE "
+        "annulled_key=? AND relation_type='ANNULS'", (notice_key,)))
+    err = next((e for e in errors if e["notice_key"] == notice_key),
+               None)
+    if err:
+        return {"relation_status":
+                "CYCLE" if err["detail"].startswith("cycle:")
+                else "AMBIGUOUS",
+                "annulled_notice": notice_key,
+                "annulling_notices": annulling,
+                "terminal": None, "detail": err["detail"]}
+    if notice_key in terminal:
+        return {"relation_status": "RESOLVED",
+                "annulled_notice": notice_key,
+                "annulling_notices": annulling,
+                "terminal": terminal[notice_key]}
+    return {"relation_status": "NONE",
+            "annulled_notice": notice_key,
+            "annulling_notices": [], "terminal": None}
+
+
+def current_authoritative(cx, notice_key):
+    """Resolve a notice to its authoritative version. Fails closed:
+    on AMBIGUOUS or CYCLE it reports the status instead of picking a
+    winner."""
+    st = annulment_status(cx, notice_key)
+    rs = st["relation_status"]
+    if rs == "NONE":
+        return {"status": "AUTHORITATIVE", "notice_key": notice_key}
+    if rs == "RESOLVED":
+        return {"status": "SUPERSEDED", "notice_key": notice_key,
+                "authoritative": st["terminal"]}
+    return {"status": rs, "notice_key": notice_key,
+            "annulling_notices": st["annulling_notices"],
+            "authoritative": None}
 
 
 def status_as_known_at(cx, notice_key, known_at):

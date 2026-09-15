@@ -191,11 +191,28 @@ CREATE TABLE IF NOT EXISTS source_fact(
  semantic_parser TEXT, semantic_parser_version TEXT,
  source_payload_json TEXT, source_payload_sha256 TEXT,
  raw_sha256 TEXT, first_observed_at TEXT);
-CREATE TABLE IF NOT EXISTS fact_version_relation(
- from_fact_id TEXT NOT NULL, to_fact_id TEXT NOT NULL,
- relation_type TEXT NOT NULL, basis TEXT NOT NULL,
- annulling_notice_key TEXT, observed_at TEXT,
- PRIMARY KEY(from_fact_id, to_fact_id, relation_type));
+-- G6-A: fact_version_relation is a VIEW, not a stored table. The G4
+-- semantics (every fact of the annulled notice x every fact of the
+-- annulling notice) are preserved exactly; only the physical
+-- representation changed. Stage B produced 7.65M rows for 1,295
+-- notice-level relations — quadratic storage for information already
+-- derivable from notice_relation + source_fact. The view produces
+-- the identical logical row set, so ledger_digest is unchanged.
+CREATE VIEW IF NOT EXISTS fact_version_relation AS
+SELECT fa.fact_id AS from_fact_id,
+       fb.fact_id AS to_fact_id,
+       CASE r.relation_type WHEN 'ANNULS' THEN 'CANCELLED_BY'
+                            ELSE 'RECTIFIED_BY' END AS relation_type,
+       'NOTICE_RELATION:' || r.relation_type AS basis,
+       r.annulling_key AS annulling_notice_key,
+       fo.observed_at AS observed_at
+FROM notice_relation r
+JOIN source_fact fa ON fa.notice_key = r.annulled_key
+JOIN source_fact fb ON fb.notice_key = r.annulling_key
+LEFT JOIN (SELECT notice_key, MIN(observed_at) AS observed_at
+           FROM notice_observation GROUP BY notice_key) fo
+       ON fo.notice_key = r.annulling_key
+WHERE r.relation_type IN ('ANNULS','RECTIFIES');
 CREATE TABLE IF NOT EXISTS derivation_rule(
  rule_id TEXT PRIMARY KEY, rule_version TEXT NOT NULL,
  event_type TEXT NOT NULL, description TEXT,
@@ -280,6 +297,12 @@ def connect(path):
 def init_db(path):
     os.makedirs(os.path.dirname(path), exist_ok=True)
     cx = connect(path)
+    # G6-A migration: fact_version_relation used to be a stored table.
+    # Its rows are derived and rebuildable — dropping loses nothing.
+    kind = cx.execute("SELECT type FROM sqlite_master WHERE name="
+                      "'fact_version_relation'").fetchone()
+    if kind and kind[0] == "table":
+        cx.execute("DROP TABLE fact_version_relation")
     cx.executescript(SCHEMA)
     # forward-only column migrations for existing databases
     cols = {r[1] for r in cx.execute(

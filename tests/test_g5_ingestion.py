@@ -319,8 +319,8 @@ class TestG5(unittest.TestCase):
         ingest.enumerate_universe(cx, fx, ISSUERS, "r1",
                                   families=("nod", "ps_ac"))
         d1 = ledger.materialize(cx)["digest"]
-        for t in ("source_fact", "fact_version_relation",
-                  "ledger_event", "derivation_rule"):
+        # fact_version_relation is a view since G6-A — no storage to drop
+        for t in ("source_fact", "ledger_event", "derivation_rule"):
             cx.execute(f"DELETE FROM {t}")
         cx.commit()
         d2 = ledger.materialize(cx)["digest"]
