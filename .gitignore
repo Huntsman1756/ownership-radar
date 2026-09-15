@@ -31,3 +31,8 @@ __pycache__/
 build/
 *.egg-info/
 nul
+
+# packaging output
+dist/
+demo/*.sqlite-shm
+demo/*.sqlite-wal

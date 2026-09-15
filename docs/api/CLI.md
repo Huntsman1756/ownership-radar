@@ -25,12 +25,18 @@ notice KEY                     one notice + annulment + authoritative
 provenance KEY                 provenance chain for a notice
 dataset-info                   dataset/universe/versions/digest
 coverage                       explicit coverage denominators
+feed                           newly-observed information feed
+feed-cursor-latest             print a "from now" feed cursor
 ```
+
+`feed` options: `--issuer IDENT`, `--type FEED_ITEM_TYPE`,
+`--include-backfill`, `--from-latest`, `--cursor`, `--limit`,
+`--format json|jsonl|atom|table`. See `FEED.md` and `ATOM.md`.
 
 ## Options
 
 ```text
---format table|json|jsonl     (default table)
+--format table|json|jsonl|atom (default table; atom = feed only)
 --limit N --cursor CURSOR     keyset pagination
 --known-at ISO-INSTANT        knowledge time (AS_KNOWN_AT)
 --effective-at ISO-DATE       economic time filter
@@ -50,7 +56,11 @@ Flags work both before and after the subcommand.
 - `--format json`: one envelope
   `{"schema_version": "1", "api_version": ..., "data": ...}`.
 - `--format jsonl`: one `{"schema_version": "1", "data": ...}` object
-  per line.
+  per line. A feed `next_cursor` is emitted on stderr — it is
+  metadata, never a fake item line.
+- `--format atom`: one valid Atom document (feed command only);
+  `published`/`updated` are observation times, never effective
+  dates.
 - Decimals serialize as strings (lossless); dates/instants as
   ISO-8601 with timezone.
 - `schema_version` changes only on incompatible contract changes.
@@ -72,4 +82,7 @@ ownership-radar events SAN --known-at 2026-01-01T00:00:00+00:00
 ownership-radar notice ps:2021016444 --format json
 ownership-radar provenance nod:2026120682 --format json
 ownership-radar recent-insiders --format jsonl
+ownership-radar feed --format json --limit 100
+ownership-radar feed --format atom --include-backfill
+ownership-radar feed --from-latest --format json
 ```

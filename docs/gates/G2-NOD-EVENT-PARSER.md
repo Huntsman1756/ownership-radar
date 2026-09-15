@@ -265,12 +265,12 @@ CA also present-and-verified in holdout (1 notice); amendments
 ## Directory note
 
 The local worktree path keeps the historical typo
-`F:\_Proyectos\owership_radar`: the rename to `ownership_radar` was
+`owership_radar` (missing `n`): the rename to `ownership_radar` was
 attempted and blocked by an external process lock (WinError 32, holder
 not identifiable from inside the session). Git history/toplevel are
 unaffected — the directory name is cosmetic and no repo-internal path
 is absolute. Renaming remains a safe one-step operation once the lock
-clears (`mv owership_radar ownership_radar` from `F:\_Proyectos`).
+clears.
 
 ## G2 VERDICT (post-audit): **PASS**
 

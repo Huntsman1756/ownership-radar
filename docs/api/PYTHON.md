@@ -47,6 +47,9 @@ radar.require_authoritative(notice_key) -> AuthoritativeResult
                                          | AmbiguousAnnulment
 radar.dataset_info()                    -> DatasetInfo
 radar.coverage()                        -> explicit denominators
+radar.feed(cursor=, limit=, issuer=, item_type=,
+           include_backfill=)           -> FeedResult
+radar.feed_cursor_latest()              -> opaque "from now" cursor
 ```
 
 `Issuer` mirrors the per-issuer query methods
@@ -73,6 +76,13 @@ All frozen dataclasses; read-only.
 - `QueryResult` — `status`, `history_mode`, `known_at`,
   `effective_at`, `items`, `count`, `has_more`, `next_cursor`,
   `dataset_version`.
+- `FeedItem` — one newly-observed unit: `feed_item_id` (stable
+  `v1:<sha256>`), `feed_item_type`, `observed_at`, `run_type`,
+  `history_class`, `effective_date`, `filing_date`, `event_basis`,
+  `annulment_status`, `summary`, `provenance()`.
+- `FeedResult` — `items`, `count`, `has_more`, `next_cursor`,
+  `watermark`, `dataset_version`. The feed is replayable +
+  idempotent, not exactly-once — see `FEED.md`.
 
 ## Temporal semantics
 
@@ -119,7 +129,9 @@ lossless.
 
 `OwnershipRadarError` base + `NotFound`, `AmbiguousIdentifier`,
 `InvalidTemporalQuery`, `UnsupportedQuery`, `AmbiguousAnnulment`,
-`DataIntegrityError`. No raw sqlite3 exceptions escape the contract.
+`DataIntegrityError`, `InvalidCursor`, `UnsupportedCursorVersion`,
+`CursorDatasetMismatch`. No raw sqlite3 exceptions escape the
+contract.
 
 ## Scope honesty
 
