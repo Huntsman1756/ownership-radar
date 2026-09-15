@@ -13,7 +13,9 @@ def main():
     if args and args[0] == "ingest":
         _ingest(args[1:])
         return
-    run()
+    # public G6-B CLI is the default surface
+    from . import public_cli
+    sys.exit(public_cli.main(args))
 
 
 def _ingest(args):

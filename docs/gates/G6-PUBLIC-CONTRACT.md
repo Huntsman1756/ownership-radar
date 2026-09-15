@@ -114,3 +114,56 @@ G6-A5  QUERY_BENCHMARK_RECORDED                        PASS
          fact_version_relation full count        3.78s
            (7.65M logical rows — provenance view, not a query path)
 ```
+
+## G6-B — results (2026-09-15)
+
+Public surface: `ownership_radar/api.py` + `public_cli.py`; docs in
+`docs/api/`. All objects frozen dataclasses; connection read-only
+(`mode=ro` + `query_only`); zero network in the query layer.
+
+```text
+PUBLIC_API_STORAGE_INDEPENDENT          PASS  domain objects only;
+                                              no SQL/rowid/paths leak
+EXACT_ISSUER_RESOLUTION                 PASS  NIF/LEI/ISIN/alias ->
+                                              Issuer|NotFound|
+                                              AmbiguousIdentifier
+TEMPORAL_ARGUMENTS_UNAMBIGUOUS          PASS  known_at/effective_at
+                                              only; no date=/as_of=
+NO_AS_KNOWN_AT_RETROPROJECTION          PASS  pre-history ->
+                                              NO_OBSERVATION_HISTORY
+SOURCE_DERIVED_EXPLICIT                 PASS  event_basis on every
+                                              event; basis= filter
+PS_NO_INVENTED_TRADES_PUBLIC            PASS  disclosure objects have
+                                              no side/nature fields
+TREASURY_FLOW_STOCK_DISTINCT_PUBLIC     PASS  TreasuryOperation vs
+                                              TreasuryStockPosition
+AMBIGUOUS_ANNULS_FAIL_CLOSED_PUBLIC     PASS  AMBIGUOUS + candidates;
+                                              require_authoritative
+                                              raises; works on
+                                              relation-only keys
+PROVENANCE_PUBLICLY_TRACEABLE           PASS  notice -> url -> sha256
+                                              -> parser -> rule
+COVERAGE_PUBLICLY_DISCLOSED             PASS  dataset_info() says
+                                              itf2026-v1/60 issuers;
+                                              coverage() denominators
+CURSOR_STABLE                           PASS  keyset cursor, opaque,
+                                              no overlap page1/page2
+DECIMAL_LOSSLESS                        PASS  Decimal in Python; str
+                                              in JSON ("12.66")
+JSON_SCHEMA_VERSIONED                   PASS  schema_version:"1" in
+                                              every envelope
+CLI_MACHINE_OUTPUT_CLEAN                PASS  stdout pure payload;
+                                              errors to stderr;
+                                              exit 0/1/2
+QUERY_LAYER_OFFLINE                     PASS  mode=ro + query_only;
+                                              write attempt fails
+PUBLIC_CONTRACT_BLACKBOX_PASS           PASS  26 tests, public imports
+                                              only (test_g6_public_api)
+QUERY_BENCHMARK_PASS                    PASS  prod DB: company 0ms,
+                                              issuer queries p95 <85ms,
+                                              recent-insiders p95 163ms
+CLEAN_INSTALL_PASS                      PASS  pip install . in clean
+                                              venv; ownership-radar
+                                              console script works
+G1_G5_REGRESSION_FREE                   PASS  103 tests + 30 subtests
+```
