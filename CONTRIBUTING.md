@@ -6,7 +6,8 @@ convenience. Read this before proposing changes.
 ## Setup
 
 ```bash
-git clone <repo> && cd owership_radar
+git clone https://github.com/Huntsman1756/ownership-radar.git
+cd ownership-radar
 pip install -e .
 python -m pytest tests/          # corpus-dependent tests SKIP
 python scripts/build_demo_dataset.py
