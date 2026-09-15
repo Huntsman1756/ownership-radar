@@ -479,9 +479,38 @@ def materialize(cx):
              e["source_notice_key"], e["source_fact_id"], e["rule_id"],
              e["derivation_version"], e["payload_json"],
              e["payload_sha256"], e["first_observed_at"]))
+    rebuild_feed(cx)
     cx.commit()
     return {"facts": len(facts),
             "digest": ledger_digest(cx)}
+
+
+def rebuild_feed(cx):
+    """G6-C: rebuild the materialized feed_item table from evidence.
+    Idempotent: identical inputs -> identical feed digest. The feed
+    is derived state, never a second source of truth."""
+    from . import store
+    cx.execute("DELETE FROM feed_item")
+    cx.execute("INSERT INTO feed_item " + store.FEED_SQL)
+    cx.commit()
+    return {"items": cx.execute(
+        "SELECT COUNT(*) FROM feed_item").fetchone()[0],
+        "feed_digest": feed_digest(cx)}
+
+
+def feed_digest(cx):
+    """Deterministic digest over the materialized feed — ordering
+    keys + identity + payload, independent of insertion order."""
+    rows = cx.execute(
+        "SELECT item_key,feed_item_type,observed_at,run_id,run_type,"
+        "history_class,issuer_id,notice_key,event_id,annulling_key,"
+        "annulled_key,relation_type,effective_date,filing_date,"
+        "event_basis,fact_id,payload_json FROM feed_item "
+        "ORDER BY item_key").fetchall()
+    h = hashlib.sha256()
+    for r in rows:
+        h.update(repr(r).encode("utf-8"))
+    return h.hexdigest()
 
 
 def ledger_digest(cx):

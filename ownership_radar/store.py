@@ -213,6 +213,24 @@ LEFT JOIN (SELECT notice_key, MIN(observed_at) AS observed_at
            FROM notice_observation GROUP BY notice_key) fo
        ON fo.notice_key = r.annulling_key
 WHERE r.relation_type IN ('ANNULS','RECTIFIES');
+-- G6-C: feed_item is a MATERIALIZED TABLE rebuilt by
+-- ledger.rebuild_feed() — derived, not a second source of truth.
+-- FEED_SQL is the single derivation; drop/rebuild must yield an
+-- identical digest (ADR-G6-FEED-IDENTITY / FEED_REBUILD_IDENTICAL).
+CREATE TABLE IF NOT EXISTS feed_item(
+ item_key TEXT NOT NULL,
+ feed_item_type TEXT NOT NULL,
+ observed_at TEXT NOT NULL,
+ run_id TEXT, run_type TEXT, history_class TEXT,
+ issuer_id TEXT, notice_key TEXT, event_id TEXT,
+ annulling_key TEXT, annulled_key TEXT, relation_type TEXT,
+ effective_date TEXT, filing_date TEXT, event_basis TEXT,
+ fact_id TEXT, payload_json TEXT,
+ PRIMARY KEY(feed_item_type, item_key));
+CREATE INDEX IF NOT EXISTS ix_feed_obs
+ON feed_item(observed_at, item_key);
+CREATE INDEX IF NOT EXISTS ix_feed_issuer
+ON feed_item(issuer_id, observed_at, item_key);
 CREATE TABLE IF NOT EXISTS derivation_rule(
  rule_id TEXT PRIMARY KEY, rule_version TEXT NOT NULL,
  event_type TEXT NOT NULL, description TEXT,
@@ -269,6 +287,120 @@ CREATE INDEX IF NOT EXISTS ix_fact_notice ON source_fact(notice_key);
 CREATE INDEX IF NOT EXISTS ix_event_issuer ON ledger_event(issuer_id);
 """
 
+# G6-C feed derivation — the single source of the feed_item table.
+# item_key is the canonical identity; the public feed_item_id is a
+# versioned sha256 of it (api.py + ADR-G6-FEED-IDENTITY). The unit is
+# the FIRST qualifying observation of new public information —
+# re-observing the same state yields nothing (no reconciliation
+# noise). BACKFILL observations classify RECONSTRUCTED_HISTORICAL.
+FEED_SQL = """
+-- semantic items: one per observed source_fact
+SELECT
+  'FACT:' || f.fact_id                                   AS item_key,
+  CASE f.fact_type
+    WHEN 'NOD_TRANSACTION_EVENT'           THEN 'INSIDER_TRANSACTION_OBSERVED'
+    WHEN 'SIGNIFICANT_HOLDING_DISCLOSURE'  THEN 'SIGNIFICANT_HOLDING_DISCLOSURE_OBSERVED'
+    WHEN 'TREASURY_OPERATION'              THEN 'TREASURY_OPERATION_OBSERVED'
+    WHEN 'TREASURY_RESULTING_POSITION'     THEN 'TREASURY_STOCK_POSITION_OBSERVED'
+  END                                                    AS feed_item_type,
+  f.first_observed_at                                    AS observed_at,
+  fo.run_id                                              AS run_id,
+  cr.run_type                                            AS run_type,
+  CASE WHEN cr.run_type='BACKFILL' THEN 'RECONSTRUCTED_HISTORICAL'
+       ELSE 'OBSERVED_CURRENT' END                       AS history_class,
+  n.issuer_id,
+  f.notice_key,
+  e.event_id,
+  NULL AS annulling_key, NULL AS annulled_key,
+  NULL AS relation_type,
+  f.effective_date, f.filing_date,
+  e.event_basis,
+  f.fact_id                                              AS fact_id,
+  f.source_payload_json                                  AS payload_json
+FROM source_fact f
+JOIN notice n ON n.notice_key=f.notice_key
+LEFT JOIN ledger_event e ON e.source_fact_id=f.fact_id
+LEFT JOIN (
+  SELECT o.notice_key, o.observed_at, MIN(o.run_id) run_id
+  FROM notice_observation o
+  JOIN (SELECT notice_key, MIN(observed_at) mo
+        FROM notice_observation GROUP BY notice_key) m
+    ON m.notice_key=o.notice_key AND m.mo=o.observed_at
+  GROUP BY o.notice_key, o.observed_at
+) fo ON fo.notice_key=f.notice_key AND fo.observed_at=f.first_observed_at
+LEFT JOIN crawl_run cr ON cr.run_id=fo.run_id
+UNION ALL
+-- notice-level item: the notice itself first observed
+SELECT
+  'NOTICE:' || n.notice_key,
+  'NOTICE_OBSERVED',
+  fo.observed_at, fo.run_id, cr.run_type,
+  CASE WHEN cr.run_type='BACKFILL' THEN 'RECONSTRUCTED_HISTORICAL'
+       ELSE 'OBSERVED_CURRENT' END,
+  n.issuer_id, n.notice_key, NULL, NULL, NULL, NULL,
+  n.filing_date, n.filing_date, NULL, NULL,
+  json_object('surface', n.source_surface, 'reg_number',
+              n.source_registration_number, 'notice_type',
+              n.notice_type, 'title', n.declarant_name_raw)
+FROM notice n
+JOIN (
+  SELECT o.notice_key, o.observed_at, MIN(o.run_id) run_id
+  FROM notice_observation o
+  JOIN (SELECT notice_key, MIN(observed_at) mo
+        FROM notice_observation GROUP BY notice_key) m
+    ON m.notice_key=o.notice_key AND m.mo=o.observed_at
+  GROUP BY o.notice_key, o.observed_at
+) fo ON fo.notice_key=n.notice_key
+LEFT JOIN crawl_run cr ON cr.run_id=fo.run_id
+UNION ALL
+-- ANNULS relations first observed; relation-only annulling keys
+-- still emit (evidence exists even without a notice row)
+SELECT
+  'REL:' || r.annulled_key || '|' || r.annulling_key || '|'
+          || r.relation_type,
+  'CANCELLATION_RELATION_OBSERVED',
+  COALESCE(ro.observed_at, cr.started_at) AS observed_at,
+  r.observed_run_id, cr.run_type,
+  CASE WHEN cr.run_type='BACKFILL' THEN 'RECONSTRUCTED_HISTORICAL'
+       ELSE 'OBSERVED_CURRENT' END,
+  an.issuer_id, r.annulled_key, NULL,
+  r.annulling_key, r.annulled_key, r.relation_type,
+  NULL, NULL, NULL, NULL, NULL
+FROM notice_relation r
+LEFT JOIN notice an ON an.notice_key=r.annulling_key
+LEFT JOIN (
+  SELECT notice_key, run_id, MIN(observed_at) observed_at
+  FROM notice_observation GROUP BY notice_key, run_id
+) ro ON ro.notice_key=r.annulling_key AND ro.run_id=r.observed_run_id
+LEFT JOIN crawl_run cr ON cr.run_id=r.observed_run_id
+WHERE r.relation_type='ANNULS'
+UNION ALL
+-- disappearances: first observation of each disappearance streak
+-- (re-observed absence is not new public information)
+SELECT
+  'DIS:' || o.notice_key || '|' || o.observed_at,
+  'NOTICE_DISAPPEARANCE_OBSERVED',
+  o.observed_at, o.run_id, cr.run_type,
+  CASE WHEN cr.run_type='BACKFILL' THEN 'RECONSTRUCTED_HISTORICAL'
+       ELSE 'OBSERVED_CURRENT' END,
+  n.issuer_id, o.notice_key, NULL, NULL, NULL, NULL,
+  NULL, n.filing_date, NULL, NULL, NULL
+FROM notice_observation o
+JOIN notice n ON n.notice_key=o.notice_key
+LEFT JOIN crawl_run cr ON cr.run_id=o.run_id
+WHERE o.status_observed='SOURCE_DISAPPEARANCE_OBSERVED'
+  AND o.run_id=(SELECT MIN(o3.run_id) FROM notice_observation o3
+                WHERE o3.notice_key=o.notice_key
+                  AND o3.observed_at=o.observed_at
+                  AND o3.status_observed=
+                      'SOURCE_DISAPPEARANCE_OBSERVED')
+  AND (SELECT o2.status_observed FROM notice_observation o2
+       WHERE o2.notice_key=o.notice_key
+         AND o2.observed_at<o.observed_at
+       ORDER BY o2.observed_at DESC LIMIT 1)
+      IS NOT 'SOURCE_DISAPPEARANCE_OBSERVED';
+"""
+
 # Conservative surface-level defaults only. The ps surface deliberately
 # stays UNCLASSIFIED: before 2020-03-02 it mixes DIRECTOR_HOLDING
 # (Circular 8/2015 Modelo 2) and SIGNIFICANT_HOLDING — a surface label
@@ -303,6 +435,12 @@ def init_db(path):
                       "'fact_version_relation'").fetchone()
     if kind and kind[0] == "table":
         cx.execute("DROP TABLE fact_version_relation")
+    # G6-C: feed_item may exist as a view from early development —
+    # it is a materialized table now (rebuildable, derived).
+    kind = cx.execute("SELECT type FROM sqlite_master WHERE name="
+                      "'feed_item'").fetchone()
+    if kind and kind[0] == "view":
+        cx.execute("DROP VIEW feed_item")
     cx.executescript(SCHEMA)
     # forward-only column migrations for existing databases
     cols = {r[1] for r in cx.execute(

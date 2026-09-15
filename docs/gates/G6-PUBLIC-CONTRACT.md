@@ -167,3 +167,111 @@ CLEAN_INSTALL_PASS                      PASS  pip install . in clean
                                               console script works
 G1_G5_REGRESSION_FREE                   PASS  103 tests + 30 subtests
 ```
+
+## G6-C — results (2026-09-15)
+
+Feed derived by `store.FEED_SQL` into materialized `feed_item`
+(rebuilt by `ledger.materialize`/`rebuild_feed`; `feed_digest`
+stable across rebuilds). Public surface: `radar.feed()`,
+`radar.feed_cursor_latest()`, `FeedItem`, `FeedResult`,
+`ownership-radar feed` (json|jsonl|atom|table) +
+`feed-cursor-latest`. Docs: `docs/api/FEED.md`, `docs/api/ATOM.md`,
+`docs/model/FEED-SEMANTICS.md`, `docs/decisions/ADR-G6-FEED-*`.
+
+Production feed (`itf2026-v1`, 60 issuers):
+
+```text
+NOTICE_OBSERVED                          34,981
+INSIDER_TRANSACTION_OBSERVED             10,829
+SIGNIFICANT_HOLDING_DISCLOSURE_OBSERVED   6,479
+TREASURY_OPERATION_OBSERVED             123,251
+TREASURY_STOCK_POSITION_OBSERVED            930
+CANCELLATION_RELATION_OBSERVED            1,240   (6 AMBIGUOUS rows,
+                                                    3 targets x 2)
+NOTICE_DISAPPEARANCE_OBSERVED             1,419   (the preserved G5
+                                          false-disappearance streaks)
+total                                   179,129
+run_type   BACKFILL 177,616 | INCREMENTAL 94 | RECONCILIATION 1,419
+feed_digest  c99f94849ccee9ad06d8de0adf9e6e8aded09d5030e7f27dfaf1833d639fcfbd
+```
+
+```text
+G6-C1  FEED_MEANS_NEWLY_OBSERVED          PASS
+       observed_at/filing_date/effective_date always distinct
+       fields; fixture asserts eff=2024-01-05, fil=2024-01-08,
+       obs=2024-01-10 on one item. Prod sample: eff 2026-09-11,
+       fil 2026-09-14, obs 2026-09-14T22:53Z.
+G6-C2  BACKFILL_NOT_IN_LIVE_FEED          PASS
+       default include_backfill=False; BACKFILL items exist only
+       under explicit opt-in, classed RECONSTRUCTED_HISTORICAL.
+G6-C3  STABLE_CURSOR                      PASS
+       v1.<b64(JSON)> opaque; keyset (observed_at,item_key);
+       query-bound + dataset-bound + watermark snapshot.
+```
+
+Detailed G6-C evidence (nomenclature per spec §49):
+
+```text
+FEED_IS_OBSERVATION_DRIVEN              PASS  items anchor on first
+                                            qualifying observation
+OBSERVED_EFFECTIVE_DATES_DISTINCT       PASS  three date fields,
+                                            never conflated
+FEED_ITEM_ID_STABLE                     PASS  v1:<sha256(item_key)>;
+                                            replay-identical
+CURSOR_OPAQUE_VERSIONED                 PASS  v1.* b64 JSON
+CURSOR_NO_GAPS / NO_PAGE_OVERLAP        PASS  full traversal at
+                                            limit=2: exact coverage
+CURSOR_TIES_EXACT                       PASS  all INCREMENTAL items
+                                            share T1 — paginated
+                                            loss-free
+CURSOR_QUERY_BOUND                      PASS  filter/backfill
+                                            mismatch ->
+                                            CursorDatasetMismatch
+RECONCILIATION_NOISE_SUPPRESSED         PASS  nod:B re-observed x2 ->
+                                            1 item at first obs
+CANCELLATION_RELATION_EMITTED           PASS  incl. relation-only
+                                            annulling endpoints
+AMBIGUOUS_ANNULS_PRESERVED              PASS  AMBIGUOUS + both
+                                            candidates; prod: all 3
+DISAPPEARANCE_NON_DESTRUCTIVE           PASS  streak-head only;
+                                            cancellation_evidence_
+                                            present flag; never a
+                                            relation
+SOURCE_DERIVED_EXPLICIT                 PASS  event_basis carried
+                                            on semantic items
+FEED_PROVENANCE_TRACEABLE               PASS  item.provenance() ->
+                                            notice/url/sha256/parser
+JSON_JSONL_SCHEMA_STABLE                PASS  schema_version:"1";
+                                            next_cursor on stderr
+ATOM_SEMANTICS_CORRECT                  PASS  published=observed_at,
+                                            urn ids, valid XML,
+                                            dataset in feed id
+FEED_OFFLINE                            PASS  mode=ro + query_only;
+                                            zero network
+FEED_REBUILD_IDENTICAL                  PASS  digest c99f9484…
+                                            identical before/after
+                                            rebuild_feed()
+CLEAN_INSTALL_PASS                      PASS  clean venv install;
+                                            feed + CLI work
+G1_G6B_REGRESSION_FREE                  PASS  125 tests + 30
+                                            subtests
+```
+
+Production feed benchmark:
+
+```text
+first page (incl. watermark)   p95 484ms
+next page                      p95   6ms
+issuer-filtered                p95  18ms
+type-filtered                  p95 135ms
+1000-item JSONL (CLI)              272ms
+200-entry Atom (CLI, valid XML)    339ms
+```
+
+Kill conditions: none triggered. K1 effective-as-published —
+Atom/JSON use observed_at. K2 backfill excluded by default.
+K3 identical reconciliation -> 0 items. K4 ties paginate exactly.
+K5 AMBIGUOUS preserved (prod verified). K6 disappearance stays
+distinct. K7 feed is offline/read-only. K8 rebuild digest identical.
+K9 cursor is keyset + versioned payload. K10 dataset_version +
+universe in FeedResult/feed id.

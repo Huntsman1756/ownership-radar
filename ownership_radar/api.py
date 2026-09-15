@@ -22,6 +22,7 @@ result with status NO_OBSERVATION_HISTORY — never reconstructed
 history.
 """
 import base64
+import hashlib
 import json
 import sqlite3
 from dataclasses import dataclass, field
@@ -66,6 +67,18 @@ class AmbiguousAnnulment(OwnershipRadarError):
 
 
 class DataIntegrityError(OwnershipRadarError):
+    pass
+
+
+class InvalidCursor(OwnershipRadarError):
+    pass
+
+
+class UnsupportedCursorVersion(InvalidCursor):
+    pass
+
+
+class CursorDatasetMismatch(InvalidCursor):
     pass
 
 
@@ -381,6 +394,105 @@ class QueryResult:
                 "query": self.query,
                 "items": [i.to_dict() if hasattr(i, "to_dict")
                           else i for i in self.items]}
+
+
+FEED_ITEM_TYPES = (
+    "NOTICE_OBSERVED",
+    "INSIDER_TRANSACTION_OBSERVED",
+    "SIGNIFICANT_HOLDING_DISCLOSURE_OBSERVED",
+    "TREASURY_OPERATION_OBSERVED",
+    "TREASURY_STOCK_POSITION_OBSERVED",
+    "CANCELLATION_RELATION_OBSERVED",
+    "NOTICE_DISAPPEARANCE_OBSERVED",
+)
+
+OBSERVED_CURRENT = "OBSERVED_CURRENT"
+RECONSTRUCTED_HISTORICAL = "RECONSTRUCTED_HISTORICAL"
+CURSOR_VERSION = "v1"
+
+
+@dataclass(frozen=True)
+class FeedItem:
+    """One newly-observed unit of public information. `observed_at`
+    is when Ownership Radar learned it — never the economic date."""
+    feed_item_id: str
+    feed_item_type: str
+    observed_at: Optional[datetime]
+    run_id: Optional[str]
+    run_type: Optional[str]
+    history_class: str
+    issuer_id: Optional[str]
+    notice_key: Optional[str]
+    event_id: Optional[str]
+    annulling_notice_key: Optional[str]
+    annulled_notice_key: Optional[str]
+    relation_type: Optional[str]
+    effective_date: Optional[date]
+    filing_date: Optional[date]
+    event_basis: Optional[str]
+    annulment_status: Optional[str]
+    summary: Optional[dict]
+    _radar: object = field(repr=False, compare=False, default=None)
+
+    def provenance(self):
+        return self._radar._provenance(self.notice_key,
+                                       self.event_id)
+
+    def to_dict(self):
+        return {k: v for k, v in self.__dict__.items()
+                if not k.startswith("_")}
+
+
+def _feed_summary(ftype, p):
+    """Minimal typed payload per feed type — a summary, never a
+    reinterpretation. Source fields keep their document names."""
+    if ftype == "INSIDER_TRANSACTION_OBSERVED":
+        n, t = p.get("notice") or {}, p.get("transaction") or {}
+        return {"notifying_party": n.get("notifying_party_name_raw"),
+                "notification_kind": n.get("notification_kind"),
+                "nature": t.get("transaction_nature_normalized"),
+                "transaction_date": t.get("transaction_date"),
+                "instrument_code": t.get("instrument_code_raw")}
+    if ftype == "SIGNIFICANT_HOLDING_DISCLOSURE_OBSERVED":
+        return {"obliged_subject": p.get("obliged_subject_name_raw"),
+                "issuer_name_document":
+                    p.get("issuer_name_document"),
+                "situation_date": p.get("situation_date")}
+    if ftype == "TREASURY_OPERATION_OBSERVED":
+        return {"operation_flag":
+                    p.get("operation_flag_normalized"),
+                "operation_date": p.get("operation_date"),
+                "isin": p.get("isin"),
+                "issuer_name_document":
+                    p.get("issuer_name_document")}
+    if ftype == "TREASURY_STOCK_POSITION_OBSERVED":
+        fp = p.get("final_position") or {}
+        return {"pct_total": fp.get("pct_total"),
+                "isin": fp.get("isin")}
+    if ftype == "NOTICE_OBSERVED":
+        return p or None
+    return p or None
+
+
+@dataclass(frozen=True)
+class FeedResult:
+    status: str
+    items: tuple
+    count: int
+    has_more: bool
+    next_cursor: Optional[str]
+    watermark: Optional[str]
+    dataset_version: Optional[str]
+    schema_version: str = SCHEMA_VERSION
+
+    def to_dict(self):
+        return {"status": self.status, "count": self.count,
+                "has_more": self.has_more,
+                "next_cursor": self.next_cursor,
+                "watermark": self.watermark,
+                "dataset_version": self.dataset_version,
+                "schema_version": self.schema_version,
+                "items": [i.to_dict() for i in self.items]}
 
 
 @dataclass(frozen=True)
@@ -1062,6 +1174,168 @@ class OwnershipRadar:
                 self._cx, universe_issuers=None),
             "matrix": _coverage.coverage_matrix(self._cx),
             "legacy": _coverage.legacy_inventory(self._cx)}
+
+    # ------------------------------------------------- feed (G6-C)
+
+    def _feed_item_id(self, item_key):
+        """Public stable identity (ADR-G6-FEED-IDENTITY):
+        v1:<sha256('feed/v1|' + canonical item_key)[:32]>.
+        Deterministic across replays, rebuilds and processes."""
+        return CURSOR_VERSION + ":" + hashlib.sha256(
+            ("feed/" + CURSOR_VERSION + "|" + item_key).encode()
+        ).hexdigest()[:32]
+
+    def _feed_qsig(self, issuer_id, item_type, include_backfill):
+        return hashlib.sha256(
+            ("%s|%s|%s" % (issuer_id, item_type,
+                           include_backfill)).encode()
+        ).hexdigest()[:16]
+
+    def _feed_cursor_encode(self, k, w, q):
+        payload = {"k": k, "w": w, "q": q,
+                   "dv": self._dataset_version()}
+        return (CURSOR_VERSION + "." + base64.urlsafe_b64encode(
+            json.dumps(payload, separators=(",", ":")).encode()
+        ).decode())
+
+    def _feed_cursor_decode(self, cursor, q):
+        try:
+            ver, raw = cursor.split(".", 1)
+        except (ValueError, AttributeError):
+            raise InvalidCursor("malformed feed cursor")
+        if ver != CURSOR_VERSION:
+            raise UnsupportedCursorVersion(
+                f"feed cursor version {ver!r} unsupported")
+        try:
+            d = json.loads(base64.urlsafe_b64decode(
+                raw.encode()).decode())
+            k, w, cq, dv = d["k"], d["w"], d["q"], d["dv"]
+        except Exception as e:  # noqa
+            raise InvalidCursor(f"undecodable feed cursor: {e!r}")
+        if cq != q:
+            raise CursorDatasetMismatch(
+                "cursor was issued for a different query/filter set")
+        if dv != self._dataset_version():
+            raise CursorDatasetMismatch(
+                "cursor was issued against a different dataset version")
+        return k, w
+
+    def feed_cursor_latest(self):
+        """Explicit 'from now': skip everything currently observed.
+        Unbounded watermark — items arriving later are included."""
+        mx = self._cx.execute(
+            "SELECT MAX(observed_at) FROM feed_item").fetchone()[0]
+        return self._feed_cursor_encode(
+            [mx or "", "￿"], None,
+            self._feed_qsig(None, None, False))
+
+    def feed(self, cursor=None, limit=100, issuer=None, item_type=None,
+             include_backfill=False):
+        """Newly-observed information since `cursor`.
+
+        cursor=None means the beginning of the selected feed
+        (frozen contract). Default excludes BACKFILL runs — those
+        items exist but are RECONSTRUCTED_HISTORICAL, not live
+        changes. Ordering: observed_at ASC, canonical key ASC.
+        A traversal is bounded by a watermark fixed on the first
+        page, so new arrivals cannot reorder an active read."""
+        issuer_id = (issuer.issuer_id if isinstance(issuer, Issuer)
+                     else issuer)
+        if issuer_id:
+            issuer_id = self._resolve_issuer_id(issuer_id)
+        if item_type and item_type not in FEED_ITEM_TYPES:
+            raise UnsupportedQuery(
+                f"unknown feed_item_type {item_type!r}; "
+                f"valid: {list(FEED_ITEM_TYPES)}")
+        q = self._feed_qsig(issuer_id, item_type, include_backfill)
+        k = w = None
+        if cursor is not None:
+            k, w = self._feed_cursor_decode(cursor, q)
+        sql = ("SELECT item_key,feed_item_type,observed_at,run_id,"
+               "run_type,history_class,issuer_id,notice_key,event_id,"
+               "annulling_key,annulled_key,relation_type,"
+               "effective_date,filing_date,event_basis,fact_id,"
+               "payload_json FROM feed_item WHERE 1=1")
+        args = []
+        if issuer_id:
+            sql += " AND issuer_id=?"
+            args.append(issuer_id)
+        if item_type:
+            sql += " AND feed_item_type=?"
+            args.append(item_type)
+        if not include_backfill:
+            sql += " AND COALESCE(run_type,'')<>'BACKFILL'"
+        if w is not None:
+            sql += " AND observed_at<=?"
+            args.append(w)
+        if k is not None:
+            sql += (" AND (observed_at>? OR (observed_at=? AND "
+                    "item_key>?))")
+            args += [k[0], k[0], k[1]]
+        # first page fixes the snapshot watermark
+        if w is None and cursor is None:
+            wq = ("SELECT MAX(observed_at) FROM feed_item WHERE 1=1")
+            wargs = []
+            if issuer_id:
+                wq += " AND issuer_id=?"
+                wargs.append(issuer_id)
+            if item_type:
+                wq += " AND feed_item_type=?"
+                wargs.append(item_type)
+            if not include_backfill:
+                wq += " AND COALESCE(run_type,'')<>'BACKFILL'"
+            w = self._cx.execute(wq, wargs).fetchone()[0]
+            if w is not None:
+                sql += " AND observed_at<=?"
+                args.append(w)
+        sql += " ORDER BY observed_at,item_key LIMIT ?"
+        args.append(limit + 1)
+        rows = self._cx.execute(sql, args).fetchall()
+        has_more = len(rows) > limit
+        rows = rows[:limit]
+        items = [self._feed_item(r) for r in rows]
+        nc = (self._feed_cursor_encode(
+            [rows[-1][2], rows[-1][0]], w, q)
+            if has_more and rows else None)
+        return FeedResult(
+            status="OK", items=tuple(items), count=len(items),
+            has_more=has_more, next_cursor=nc, watermark=w,
+            dataset_version=self._dataset_version())
+
+    def _feed_item(self, r):
+        (item_key, ftype, observed_at, run_id, run_type, hclass,
+         issuer_id, notice_key, event_id, annulling, annulled, rtype,
+         eff, fil, basis, fact_id, payload) = r
+        summary = None
+        ann_status = None
+        if ftype == "CANCELLATION_RELATION_OBSERVED":
+            st = _ledger.annulment_status(self._cx, annulled)
+            ann_status = st["relation_status"]
+            raw_obs = self._cx.execute(
+                "SELECT 1 FROM notice WHERE notice_key=?",
+                (annulled,)).fetchone() is not None
+            summary = {"annulment_status": ann_status,
+                       "annulling_notices": st["annulling_notices"],
+                       "cancelled_notice_raw_observed": raw_obs}
+        elif ftype == "NOTICE_DISAPPEARANCE_OBSERVED":
+            rel = self._cx.execute(
+                "SELECT 1 FROM notice_relation WHERE annulled_key=? "
+                "AND relation_type='ANNULS'",
+                (notice_key,)).fetchone() is not None
+            summary = {"cancellation_evidence_present": rel}
+        elif payload:
+            p = _json(payload) or {}
+            summary = _feed_summary(ftype, p)
+        return FeedItem(
+            feed_item_id=self._feed_item_id(item_key),
+            feed_item_type=ftype, observed_at=_dt(observed_at),
+            run_id=run_id, run_type=run_type, history_class=hclass,
+            issuer_id=issuer_id, notice_key=notice_key,
+            event_id=event_id, annulling_notice_key=annulling,
+            annulled_notice_key=annulled, relation_type=rtype,
+            effective_date=_date(eff), filing_date=_date(fil),
+            event_basis=basis, annulment_status=ann_status,
+            summary=summary, _radar=self)
 
 
 @dataclass(frozen=True)
