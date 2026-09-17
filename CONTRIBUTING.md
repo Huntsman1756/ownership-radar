@@ -8,16 +8,36 @@ convenience. Read this before proposing changes.
 ```bash
 git clone https://github.com/Huntsman1756/ownership-radar.git
 cd ownership-radar
-pip install -e ".[dev]"
+python -m pip install -r requirements.txt
+python -m pip install -e ".[dev]"
 ruff check .                     # pyflakes correctness rules
 python -m pytest tests/          # corpus-dependent tests SKIP
 python scripts/build_demo_dataset.py
 python examples/recent_insiders.py
 ```
 
+`requirements.txt` pins the PDF parser snapshot used for semantic
+validation. The package metadata intentionally exposes a compatible
+runtime lower bound, but contributors and CI should use the pinned
+snapshot unless a dependency bump is the change under review.
+
 Corpus tests requiring private CNMV raw documents SKIP with
 `LOCAL_CNMV_CORPUS_NOT_AVAILABLE` — that is expected on a public
-clone.
+clone. A SKIP is not evidence that the private corpus passed.
+
+## Development workflow
+
+1. Work on a focused branch and open a pull request against `main`.
+2. Run `ruff check .` and `python -m pytest tests/` before pushing.
+3. Add a regression test for every behavior/correctness change.
+4. Update docs when the public contract or semantics change.
+5. Record user-visible changes under `CHANGELOG.md` → `Unreleased`.
+6. Keep changes narrow: refactors must not silently change semantic
+   digests, provenance, temporal semantics or fail-closed behavior.
+
+The pull-request template contains the verification checklist used by
+maintainers. CI repeats lint, tests, deterministic demo builds,
+examples, package build/audit and clean-wheel smoke tests.
 
 ## Rules that are not negotiable
 
