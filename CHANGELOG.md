@@ -12,7 +12,8 @@ the corresponding prerelease form (`v0.1.0-alpha.2`).
 - Public-repository hardening: standard MIT license text for SPDX/GitHub
   detection, normalized line-ending policy, editor defaults, weekly
   Dependabot updates, CodeQL scanning, least-privilege/concurrent CI,
-  and package validation with `twine check`.
+  package validation with `twine check`, SHA-pinned GitHub Actions,
+  and explicit `CODEOWNERS` review ownership.
 - Public docs refreshed to the current `v0.1.0-alpha.2` release and the
   actual installation paths; PyPI is not advertised until it is
   published.

@@ -1,0 +1,9 @@
+# Default reviewer for all public contributions.
+* @Huntsman1756
+
+# Security/release automation and core package changes should always
+# remain visible to the maintainer even if more owners are added later.
+/.github/ @Huntsman1756
+/ownership_radar/ @Huntsman1756
+/pyproject.toml @Huntsman1756
+/requirements.txt @Huntsman1756
