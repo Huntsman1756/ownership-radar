@@ -1,10 +1,23 @@
 # Changelog
 
 All notable changes to this project. Format follows
-[Keep a Changelog](https://keepachangelog.com/) loosely;
-versioning is PEP 440 (`0.1.0a1`) tagged as `v0.1.0-alpha.1`.
+[Keep a Changelog](https://keepachangelog.com/) loosely. Python package
+versions use PEP 440 (for example `0.1.0a2`) and Git release tags use
+the corresponding prerelease form (`v0.1.0-alpha.2`).
 
 ## [Unreleased]
+
+### Changed
+
+- Public-repository hardening: standard MIT license text for SPDX/GitHub
+  detection, normalized line-ending policy, editor defaults, weekly
+  Dependabot updates, CodeQL scanning, least-privilege/concurrent CI,
+  and package validation with `twine check`.
+- Public docs refreshed to the current `v0.1.0-alpha.2` release and the
+  actual installation paths; PyPI is not advertised until it is
+  published.
+- Security/conduct reporting language no longer implies that sensitive
+  reports filed in public issues are confidential.
 
 ## [0.1.0-alpha.2] — 2026-09-17
 
