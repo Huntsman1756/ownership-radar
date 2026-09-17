@@ -1,7 +1,8 @@
 # ARCHITECTURE — Ownership Radar ES
 
-End-to-end design of the current system (v0.1.0-alpha.1). Functional
-contract frozen at G6-C.
+End-to-end design of the current system (`v0.1.0-alpha.2`). The
+functional contract was frozen at G6-C; alpha.2 hardens correctness,
+ingestion and packaging without changing ledger semantics.
 
 ```text
 CNMV official disclosures
@@ -77,14 +78,17 @@ bitemporal core (known_at / effective_at)
 ## Public surface
 
 - `api.py`: read-only SQLite (`mode=ro` + `query_only`), zero
-  network, frozen dataclasses, `Decimal` preserved, keyset cursors.
+  network, frozen dataclasses, `Decimal` preserved, keyset pagination.
+  `QueryResult` cursors are `q2` envelopes bound to method, filters,
+  canonical issuer and dataset version; malformed or cross-query
+  reuse fails closed.
 - `public_cli.py`: `ownership-radar` — stdout payload only,
   `schema_version:"1"`, exit 0/1/2.
 - `feed_item`: materialized derived table rebuilt by
   `ledger.rebuild_feed()` from `store.FEED_SQL` — notices, semantic
   facts, ANNULS relations, disappearance streak-heads. Stable
   `feed_item_id = v1:<sha256(item_key)>`; replayable + idempotent;
-  `feed_digest` deterministic.
+  `feed_digest` deterministic. Feed cursors remain version `v1`.
 
 ## Storage
 
