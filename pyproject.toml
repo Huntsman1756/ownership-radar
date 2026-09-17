@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "ownership-radar"
-version = "0.1.0a1"
+version = "0.1.0a2"
 description = "Bitemporal, reproducible ledger of ownership changes in Spanish listed companies built on official CNMV notifications"
 readme = "README.md"
 requires-python = ">=3.10"

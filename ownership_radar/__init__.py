@@ -27,5 +27,5 @@ from .api import (AmbiguousAnnulment, AmbiguousIdentifier,  # noqa:F401
                   RECONSTRUCTED_HISTORICAL, SCHEMA_VERSION,
                   SOURCE_DECLARED)
 
-__version__ = "0.1.0a1"
+__version__ = "0.1.0a2"
 PARSER_VERSION = "1.0.0-g1"

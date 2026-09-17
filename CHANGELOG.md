@@ -6,6 +6,8 @@ versioning is PEP 440 (`0.1.0a1`) tagged as `v0.1.0-alpha.1`.
 
 ## [Unreleased]
 
+## [0.1.0-alpha.2] — 2026-09-17
+
 ### Fixed
 
 - **Pagination (data loss while paging)**: `significant_holdings`,
