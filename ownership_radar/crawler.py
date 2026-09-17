@@ -12,6 +12,7 @@ from .store import sha256b
 DELAY_S = 0.9
 MAX_RETRIES = 3
 BACKOFF_S = 5.0
+MAX_BODY_BYTES = 256 * 1024 * 1024   # sanity cap; CNMV PDFs are ~MB
 UA = "OwnershipRadarES/0.1 (evidence-layer crawler; low frequency; see CRAWLING-POLICY.md)"
 
 _seq = 0
@@ -61,7 +62,10 @@ class Fetcher:
                 req = urllib.request.Request(url)
                 t0 = datetime.now(timezone.utc)
                 resp = self.op.open(req, timeout=120)
-                body = resp.read()
+                body = resp.read(MAX_BODY_BYTES + 1)
+                if len(body) > MAX_BODY_BYTES:
+                    raise ValueError("response exceeds %d bytes"
+                                     % MAX_BODY_BYTES)
                 meta = {
                     "seq": seq, "run_id": self.run_id,
                     "requested_url": url, "final_url": resp.geturl(),
@@ -85,7 +89,8 @@ class Fetcher:
                 return meta, body
             except Exception as e:  # noqa
                 last_err = repr(e)
-                time.sleep(BACKOFF_S * (attempt + 1))
+                if attempt < MAX_RETRIES - 1:
+                    time.sleep(BACKOFF_S * (attempt + 1))
         meta = {"seq": seq, "run_id": self.run_id, "requested_url": url,
                 "status": "ERROR", "error": last_err,
                 "retrieved_at": datetime.now(timezone.utc).isoformat(timespec="milliseconds"),

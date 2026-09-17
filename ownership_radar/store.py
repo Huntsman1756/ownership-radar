@@ -427,7 +427,7 @@ def connect(path):
 
 
 def init_db(path):
-    os.makedirs(os.path.dirname(path), exist_ok=True)
+    os.makedirs(os.path.dirname(path) or ".", exist_ok=True)
     cx = connect(path)
     # G6-A migration: fact_version_relation used to be a stored table.
     # Its rows are derived and rebuildable — dropping loses nothing.

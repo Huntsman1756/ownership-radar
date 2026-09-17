@@ -10,14 +10,15 @@ Failures are isolated into failed_item and the run continues.
 """
 import json
 import os
-import sqlite3
 from datetime import datetime, timezone
 
 from . import cnmv, pipeline, store
 from .crawler import Fetcher
 
-REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-PROD_DIR = os.path.join(REPO_ROOT, "data", "production")
+# dataset paths are cwd-relative — a checkout convention, not
+# package-relative (site-packages must never be a data dir)
+PROD_DIR = os.environ.get("RADAR_PROD_DIR",
+                          os.path.join("data", "production"))
 DB_PATH = os.path.join(PROD_DIR, "ownership-radar.sqlite")
 RAW_DIR = os.path.join(PROD_DIR, "raw")
 BLOB_DIR = os.path.join(PROD_DIR, "blobs")
@@ -38,7 +39,9 @@ def start_run(cx, run_type, scope, universe_version=None,
     assert run_type in RUN_TYPES
     run_id = run_id or datetime.now(timezone.utc).strftime(
         run_type.lower() + "-%Y%m%dT%H%M%SZ")
-    cx.execute("INSERT INTO crawl_run VALUES(?,?,?,?,?,?,?,?,?,?)",
+    cx.execute("""INSERT INTO crawl_run(run_id,started_at,completed_at,
+                  source,parser_version,status,stats_json,run_type,
+                  scope,universe_version) VALUES(?,?,?,?,?,?,?,?,?,?)""",
                (run_id, _now(), None, "cnmv.es", None, "RUNNING",
                 None, run_type, scope, universe_version))
     cx.commit()

@@ -1,4 +1,10 @@
-"""Crawl orchestration — `python -m ownership_radar` runs one crawl.
+"""Internal crawl orchestration — `python -m ownership_radar crawl`
+runs one SAN/BBVA observation pass into `data/radar.sqlite`.
+
+This is the G1-era entry point used to produce the local listing
+database that the corpus tooling (`scripts/fetch_*_corpus.py`) reads.
+Production ingestion lives in `ingest.py` / `poller.py` (typed runs,
+checkpoints, failure isolation).
 
 A run is an append-only observation pass over the bounded issuer
 universe. Output: data/raw/<run_id>/ (immutable captures), data/runs/,
@@ -12,8 +18,9 @@ from . import PARSER_VERSION
 from . import cnmv, store
 from .crawler import Fetcher
 
-REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-DATA_DIR = os.path.join(REPO_ROOT, "data")
+# dataset paths are cwd-relative — a checkout convention, not
+# package-relative (site-packages must never be a data dir)
+DATA_DIR = os.environ.get("RADAR_DATA_DIR", "data")
 DB_PATH = os.path.join(DATA_DIR, "radar.sqlite")
 RAW_DIR = os.path.join(DATA_DIR, "raw")
 RUNS_DIR = os.path.join(DATA_DIR, "runs")
@@ -25,12 +32,14 @@ ISSUERS = {
 
 
 def run(issuers=None):
-    issuers = issuers or ISSUERS
+    issuers = ISSUERS if issuers is None else issuers
     os.makedirs(RUNS_DIR, exist_ok=True)
     cx = store.init_db(DB_PATH)
     run_id = datetime.now(timezone.utc).strftime("run-%Y%m%dT%H%M%SZ")
     t0 = datetime.now(timezone.utc).isoformat(timespec="milliseconds")
-    cx.execute("INSERT INTO crawl_run VALUES(?,?,?,?,?,?,NULL)",
+    cx.execute("""INSERT INTO crawl_run(run_id,started_at,completed_at,
+                  source,parser_version,status,stats_json)
+                  VALUES(?,?,?,?,?,?,NULL)""",
                (run_id, t0, None, "cnmv.es", PARSER_VERSION, "RUNNING"))
     cx.commit()
     fx = Fetcher(run_id, RAW_DIR)

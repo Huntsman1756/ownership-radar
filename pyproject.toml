@@ -9,12 +9,52 @@ description = "Bitemporal, reproducible ledger of ownership changes in Spanish l
 readme = "README.md"
 requires-python = ">=3.10"
 license = {text = "MIT"}
+authors = [{name = "ownership-radar maintainers"}]
+keywords = ["cnmv", "spain", "insider-trading", "significant-holdings",
+            "treasury-stock", "bitemporal", "provenance"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Financial and Insurance Industry",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Database",
+    "Topic :: Office/Business :: Financial",
+]
 dependencies = [
     "pdfminer-six>=20221105",
 ]
+
+[project.optional-dependencies]
+dev = ["pytest>=8", "ruff==0.16.8", "build>=1"]
+
+[project.urls]
+Homepage = "https://github.com/Huntsman1756/ownership-radar"
+Repository = "https://github.com/Huntsman1756/ownership-radar"
+Issues = "https://github.com/Huntsman1756/ownership-radar/issues"
+Changelog = "https://github.com/Huntsman1756/ownership-radar/blob/main/CHANGELOG.md"
 
 [project.scripts]
 ownership-radar = "ownership_radar.public_cli:main"
 
 [tool.setuptools.packages.find]
 include = ["ownership_radar*"]
+
+[tool.setuptools.package-data]
+ownership_radar = ["seeds/*.json"]
+
+[tool.ruff]
+line-length = 68
+extend-exclude = ["probe"]
+
+[tool.ruff.lint]
+# Frozen rule set: pyflakes correctness only (unused imports/vars,
+# undefined names, redefinitions). The codebase's compact style is
+# intentional — stylistic rules are deliberately not enabled.
+select = ["F"]

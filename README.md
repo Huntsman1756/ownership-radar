@@ -189,7 +189,8 @@ scripts/           dataset/universe tooling (incl. demo builder)
 examples/          runnable API/feed examples
 demo/              generated demo dataset (see DATA-NOTICE.md)
 data/              local crawl output — gitignored
-universe/          frozen issuer-universe seeds
+ownership_radar/seeds/  frozen issuer-universe seeds (shipped in the
+                   package)
 ```
 
 ## Data / reuse notice

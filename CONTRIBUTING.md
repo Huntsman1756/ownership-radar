@@ -8,7 +8,8 @@ convenience. Read this before proposing changes.
 ```bash
 git clone https://github.com/Huntsman1756/ownership-radar.git
 cd ownership-radar
-pip install -e .
+pip install -e ".[dev]"
+ruff check .                     # pyflakes correctness rules
 python -m pytest tests/          # corpus-dependent tests SKIP
 python scripts/build_demo_dataset.py
 python examples/recent_insiders.py
@@ -48,7 +49,7 @@ clone.
 
 ## Repository map
 
-`ownership_radar/` library · `tests/` contract tests · `docs/`
-model/API/ADRs/gates · `probe/` G0 evidence (not runtime) ·
-`corpus/` manifests+oracles · `scripts/` dataset tooling ·
-`examples/` runnable demos.
+`ownership_radar/` library (incl. `seeds/` frozen universe seed) ·
+`tests/` contract tests · `docs/` model/API/ADRs/gates · `probe/` G0
+evidence (not runtime) · `corpus/` manifests+oracles · `scripts/`
+dataset tooling · `examples/` runnable demos.

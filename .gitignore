@@ -26,6 +26,17 @@ corpus/g3/
 
 __pycache__/
 *.pyc
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# local virtualenvs / editor state
+.venv/
+venv/
+.env
+.env.*
+!.env.example
 
 # python packaging artifacts
 build/

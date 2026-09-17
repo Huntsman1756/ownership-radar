@@ -116,7 +116,8 @@ def _atom(result):
 def _table(obj):
     """Minimal human-readable rendering."""
     if hasattr(obj, "items"):
-        print(f"[{obj.history_mode}] count={obj.count} "
+        mode = getattr(obj, "history_mode", None) or obj.status
+        print(f"[{mode}] count={obj.count} "
               f"has_more={obj.has_more}")
         for it in obj.items:
             if hasattr(it, "to_dict"):

@@ -10,6 +10,12 @@ ownership-radar --db <path> <command> [options]
 `--db` defaults to `data/production/ownership-radar.sqlite`
 (env `RADAR_DB` overrides).
 
+Internal/admin surfaces are subcommands of `python -m
+ownership_radar`, not the public CLI: `ingest` (production
+backfill/reconcile/poll/report/invariants/materialize; env
+`RADAR_PROD_DB`/`RADAR_PROD_DIR`), `ledger` (validation),
+`crawl` (G1-era SAN/BBVA local crawl into `data/radar.sqlite`).
+
 ## Commands
 
 ```text

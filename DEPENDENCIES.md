@@ -24,7 +24,8 @@ the project's `LICENSE` (MIT, code only; CNMV data terms live in
 
 ## Dev-only tools (not shipped as runtime deps)
 
-`pytest` (MIT), `build` (MIT), `twine` (Apache-2.0).
+`pytest` (MIT), `ruff` (MIT, pinned — pyflakes correctness rules
+only), `build` (MIT), `twine` (Apache-2.0).
 
 ## Policy
 

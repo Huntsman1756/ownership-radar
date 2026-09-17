@@ -21,6 +21,10 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install . pytest
+      - name: Lint (pyflakes correctness rules)
+        run: |
+          pip install ruff==0.16.8
+          ruff check .
       - name: Unit + contract tests
         run: python -m pytest tests/ -q -rs
         # corpus tests SKIP with LOCAL_CNMV_CORPUS_NOT_AVAILABLE —
@@ -64,4 +68,8 @@ jobs:
           cd /tmp
           /tmp/venv-clean/bin/python -c "import ownership_radar; \
             print(ownership_radar.__version__)"
+          /tmp/venv-clean/bin/python -c "from ownership_radar import \
+            universe; u = universe.load_universe(); \
+            assert len(u[1]) == 60; print(u[0]['universe_version'])"
           /tmp/venv-clean/bin/ownership-radar --help
+          /tmp/venv-clean/bin/ownership-radar --version

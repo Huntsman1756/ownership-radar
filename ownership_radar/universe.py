@@ -1,9 +1,9 @@
 """Issuer universe — versioned seed + resolution boundary.
 
 The product crawls a *defined* universe, not "whatever the search form
-returns". A universe is a frozen seed file (universe/<version>.json)
-with its own content_sha256; production runs record which version
-they executed against.
+returns". A universe is a frozen seed file (seeds/<version>.json,
+shipped inside the package) with its own content_sha256; production
+runs record which version they executed against.
 
 Identity policy: issuer_id = official NIF. Tickers live in
 `issuer_alias` as conveniences only — never identity, never fuzzy.
@@ -11,8 +11,8 @@ Identity policy: issuer_id = official NIF. Tickers live in
 import json
 import os
 
-REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-UNIVERSE_DIR = os.path.join(REPO_ROOT, "universe")
+UNIVERSE_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                            "seeds")
 DEFAULT_UNIVERSE = "itf2026-v1"
 
 # Market tickers, source-annotated conveniences. Coverage: only

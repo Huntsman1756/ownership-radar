@@ -55,8 +55,8 @@ bitemporal core (known_at / effective_at)
 - NOD → `transaction_event` + `execution_line` (exact decimals, PDMR
   / closely-associated classification, amendment text raw).
 - PS → disclosure positions + control chains (never trades).
-- AC → `ac_operation` flows (sec. 4) + `ac_resulting_position` stock
-  (sec. 5) — separate structures.
+- AC → `ac_operation` flows (sec. 4) + section-5 resulting stock in
+  `ac_notice_semantic.final_position_json` — separate structures.
 
 ## Ledger (bitemporal)
 

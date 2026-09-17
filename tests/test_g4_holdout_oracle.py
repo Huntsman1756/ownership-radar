@@ -6,7 +6,6 @@ of the event builder. Skips cleanly without the local corpus DB.
 """
 import json
 import os
-import sqlite3
 import sys
 import unittest
 from collections import Counter
@@ -71,7 +70,7 @@ class TestG4HoldoutOracle(unittest.TestCase):
         self.assertEqual(mism, [])
 
     def test_chains(self):
-        exp = json.load(open(ORACLE, encoding="utf-8"))
+        json.load(open(ORACLE, encoding="utf-8"))
         term, errs = ledger.resolve_annulment_chains(self.cx)
         self.assertEqual(errs, [])
         self.assertEqual(term["ps:2020135555"], "ps:2021016444")

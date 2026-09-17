@@ -57,6 +57,14 @@ radar.feed_cursor_latest()              -> opaque "from now" cursor
 `issuer.treasury_stock_positions()`, `issuer.treasury_operations()`,
 `issuer.notices()`, `issuer.events()`).
 
+Everywhere `issuer=` is accepted it takes an `Issuer` or any
+identifier string resolved by the same exact rules as `company()`
+— consistently across `notices`, `events`, `insider_transactions`,
+`significant_holdings`, `treasury_stock_positions`,
+`treasury_operations` and `feed`. A string that matches no universe
+entry but is already an `issuer_id` in the dataset is accepted
+verbatim; anything else raises `NotFound`.
+
 ## Domain objects
 
 All frozen dataclasses; read-only.
@@ -116,7 +124,20 @@ They are never collapsed into `cancelled=True`.
 `limit` + opaque `cursor` (keyset on the declared ordering).
 Ordering is declared per method — never SQLite row order.
 `QueryResult.next_cursor` is stable and deterministic for the same
-query parameters.
+query parameters. `limit` must be a positive integer.
+
+Query cursors are versioned envelopes (`q2.<…>`) bound to the
+issuing query — method, resolved issuer, and every filter — and to
+the dataset version. A cursor reused against a different method,
+filters or dataset raises `CursorDatasetMismatch`; a wrong-version
+cursor raises `UnsupportedCursorVersion`; anything malformed raises
+`InvalidCursor`. Bare unversioned cursors produced by `0.1.0a1` are
+deliberately rejected (`InvalidCursor`) — their keys were computed
+against the wrong ordering and could skip records. Feed cursors
+(`v1.<…>`) are a separate, unchanged contract — see `FEED.md`.
+
+`OwnershipRadar.open(path)` raises `OwnershipRadarError` if the
+dataset file cannot be opened (missing path, unreadable file).
 
 ## Types
 

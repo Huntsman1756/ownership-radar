@@ -13,6 +13,9 @@ def main():
     if args and args[0] == "ingest":
         _ingest(args[1:])
         return
+    if args and args[0] == "crawl":
+        run()
+        return
     # public G6-B CLI is the default surface
     from . import public_cli
     sys.exit(public_cli.main(args))
@@ -24,8 +27,14 @@ def _ingest(args):
     db = os.environ.get("RADAR_PROD_DB", ingest.DB_PATH)
     u = universe.load_universe()
     cmd = args[0] if args else "report"
+    if cmd in ("report", "invariants") and not os.path.exists(db):
+        print("error: dataset not found: " + db, file=sys.stderr)
+        sys.exit(1)
     cx = store.init_db(db)
-    universe.persist_universe(cx, u[0])
+    # read commands must not mutate the dataset — the universe seed is
+    # persisted only by commands that write observations
+    if cmd in ("backfill", "reconcile", "poll", "materialize"):
+        universe.persist_universe(cx, u[0])
     if cmd == "backfill":
         ids = _opt(args, "--issuers")
         sub = {k: u[1][k] for k in ids.split(",")} if ids else None
@@ -93,4 +102,5 @@ def _opt(args, name):
     return args[args.index(name) + 1] if name in args else None
 
 
-main()
+if __name__ == "__main__":
+    main()

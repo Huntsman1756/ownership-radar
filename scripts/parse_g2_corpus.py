@@ -26,7 +26,7 @@ def canonical_digest(p):
 
 
 def run(tag=""):
-    m = json.load(open(MANIFEST))
+    m = json.load(open(MANIFEST, encoding="utf-8"))
     dbs = {"dev": os.path.join(ROOT, "data", "radar.sqlite"),
            "holdout": os.path.join(ROOT, "corpus", "corpus.sqlite")}
     conns = {k: store.init_db(v) for k, v in dbs.items()}

@@ -197,7 +197,7 @@ class TestFailClosed(unittest.TestCase):
 
 class TestStorage(unittest.TestCase):
     def test_event_provenance_and_shape(self):
-        import sqlite3, tempfile
+        import tempfile
         fd, path = tempfile.mkstemp(suffix=".sqlite")
         os.close(fd)
         try:

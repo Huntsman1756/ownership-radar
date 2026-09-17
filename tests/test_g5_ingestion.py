@@ -5,14 +5,12 @@ pattern. Covers idempotency, checkpoints, failure isolation, scoped
 disappearances, content-addressable blobs, incremental discovery and
 AS_KNOWN_AT at scale.
 """
-import json
 import os
-import sqlite3
 import tempfile
 import unittest
 from datetime import datetime, timezone
 
-from ownership_radar import (cnmv, coverage, ingest, ledger, pipeline,
+from ownership_radar import (coverage, ingest, ledger, pipeline,
                              poller, store, universe)
 
 
@@ -221,7 +219,6 @@ class TestG5(unittest.TestCase):
         reconciliation produced 1,419 false positives before fix)."""
         tmp = tempfile.mkdtemp()
         cx = mkdb(tmp)
-        now = _now()
         cx.execute("""INSERT INTO notice(notice_key,source_surface,
             source_registration_number,issuer_id,filing_date,
             notice_status,first_seen_run,last_seen_run)
@@ -270,7 +267,7 @@ class TestG5(unittest.TestCase):
                       doc_token) VALUES(?,?,?,?,?,?)""",
                    (nk2, "ps", "1999000001", "A00000001",
                     "1999-05-01", "TOKX"))
-        stats = pipeline.scan_docs(cx, fx, "r2")
+        pipeline.scan_docs(cx, fx, "r2")
         row2 = cx.execute("SELECT doc_status FROM notice_doc WHERE "
                           "notice_key=?", (nk2,)).fetchone()
         self.assertEqual(row2[0], "NOT_FETCHED_LEGACY_ERA")

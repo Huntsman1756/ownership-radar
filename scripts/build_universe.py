@@ -1,8 +1,9 @@
 """Build universe seed from the AEAT ITF issuer list PDF.
 
 Deterministic: same input PDF -> same entries -> same content_sha256.
-Writes universe/itf_2026.json. The PDF itself is NOT committed
-(redistribution unknown); its sha256 + URL are recorded in the seed.
+Writes ownership_radar/seeds/itf2026-v1.json. The PDF itself is NOT
+committed (redistribution unknown); its sha256 + URL are recorded in
+the seed.
 
 Usage: python scripts/build_universe.py <aeat.pdf>
 """
@@ -18,8 +19,9 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 SOURCE_URL = ("https://www3.agenciatributaria.gob.es/static_files/Sede/Tema/"
               "Declaraciones_informativas/I_Transacciones_Financieras/"
               "RELACION_SOCIEDADES_EJERCICIO_2026.pdf")
-OUT = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
-                   "universe", "itf_2026.json")
+OUT = os.path.join(os.path.dirname(os.path.dirname(
+    os.path.abspath(__file__))), "ownership_radar", "seeds",
+    "itf2026-v1.json")
 
 ROW_RE = re.compile(r"^(\d{4})\s+([A-Z]\d{8})\s*(.*?)\s*$")
 ISIN_RE = re.compile(r"^ES[0-9A-Z]{10}$")

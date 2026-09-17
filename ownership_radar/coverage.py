@@ -5,12 +5,9 @@ acquisition (enumerated) -> document (token present) -> template
 support -> semantic parse -> ledger. A single "%" without denominators
 is not a coverage figure.
 """
-import hashlib
-import json
-import os
 from collections import Counter, defaultdict
 
-from . import ledger, store
+from . import ledger
 
 DOC_ERA = "2015-12-28"
 

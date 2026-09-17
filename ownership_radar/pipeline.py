@@ -17,7 +17,6 @@ DIRECTOR_HOLDING (Circular 8/2015 Modelo 2). pspdf fingerprints the
 document; a Modelo-2 director form is UNSUPPORTED for the G3
 significant-holdings parser, not an error.
 """
-import json
 import logging
 from datetime import datetime, timezone
 
@@ -96,7 +95,15 @@ def fetch_and_process(fx, cx, notice, run_id):
     meta, body = fx.get(
         "https://www.cnmv.es/webservices/verdocumento/ver?e=" + token,
         note=f"doc {nk}")
-    if not body or body[:4] != b"%PDF":
+    if meta.get("status") == "ERROR" or not body:
+        # transient fetch failure — a retryable class, never a
+        # content verdict
+        cx.execute("""INSERT OR REPLACE INTO notice_doc
+                      VALUES(?,?,?,?,?,NULL,NULL)""",
+                   (nk, ERR, meta.get("raw_sha256"),
+                    meta.get("retrieved_at"), run_id))
+        return ERR
+    if body[:4] != b"%PDF":
         cx.execute("""INSERT OR REPLACE INTO notice_doc
                       VALUES(?,?,?,?,?,NULL,NULL)""",
                    (nk, NOT_PDF, meta.get("raw_sha256"),
@@ -131,12 +138,13 @@ def scan_docs(cx, fx, run_id, issuer_ids=None,
                   n.filing_date, n.issuer_id
            FROM notice n
            LEFT JOIN notice_doc d ON d.notice_key = n.notice_key
-           WHERE d.notice_key IS NULL"""
+           WHERE (d.notice_key IS NULL"""
     params = []
     if retry_statuses:
         q += (" OR d.doc_status IN (%s)" %
               ",".join("?" * len(retry_statuses)))
         params += list(retry_statuses)
+    q += ")"
     if filing_since:
         q += " AND (n.filing_date IS NULL OR n.filing_date>=?)"
         params.append(filing_since)

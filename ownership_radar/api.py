@@ -24,6 +24,7 @@ history.
 import base64
 import hashlib
 import json
+import pathlib
 import sqlite3
 from dataclasses import dataclass, field
 from datetime import date, datetime, timezone
@@ -408,7 +409,15 @@ FEED_ITEM_TYPES = (
 
 OBSERVED_CURRENT = "OBSERVED_CURRENT"
 RECONSTRUCTED_HISTORICAL = "RECONSTRUCTED_HISTORICAL"
-CURSOR_VERSION = "v1"
+# G6-C feed cursor / feed_item_id versions — frozen, do not change.
+FEED_CURSOR_VERSION = "v1"
+FEED_ITEM_ID_VERSION = "v1"
+# QueryResult cursors (notices/events/insider_transactions/…):
+# "q2.<b64url({k,q,dv})>" — versioned envelope bound to the issuing
+# query and dataset. The unversioned alpha.1 format is rejected:
+# its keys were computed against the wrong ordering and could skip
+# records, so no compatibility is attempted.
+QUERY_CURSOR_VERSION = "q2"
 
 
 @dataclass(frozen=True)
@@ -516,17 +525,64 @@ class DatasetInfo:
 
 # ----------------------------------------------------------------- cursor
 
-def _cursor_encode(key):
-    return base64.urlsafe_b64encode(
-        json.dumps(key, separators=(",", ":")).encode()).decode()
+def _qsig(*parts):
+    """Signature binding a cursor to the exact query that produced
+    it — method name plus every filter that changes the result set
+    or ordering."""
+    return hashlib.sha256("|".join(
+        "" if p is None else
+        p.isoformat() if hasattr(p, "isoformat") else
+        str(bool(p)) if isinstance(p, bool) else
+        str(p) for p in parts).encode()).hexdigest()[:16]
 
 
-def _cursor_decode(cur):
+def _cursor_encode(key, qsig, dv):
+    payload = {"k": key, "q": qsig, "dv": dv}
+    return (QUERY_CURSOR_VERSION + "." + base64.urlsafe_b64encode(
+        json.dumps(payload, separators=(",", ":")).encode()
+    ).decode())
+
+
+def _cursor_decode(cur, spec, qsig, dv):
+    """Decode a versioned query cursor. `spec` is a per-field type
+    string — 's' for a text key part, 'i' for an integer. Errors are
+    always public: InvalidCursor (malformed/legacy), Unsupported-
+    CursorVersion, CursorDatasetMismatch (foreign query/dataset)."""
     try:
-        return json.loads(base64.urlsafe_b64decode(
-            cur.encode()).decode())
+        ver, raw = cur.split(".", 1)
+    except (ValueError, AttributeError):
+        raise InvalidCursor(
+            "unversioned query cursor — pre-0.1.0a2 cursors are "
+            "invalidated (see CHANGELOG)")
+    if ver != QUERY_CURSOR_VERSION:
+        raise UnsupportedCursorVersion(
+            f"query cursor version {ver!r} unsupported")
+    try:
+        d = json.loads(base64.urlsafe_b64decode(
+            raw.encode()).decode())
+        k, cq, cdv = d["k"], d["q"], d["dv"]
     except Exception as e:  # noqa
-        raise InvalidTemporalQuery(f"invalid cursor: {e!r}")
+        raise InvalidCursor(f"undecodable query cursor: {e!r}")
+    if cq != qsig:
+        raise CursorDatasetMismatch(
+            "cursor was issued for a different query/filter set")
+    if cdv != dv:
+        raise CursorDatasetMismatch(
+            "cursor was issued against a different dataset version")
+    if not isinstance(k, list) or len(k) != len(spec):
+        raise InvalidCursor("invalid cursor key shape")
+    for v, t in zip(k, spec):
+        ok = isinstance(v, str) if t == "s" else (
+            isinstance(v, int) and not isinstance(v, bool))
+        if not ok:
+            raise InvalidCursor("invalid cursor key shape")
+    return k
+
+
+def _check_limit(limit):
+    if not isinstance(limit, int) or isinstance(limit, bool) \
+            or limit < 1:
+        raise InvalidTemporalQuery("limit must be a positive integer")
 
 
 # ----------------------------------------------------------------- facade
@@ -546,12 +602,38 @@ class OwnershipRadar:
 
     @classmethod
     def open(cls, path):
-        uri = "file:%s?mode=ro" % path.replace("\\", "/")
-        cx = sqlite3.connect(uri, uri=True)
-        cx.execute("PRAGMA query_only=ON")
+        uri = pathlib.Path(path).absolute().as_uri() + "?mode=ro"
+        try:
+            cx = sqlite3.connect(uri, uri=True)
+            cx.execute("PRAGMA query_only=ON")
+        except sqlite3.Error as e:
+            raise OwnershipRadarError(
+                f"cannot open dataset {path!r}: {e}")
         return cls(cx)
 
     # ------------------------------------------------- issuer resolution
+
+    def _issuer_id(self, issuer):
+        """Accepts an Issuer object or an identifier string resolved by
+        the same exact rules as company(). A string matching no
+        universe entry but present as an issuer_id in the dataset is
+        accepted verbatim — the ledger may know issuers the shipped
+        universe seed does not."""
+        if issuer is None:
+            return None
+        if isinstance(issuer, Issuer):
+            return issuer.issuer_id
+        try:
+            return self._resolve_issuer_id(issuer)
+        except NotFound:
+            hit = self._cx.execute(
+                "SELECT 1 FROM notice WHERE issuer_id=? LIMIT 1",
+                (issuer,)).fetchone() or self._cx.execute(
+                "SELECT 1 FROM ledger_event WHERE issuer_id=? LIMIT 1",
+                (issuer,)).fetchone()
+            if hit:
+                return issuer
+            raise
 
     def _resolve_issuer_id(self, ident):
         """Exact resolution: issuer_id/NIF, LEI, ISIN, registered alias.
@@ -661,14 +743,15 @@ class OwnershipRadar:
         doc = self._cx.execute(
             "SELECT raw_sha256,semantic_parser_version FROM notice_doc "
             "WHERE notice_key=?", (notice_key,)).fetchone()
-        parser = None
-        for t in ("nod_notice_semantic", "ps_notice_semantic",
-                  "ac_notice_semantic"):
+        parser = parser_name = None
+        for t, mod in (("nod_notice_semantic", "nodpdf"),
+                       ("ps_notice_semantic", "pspdf"),
+                       ("ac_notice_semantic", "acpdf")):
             r = self._cx.execute(
                 f"SELECT semantic_parser_version FROM {t} WHERE "
                 f"notice_key=?", (notice_key,)).fetchone()
             if r:
-                parser = r[0]
+                parser, parser_name = r[0], mod
                 break
         return Provenance(
             notice_key=notice_key,
@@ -677,7 +760,7 @@ class OwnershipRadar:
             source_url_canonical=obs[0] if obs else None,
             raw_sha256=doc[0] if doc else None,
             first_observed_at=_dt(obs[1]) if obs else None,
-            semantic_parser=(notice_key.split(":")[0]
+            semantic_parser=(parser_name or notice_key.split(":")[0]
                              if notice_key else None),
             semantic_parser_version=parser or (doc[1] if doc else None),
             rule_id=rule_id, derivation_version=derivation_version)
@@ -756,8 +839,10 @@ class OwnershipRadar:
 
     def notices(self, issuer=None, surface=None, known_at=None,
                 limit=200, cursor=None):
-        issuer_id = issuer.issuer_id if isinstance(issuer, Issuer) \
-            else issuer
+        _check_limit(limit)
+        issuer_id = self._issuer_id(issuer)
+        qs = _qsig("notices", issuer_id, surface, known_at)
+        dv = self._dataset_version()
         mode = self._check_known_at(known_at)
         if mode == NO_OBSERVATION_HISTORY:
             return self._result([], NO_OBSERVATION_HISTORY, mode,
@@ -775,8 +860,8 @@ class OwnershipRadar:
                   "WHERE o.notice_key=n.notice_key AND "
                   "o.observed_at<=?)")
             args.append(self._kat(known_at))
-        if cursor:
-            k = _cursor_decode(cursor)
+        if cursor is not None:
+            k = _cursor_decode(cursor, "s", qs, dv)
             q += " AND n.notice_key<?"
             args.append(k[0])
         q += " ORDER BY n.notice_key DESC LIMIT ?"
@@ -785,7 +870,8 @@ class OwnershipRadar:
         has_more = len(keys) > limit
         keys = keys[:limit]
         items = [self.notice(k) for k in keys]
-        nc = _cursor_encode([keys[-1]]) if has_more and keys else None
+        nc = (_cursor_encode([keys[-1]], qs, dv)
+              if has_more and keys else None)
         return self._result(items, "OK", mode, known_at, None,
                             has_more, nc, "notices")
 
@@ -793,8 +879,10 @@ class OwnershipRadar:
 
     def events(self, issuer=None, known_at=None, effective_at=None,
                basis=None, limit=200, cursor=None):
-        issuer_id = issuer.issuer_id if isinstance(issuer, Issuer) \
-            else issuer
+        _check_limit(limit)
+        issuer_id = self._issuer_id(issuer)
+        qs = _qsig("events", issuer_id, known_at, effective_at, basis)
+        dv = self._dataset_version()
         if basis and basis not in (SOURCE_DECLARED,
                                    DETERMINISTIC_DERIVATION):
             raise InvalidTemporalQuery(
@@ -822,13 +910,13 @@ class OwnershipRadar:
         if known_at:
             q += " AND first_observed_at<=?"
             args.append(self._kat(known_at))
-        # keyset cursor on (effective_date DESC, event_id DESC)
-        if cursor:
-            k = _cursor_decode(cursor)
-            q += (" AND (effective_date<? OR (effective_date=? AND "
-                  "event_id<?) OR (effective_date IS NULL AND ? IS "
-                  "NOT NULL))")
-            args += [k[0], k[0], k[1], k[0]]
+        # keyset cursor on (effective_date DESC, event_id DESC);
+        # NULL dates sort last, encoded as '' in the cursor
+        if cursor is not None:
+            k = _cursor_decode(cursor, "ss", qs, dv)
+            q += (" AND (COALESCE(effective_date,'')<? OR "
+                  "(COALESCE(effective_date,'')=? AND event_id<?))")
+            args += [k[0], k[0], k[1]]
         q += (" ORDER BY effective_date DESC,event_id DESC LIMIT ?")
         args.append(limit + 1)
         rows = self._cx.execute(q, args).fetchall()
@@ -843,7 +931,8 @@ class OwnershipRadar:
             _radar=self) for r in rows]
         nc = None
         if has_more and rows:
-            nc = _cursor_encode([rows[-1][4], rows[-1][0]])
+            nc = _cursor_encode([rows[-1][4] or "", rows[-1][0]],
+                                qs, dv)
         return self._result(items, "OK", mode, known_at, effective_at,
                             has_more, nc, "events")
 
@@ -852,8 +941,11 @@ class OwnershipRadar:
     def insider_transactions(self, issuer=None, known_at=None,
                              effective_at=None, include_cancelled=False,
                              limit=200, cursor=None):
-        issuer_id = issuer.issuer_id if isinstance(issuer, Issuer) \
-            else issuer
+        _check_limit(limit)
+        issuer_id = self._issuer_id(issuer)
+        qs = _qsig("insider_transactions", issuer_id, known_at,
+                   effective_at, include_cancelled)
+        dv = self._dataset_version()
         mode = self._check_known_at(known_at)
         if mode == NO_OBSERVATION_HISTORY:
             return self._result([], NO_OBSERVATION_HISTORY, mode,
@@ -884,10 +976,10 @@ class OwnershipRadar:
                   "WHERE o.notice_key=t.notice_key AND "
                   "o.observed_at<=?)")
             args.append(self._kat(known_at))
-        if cursor:
-            k = _cursor_decode(cursor)
-            q += (" AND (n.filing_date<? OR (n.filing_date=? AND "
-                  "t.event_id<?))")
+        if cursor is not None:
+            k = _cursor_decode(cursor, "ss", qs, dv)
+            q += (" AND (COALESCE(n.filing_date,'')<? OR "
+                  "(COALESCE(n.filing_date,'')=? AND t.event_id<?))")
             args += [k[0], k[0], k[1]]
         q += (" ORDER BY n.filing_date DESC,t.event_id DESC LIMIT ?")
         args.append(limit + 1)
@@ -899,7 +991,7 @@ class OwnershipRadar:
         items = []
         last_key = None
         for r in rows:
-            last_key = [r[11], r[0]]
+            last_key = [r[11] or "", r[0]]
             if r[1] in cancelled:
                 continue
             exs = tuple(ExecutionLine(
@@ -921,7 +1013,8 @@ class OwnershipRadar:
                 price_currency=r[14], executions=exs,
                 venue_raw=r[15], notice_status=r[16],
                 event_basis=DETERMINISTIC_DERIVATION, _radar=self))
-        nc = _cursor_encode(last_key) if has_more and last_key else None
+        nc = (_cursor_encode(last_key, qs, dv)
+              if has_more and last_key else None)
         return self._result(items, "OK", mode, known_at, effective_at,
                             has_more, nc, "insider_transactions")
 
@@ -933,8 +1026,11 @@ class OwnershipRadar:
     def significant_holdings(self, issuer=None, known_at=None,
                              effective_at=None, include_cancelled=False,
                              limit=200, cursor=None):
-        issuer_id = issuer.issuer_id if isinstance(issuer, Issuer) \
-            else issuer
+        _check_limit(limit)
+        issuer_id = self._issuer_id(issuer)
+        qs = _qsig("significant_holdings", issuer_id, known_at,
+                   effective_at, include_cancelled)
+        dv = self._dataset_version()
         mode = self._check_known_at(known_at)
         if mode == NO_OBSERVATION_HISTORY:
             return self._result([], NO_OBSERVATION_HISTORY, mode,
@@ -965,10 +1061,12 @@ class OwnershipRadar:
                   "WHERE o.notice_key=s.notice_key AND "
                   "o.observed_at<=?)")
             args.append(self._kat(known_at))
-        if cursor:
-            k = _cursor_decode(cursor)
-            q += " AND s.notice_key<?"
-            args.append(k[0])
+        if cursor is not None:
+            k = _cursor_decode(cursor, "ss", qs, dv)
+            q += (" AND (COALESCE(s.threshold_date,'')<? OR "
+                  "(COALESCE(s.threshold_date,'')=? AND "
+                  "s.notice_key<?))")
+            args += [k[0], k[0], k[1]]
         q += " ORDER BY s.threshold_date DESC,s.notice_key DESC LIMIT ?"
         args.append(limit + 1)
         rows = self._cx.execute(q, args).fetchall()
@@ -979,7 +1077,7 @@ class OwnershipRadar:
         items = []
         last_key = None
         for r in rows:
-            last_key = [r[0]]
+            last_key = [r[3] or "", r[0]]
             if r[0] in cancelled:
                 continue
             shares = tuple(dict(zip(
@@ -1011,7 +1109,8 @@ class OwnershipRadar:
                 percentage_semantics=r[7], reasons=reasons,
                 regulatory_template=r[8], notice_status=r[9],
                 _radar=self))
-        nc = _cursor_encode(last_key) if has_more and last_key else None
+        nc = (_cursor_encode(last_key, qs, dv)
+              if has_more and last_key else None)
         return self._result(items, "OK", mode, known_at, effective_at,
                             has_more, nc, "significant_holdings")
 
@@ -1021,8 +1120,11 @@ class OwnershipRadar:
                                  effective_at=None,
                                  include_cancelled=False,
                                  limit=200, cursor=None):
-        issuer_id = issuer.issuer_id if isinstance(issuer, Issuer) \
-            else issuer
+        _check_limit(limit)
+        issuer_id = self._issuer_id(issuer)
+        qs = _qsig("treasury_stock_positions", issuer_id, known_at,
+                   effective_at, include_cancelled)
+        dv = self._dataset_version()
         mode = self._check_known_at(known_at)
         if mode == NO_OBSERVATION_HISTORY:
             return self._result([], NO_OBSERVATION_HISTORY, mode,
@@ -1050,10 +1152,12 @@ class OwnershipRadar:
                   "WHERE o.notice_key=s.notice_key AND "
                   "o.observed_at<=?)")
             args.append(self._kat(known_at))
-        if cursor:
-            k = _cursor_decode(cursor)
-            q += " AND s.notice_key<?"
-            args.append(k[0])
+        if cursor is not None:
+            k = _cursor_decode(cursor, "ss", qs, dv)
+            q += (" AND (COALESCE(s.notification_date,'')<? OR "
+                  "(COALESCE(s.notification_date,'')=? AND "
+                  "s.notice_key<?))")
+            args += [k[0], k[0], k[1]]
         q += (" ORDER BY s.notification_date DESC,s.notice_key DESC "
               "LIMIT ?")
         args.append(limit + 1)
@@ -1070,7 +1174,7 @@ class OwnershipRadar:
             reason_voting_rights_update=bool(r[6]),
             regulatory_template=r[7], notice_status=r[8], _radar=self)
             for r in rows if r[0] not in cancelled]
-        nc = (_cursor_encode([rows[-1][0]])
+        nc = (_cursor_encode([rows[-1][2] or "", rows[-1][0]], qs, dv)
               if has_more and rows else None)
         return self._result(items, "OK", mode, known_at, effective_at,
                             has_more, nc, "treasury_stock_positions")
@@ -1078,8 +1182,11 @@ class OwnershipRadar:
     def treasury_operations(self, issuer=None, known_at=None,
                             effective_at=None, include_cancelled=False,
                             limit=200, cursor=None):
-        issuer_id = issuer.issuer_id if isinstance(issuer, Issuer) \
-            else issuer
+        _check_limit(limit)
+        issuer_id = self._issuer_id(issuer)
+        qs = _qsig("treasury_operations", issuer_id, known_at,
+                   effective_at, include_cancelled)
+        dv = self._dataset_version()
         mode = self._check_known_at(known_at)
         if mode == NO_OBSERVATION_HISTORY:
             return self._result([], NO_OBSERVATION_HISTORY, mode,
@@ -1106,11 +1213,14 @@ class OwnershipRadar:
                   "WHERE ob.notice_key=o.notice_key AND "
                   "ob.observed_at<=?)")
             args.append(self._kat(known_at))
-        if cursor:
-            k = _cursor_decode(cursor)
-            q += (" AND (o.operation_date<? OR (o.operation_date=? "
-                  "AND o.notice_key<?))")
-            args += [k[0], k[0], k[1]]
+        if cursor is not None:
+            k = _cursor_decode(cursor, "ssi", qs, dv)
+            q += (" AND (COALESCE(o.operation_date,'')<? OR "
+                  "(COALESCE(o.operation_date,'')=? AND "
+                  "o.notice_key<?) OR "
+                  "(COALESCE(o.operation_date,'')=? AND "
+                  "o.notice_key=? AND o.row_index>?))")
+            args += [k[0], k[0], k[1], k[0], k[1], k[2]]
         q += (" ORDER BY o.operation_date DESC,o.notice_key DESC,"
               "o.row_index LIMIT ?")
         args.append(limit + 1)
@@ -1122,7 +1232,7 @@ class OwnershipRadar:
         items = []
         last_key = None
         for r in rows:
-            last_key = [r[3], r[0]]
+            last_key = [r[3] or "", r[0], r[2]]
             if r[0] in cancelled:
                 continue
             items.append(TreasuryOperation(
@@ -1132,7 +1242,8 @@ class OwnershipRadar:
                 price_direct=_dec(r[7]), shares_indirect=_dec(r[8]),
                 price_indirect=_dec(r[9]), filing_date=_date(r[10]),
                 notice_status=r[11], _radar=self))
-        nc = _cursor_encode(last_key) if has_more and last_key else None
+        nc = (_cursor_encode(last_key, qs, dv)
+              if has_more and last_key else None)
         return self._result(items, "OK", mode, known_at, effective_at,
                             has_more, nc, "treasury_operations")
 
@@ -1181,8 +1292,8 @@ class OwnershipRadar:
         """Public stable identity (ADR-G6-FEED-IDENTITY):
         v1:<sha256('feed/v1|' + canonical item_key)[:32]>.
         Deterministic across replays, rebuilds and processes."""
-        return CURSOR_VERSION + ":" + hashlib.sha256(
-            ("feed/" + CURSOR_VERSION + "|" + item_key).encode()
+        return FEED_ITEM_ID_VERSION + ":" + hashlib.sha256(
+            ("feed/" + FEED_ITEM_ID_VERSION + "|" + item_key).encode()
         ).hexdigest()[:32]
 
     def _feed_qsig(self, issuer_id, item_type, include_backfill):
@@ -1194,7 +1305,7 @@ class OwnershipRadar:
     def _feed_cursor_encode(self, k, w, q):
         payload = {"k": k, "w": w, "q": q,
                    "dv": self._dataset_version()}
-        return (CURSOR_VERSION + "." + base64.urlsafe_b64encode(
+        return (FEED_CURSOR_VERSION + "." + base64.urlsafe_b64encode(
             json.dumps(payload, separators=(",", ":")).encode()
         ).decode())
 
@@ -1203,7 +1314,7 @@ class OwnershipRadar:
             ver, raw = cursor.split(".", 1)
         except (ValueError, AttributeError):
             raise InvalidCursor("malformed feed cursor")
-        if ver != CURSOR_VERSION:
+        if ver != FEED_CURSOR_VERSION:
             raise UnsupportedCursorVersion(
                 f"feed cursor version {ver!r} unsupported")
         try:
@@ -1212,6 +1323,12 @@ class OwnershipRadar:
             k, w, cq, dv = d["k"], d["w"], d["q"], d["dv"]
         except Exception as e:  # noqa
             raise InvalidCursor(f"undecodable feed cursor: {e!r}")
+        if k is not None and (not isinstance(k, list) or len(k) != 2
+                              or not all(isinstance(v, str)
+                                         for v in k)):
+            raise InvalidCursor("malformed feed cursor key")
+        if w is not None and not isinstance(w, str):
+            raise InvalidCursor("malformed feed cursor watermark")
         if cq != q:
             raise CursorDatasetMismatch(
                 "cursor was issued for a different query/filter set")
@@ -1239,10 +1356,8 @@ class OwnershipRadar:
         changes. Ordering: observed_at ASC, canonical key ASC.
         A traversal is bounded by a watermark fixed on the first
         page, so new arrivals cannot reorder an active read."""
-        issuer_id = (issuer.issuer_id if isinstance(issuer, Issuer)
-                     else issuer)
-        if issuer_id:
-            issuer_id = self._resolve_issuer_id(issuer_id)
+        _check_limit(limit)
+        issuer_id = self._issuer_id(issuer)
         if item_type and item_type not in FEED_ITEM_TYPES:
             raise UnsupportedQuery(
                 f"unknown feed_item_type {item_type!r}; "

@@ -14,7 +14,6 @@ Two layers, mirroring nodpdf: parse_lines(pages) works on the
 extract_cells() structure; parse_pdf(pdf_bytes) is the full pipeline.
 """
 import hashlib
-import json
 import re
 from decimal import Decimal
 
