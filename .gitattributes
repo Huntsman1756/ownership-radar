@@ -1,0 +1,17 @@
+# Normalize text files across Windows/macOS/Linux clones.
+* text=auto eol=lf
+
+# Keep Windows command scripts native if they are added later.
+*.bat text eol=crlf
+*.cmd text eol=crlf
+
+# Binary artifacts should never be line-normalized or rendered as text diffs.
+*.sqlite binary
+*.db binary
+*.pdf binary
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.zip binary
+*.gz binary
