@@ -1,5 +1,10 @@
 # Ownership Radar ES
 
+[![CI](https://github.com/Huntsman1756/ownership-radar/actions/workflows/ci.yml/badge.svg)](https://github.com/Huntsman1756/ownership-radar/actions/workflows/ci.yml)
+[![CodeQL](https://github.com/Huntsman1756/ownership-radar/actions/workflows/codeql.yml/badge.svg)](https://github.com/Huntsman1756/ownership-radar/actions/workflows/codeql.yml)
+[![Release](https://img.shields.io/github/v/release/Huntsman1756/ownership-radar?include_prereleases&sort=semver)](https://github.com/Huntsman1756/ownership-radar/releases)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+
 **An open-source, reproducible ownership ledger for Spanish listed
 issuers, built from official CNMV disclosures covering insider
 transactions, significant holdings and treasury stock.**
@@ -24,9 +29,11 @@ Conceptually: OpenInsider / SEC-tooling for the Spanish CNMV
 ecosystem — insider dealings (NOD/MAR), significant shareholdings
 (*participaciones significativas*) and treasury stock (*autocartera*).
 
-**Status: Alpha** (`v0.1.0-alpha.1`) — semantic core and
+**Status: Alpha** (`v0.1.0-alpha.2`) — semantic core and
 production-scale dataset validated; public API/CLI/feed available and
 contract-tested; breaking changes still possible before 1.0.
+
+Latest release: [v0.1.0-alpha.2](https://github.com/Huntsman1756/ownership-radar/releases/tag/v0.1.0-alpha.2).
 
 ---
 
@@ -65,8 +72,13 @@ first-class, including relation-only targets and ambiguous chains.
 
 ## Quick start
 
+PyPI is **not published yet**. For the current public release, clone the
+repository or install the release wheel directly.
+
 ```bash
-pip install ownership-radar           # or: pip install .
+git clone https://github.com/Huntsman1756/ownership-radar.git
+cd ownership-radar
+python -m pip install .
 
 # build the demo dataset (synthetic, ~330 KB, no CNMV raws needed)
 python scripts/build_demo_dataset.py
@@ -169,10 +181,20 @@ See [PROVENANCE.md](PROVENANCE.md) and `examples/provenance.py`.
 
 ## Installation
 
+From the published alpha.2 wheel:
+
 ```bash
-pip install ownership-radar        # PyPI (when published)
-pip install .                      # from a checkout
+python -m pip install https://github.com/Huntsman1756/ownership-radar/releases/download/v0.1.0-alpha.2/ownership_radar-0.1.0a2-py3-none-any.whl
 ```
+
+From a checkout:
+
+```bash
+python -m pip install .
+```
+
+PyPI distribution is intentionally deferred; `pip install ownership-radar`
+is therefore not advertised as an available installation path yet.
 
 Requires Python ≥3.10; single runtime dependency `pdfminer.six`.
 
@@ -213,6 +235,8 @@ synthetic.
 - The free-text cancellation-letter extractor is not yet implemented
   (measured: marginal yield — see G6-A4).
 - Universe is `itf2026-v1` / 60 issuers today.
+- Alpha.2 did not run a live CNMV crawl; network transport changes are
+  covered by tests/fakes but remain an external integration risk.
 
 ## Project status & roadmap
 
@@ -223,11 +247,14 @@ G3 Significant holdings + treasury ...... PASS
 G4 Bitemporal ledger .................... PASS
 G5 Production scale-out (60 issuers) .... PASS
 G6 Public API + CLI + incremental feed .. PASS
-R1 Public release engineering ........... this release
+R1 Public release engineering ........... PASS
+A2 Correctness/audit hardening .......... PASS
 ```
 
-Likely next (not committed): wider issuer universe, legacy/OCR
-support, additional CNMV families, a web layer — driven by real use.
+Current mode: **maintenance / feedback**. There is no committed feature
+roadmap. Wider issuer coverage, legacy/OCR support, additional CNMV
+families or a web layer should be driven by real use, issues or source
+changes rather than by release cadence.
 
 ## Documentation
 
